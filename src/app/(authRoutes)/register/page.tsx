@@ -25,8 +25,10 @@ const RegisterPage = () => {
       <div className="relative hidden bg-muted lg:block">
         <Image
           src="/assets/authImages/register.jpg"
-          alt="Image"
+          alt="register image"
           fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          loading="eager"
           className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
         />
       </div>

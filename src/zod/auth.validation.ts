@@ -37,4 +37,13 @@ export const completeRegisterFormSchema = z.object({
     step2: registerUserSchema,
 });
 
-export type CompleteRegisterSchemaType = z.infer<typeof completeRegisterFormSchema>;
+export const loginSchema = z.object({
+    email: z
+        .email("Email is required")
+        .min(3, "Email must be at least 3 characters long")
+        .max(50, "Email must be at most 50 characters long"),
+    password: z
+        .string("Password is required")
+        .min(8, "Password must be at least 8 characters long")
+        .max(20, "Password must be at most 20 characters long"),
+});

@@ -1,4 +1,5 @@
 "use client";
+
 import AppButton from "@/components/shared/form/AppButton";
 import AppField from "@/components/shared/form/AppField";
 import { Button } from "@/components/ui/button";
@@ -147,7 +148,7 @@ const RegisterForm = () => {
                   >
                     {(field) => (
                       <AppField
-                        label="Company Name"
+                        label="Company Name*"
                         field={field}
                         type="text"
                         placeholder="Enter Company Name"
@@ -165,7 +166,7 @@ const RegisterForm = () => {
                   >
                     {(field) => (
                       <AppField
-                        label="Phone Number"
+                        label="Phone Number*"
                         field={field}
                         type="text"
                         placeholder="Enter Phone Number"
@@ -225,7 +226,7 @@ const RegisterForm = () => {
                   >
                     {(field) => (
                       <AppField
-                        label="Name"
+                        label="Name*"
                         field={field}
                         type="text"
                         placeholder="Enter Name"
@@ -243,7 +244,7 @@ const RegisterForm = () => {
                   >
                     {(field) => (
                       <AppField
-                        label="Email"
+                        label="Email*"
                         field={field}
                         type="email"
                         placeholder="Enter Email"
@@ -261,7 +262,7 @@ const RegisterForm = () => {
                   >
                     {(field) => (
                       <AppField
-                        label="Password"
+                        label="Password*"
                         field={field}
                         type={show ? "text" : "password"}
                         placeholder="Enter Password"
@@ -342,7 +343,7 @@ const RegisterForm = () => {
           <Separator className={'flex-1'} />
         </div>
         <FieldDescription className="px-6 text-center">
-          Already have an account? <Link href="/login">Sign in</Link>
+          Already have an account? <Link href="/login">Login</Link>
         </FieldDescription>
       </CardFooter>
     </Card>

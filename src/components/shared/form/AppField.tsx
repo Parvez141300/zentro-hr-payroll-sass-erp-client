@@ -44,6 +44,8 @@ const AppField = ({
           value={field.state.value}
           onBlur={field.handleBlur}
           onChange={(e) => field.handleChange(e.target.value)}
+          aria-invalid={isInvalid}
+          aria-describedby={isInvalid ? `${field.name}-error` : undefined}
         />
         {prepend && <InputGroupAddon>{prepend}</InputGroupAddon>}
         {append && (
