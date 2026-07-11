@@ -1,4 +1,5 @@
 import RegisterForm from "@/components/modules/authentication/RegisterForm";
+import Logo from "@/components/shared/logo/Logo";
 import { FieldDescription } from "@/components/ui/field";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,14 +10,7 @@ const RegisterPage = () => {
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">
         <div className="flex justify-center gap-2 md:justify-start">
-          <Link href="/" className="flex items-center gap-2 font-medium">
-            <Image
-              src="/assets/logos/zentro-logo-2.png"
-              alt="zentor-logo-2"
-              width={150}
-              height={500}
-            />
-          </Link>
+          <Logo />
         </div>
         <div className="flex flex-col gap-10 flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
@@ -25,7 +19,8 @@ const RegisterPage = () => {
         </div>
         <FieldDescription className="flex justify-center gap-2">
           <span>
-            @{new Date().getFullYear()} Zentro Hr & Payroll. All rights reserved.
+            @{new Date().getFullYear()} Zentro Hr & Payroll. All rights
+            reserved.
           </span>
           <Link href={"/terms"}>Terms & Conditions</Link>
           <Link href={"/privacy"}>Privacy Policy</Link>
