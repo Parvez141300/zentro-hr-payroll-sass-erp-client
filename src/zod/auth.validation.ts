@@ -74,7 +74,7 @@ export const contactFormSchema = z.object({
     phone: z
         .string()
         .regex(/^\+?[1-9]\d{1,14}$/, "Please enter a valid phone number (e.g., +1234567890)")
-        .optional(),
+    ,
     subject: z
         .string()
         .min(5, "Subject must be at least 5 characters")
