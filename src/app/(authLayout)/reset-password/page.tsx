@@ -1,8 +1,11 @@
+import ResetPasswordForm from '@/components/modules/authentication/ResetPasswordForm'
 import React from 'react'
 
 const ResetPasswordPage = () => {
   return (
-    <div>ResetPasswordPage</div>
+    <div className='min-h-screen flex justify-center items-center'>
+      <ResetPasswordForm />
+    </div>
   )
 }
 

@@ -12,16 +12,27 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { FieldDescription } from "@/components/ui/field";
-import { loginSchema } from "@/zod/auth.validation";
+import { loginSchema, resetPasswordSchema } from "@/zod/auth.validation";
 import { useForm } from "@tanstack/react-form";
-import { ArrowLeftFromLine, Mail, Send } from "lucide-react";
+import {
+  ArrowLeftFromLine,
+  LockKeyhole,
+  Mail,
+  RectangleEllipsis,
+  Send,
+} from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
-const ForgotPasswordForm = () => {
+const ResetPasswordForm = () => {
   const form = useForm({
     defaultValues: {
       email: "",
+      otp: "",
+      password: "",
+    },
+    validators: {
+      onSubmit: resetPasswordSchema,
     },
     onSubmit: async ({ value }) => {
       try {
@@ -37,10 +48,9 @@ const ForgotPasswordForm = () => {
     <Card className="max-w-5xl p-5">
       <CardHeader className="text-center space-y-2">
         <Logo />
-        <CardTitle>Forgot Your Password</CardTitle>
+        <CardTitle>Reset/Update Your Password</CardTitle>
         <CardDescription>
-          Enter your email. We will send you an email otp to reset your
-          password.
+          Enter your email, otp, and new password to reset/update your password.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -52,6 +62,7 @@ const ForgotPasswordForm = () => {
           }}
           className="space-y-5"
         >
+          {/* email field */}
           <form.Field
             name="email"
             validators={{
@@ -69,6 +80,42 @@ const ForgotPasswordForm = () => {
             )}
           </form.Field>
 
+          {/* otp field */}
+          <form.Field
+            name="otp"
+            validators={{
+              onChange: resetPasswordSchema.shape.otp,
+            }}
+          >
+            {(field) => (
+              <AppField
+                field={field}
+                label="OTP"
+                type="text"
+                placeholder="Enter your otp"
+                prepend={<RectangleEllipsis />}
+              />
+            )}
+          </form.Field>
+
+          {/* password field */}
+          <form.Field
+            name="password"
+            validators={{
+              onChange: loginSchema.shape.password,
+            }}
+          >
+            {(field) => (
+              <AppField
+                field={field}
+                label="Password"
+                type="password"
+                placeholder="Enter your password"
+                prepend={<LockKeyhole />}
+              />
+            )}
+          </form.Field>
+
           <form.Subscribe
             selector={(state) => [state.canSubmit, state.isSubmitting]}
           >
@@ -80,7 +127,7 @@ const ForgotPasswordForm = () => {
                   disabled={!canSubmit}
                   chidren={
                     <>
-                      <Send /> Send
+                      <Send /> Submit
                     </>
                   }
                   isPending={isSubmitting}
@@ -116,4 +163,4 @@ const ForgotPasswordForm = () => {
   );
 };
 
-export default ForgotPasswordForm;
+export default ResetPasswordForm;

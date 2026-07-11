@@ -47,3 +47,18 @@ export const loginSchema = z.object({
         .min(8, "Password must be at least 8 characters long")
         .max(20, "Password must be at most 20 characters long"),
 });
+
+export const resetPasswordSchema = z.object({
+    email: z
+        .email("Email is required")
+        .min(3, "Email must be at least 3 characters long")
+        .max(50, "Email must be at most 50 characters long"),
+    otp: z
+        .string()
+        .min(6, "OTP must be at least 6 characters long")
+        .max(6, "OTP must be at most 6 characters long"),
+    password: z
+        .string("Password is required")
+        .min(8, "Password must be at least 8 characters long")
+        .max(20, "Password must be at most 20 characters long"),
+});
