@@ -125,25 +125,19 @@ const ResetPasswordForm = () => {
                   className="w-full"
                   type="submit"
                   disabled={!canSubmit}
-                  chidren={
-                    <>
-                      <Send /> Submit
-                    </>
-                  }
                   isPending={isSubmitting}
                   pendingLabel="Sending..."
-                />
-                <AppButton
-                  varient="secondary"
-                  type="button"
-                  className="w-full"
-                  chidren={
-                    <Link href={"/login"} className="flex items-center gap-1">
-                      <ArrowLeftFromLine />
-                      Back To Login
-                    </Link>
-                  }
-                />
+                >
+                  <>
+                    <Send /> Submit
+                  </>
+                </AppButton>
+                <AppButton varient="secondary" type="button" className="w-full">
+                  <Link href={"/login"} className="flex items-center gap-1">
+                    <ArrowLeftFromLine />
+                    Back To Login
+                  </Link>
+                </AppButton>
               </div>
             )}
           </form.Subscribe>

@@ -108,8 +108,9 @@ const LoginForm = () => {
                     onClick={() => {
                       setShow((prev) => !prev);
                     }}
-                    chidren={show ? <Eye /> : <EyeOff />}
-                  />
+                  >
+                    {show ? <Eye /> : <EyeOff />}
+                  </AppButton>
                 }
               />
             )}
@@ -126,12 +127,11 @@ const LoginForm = () => {
                   disabled={!canSubmit}
                   isPending={isSubmitting}
                   pendingLabel="Logging in..."
-                  chidren={
-                    <>
-                      <LogIn /> Login
-                    </>
-                  }
-                />
+                >
+                  <>
+                    <LogIn /> Login
+                  </>
+                </AppButton>
               </div>
             )}
           </form.Subscribe>

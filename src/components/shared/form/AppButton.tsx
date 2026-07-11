@@ -3,7 +3,7 @@ import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 type AppButtonProps = {
-  chidren?: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
   type?: "submit" | "reset" | "button";
   disabled?: boolean;
@@ -15,7 +15,8 @@ type AppButtonProps = {
     | "ghost"
     | "link"
     | "outline"
-    | "secondary";
+    | "secondary"
+    | "outline";
   onClick?: () => void;
 };
 
@@ -23,7 +24,7 @@ const AppButton = ({
   varient,
   className,
   type,
-  chidren,
+  children,
   disabled,
   isPending,
   pendingLabel,
@@ -42,7 +43,7 @@ const AppButton = ({
           <Loader2 className="animate-spin" /> {pendingLabel}
         </>
       ) : (
-        chidren
+        children
       )}
     </Button>
   );

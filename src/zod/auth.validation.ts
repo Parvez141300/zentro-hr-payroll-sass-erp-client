@@ -62,3 +62,25 @@ export const resetPasswordSchema = z.object({
         .min(8, "Password must be at least 8 characters long")
         .max(20, "Password must be at most 20 characters long"),
 });
+
+// Contact form schema
+export const contactFormSchema = z.object({
+    fullName: z
+        .string()
+        .min(2, "Full name must be at least 2 characters")
+        .max(50, "Full name must be less than 50 characters")
+        .regex(/^[a-zA-Z\s]+$/, "Name can only contain letters and spaces"),
+    email: z.email("Please enter a valid email address"),
+    phone: z
+        .string()
+        .regex(/^\+?[1-9]\d{1,14}$/, "Please enter a valid phone number (e.g., +1234567890)")
+        .optional(),
+    subject: z
+        .string()
+        .min(5, "Subject must be at least 5 characters")
+        .max(100, "Subject must be less than 100 characters"),
+    message: z
+        .string()
+        .min(10, "Message must be at least 10 characters")
+        .max(1000, "Message must be less than 1000 characters"),
+});

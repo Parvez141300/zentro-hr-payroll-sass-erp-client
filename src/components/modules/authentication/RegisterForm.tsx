@@ -30,6 +30,7 @@ import {
   LockKeyhole,
   Mail,
   PhoneCall,
+  UserRoundArrowLeft,
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -201,12 +202,11 @@ const RegisterForm = () => {
                       onClick={() => {
                         group.handleSubmit();
                       }}
-                      chidren={
-                        <>
-                          Next <ChevronRight />
-                        </>
-                      }
-                    />
+                    >
+                      <>
+                        Next <ChevronRight />
+                      </>
+                    </AppButton>
                   </div>
                 </div>
               )}
@@ -274,8 +274,9 @@ const RegisterForm = () => {
                             onClick={() => {
                               setShow((prev) => !prev);
                             }}
-                            chidren={show ? <Eye /> : <EyeOff />}
-                          />
+                          >
+                            {show ? <Eye /> : <EyeOff />}
+                          </AppButton>
                         }
                       />
                     )}
@@ -296,12 +297,11 @@ const RegisterForm = () => {
                             onClick={() => {
                               setStep(0);
                             }}
-                            chidren={
-                              <>
-                                <ChevronLeft /> Back
-                              </>
-                            }
-                          />
+                          >
+                            <>
+                              <ChevronLeft /> Back
+                            </>
+                          </AppButton>
                           {/* reset button */}
                           <Button
                             type="reset"
@@ -323,8 +323,9 @@ const RegisterForm = () => {
                             isPending={isSubmitting}
                             pendingLabel="Registering..."
                             disabled={!canSubmit}
-                            chidren={<span>Register</span>}
-                          />
+                          >
+                            <UserRoundArrowLeft /> Register
+                          </AppButton>
                         </div>
                       </>
                     )}
@@ -340,7 +341,7 @@ const RegisterForm = () => {
         <div className="flex items-center w-full">
           <Separator className={"flex-1"} />
           <span className="px-2">Or</span>
-          <Separator className={'flex-1'} />
+          <Separator className={"flex-1"} />
         </div>
         <FieldDescription className="px-6 text-center">
           Already have an account? <Link href="/login">Login</Link>
