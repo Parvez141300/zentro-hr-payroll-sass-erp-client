@@ -1,5 +1,5 @@
 import RegisterForm from "@/components/modules/authentication/RegisterForm";
-import { GalleryVerticalEnd } from "lucide-react";
+import { FieldDescription } from "@/components/ui/field";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -10,17 +10,26 @@ const RegisterPage = () => {
       <div className="flex flex-col gap-4 p-6 md:p-10">
         <div className="flex justify-center gap-2 md:justify-start">
           <Link href="/" className="flex items-center gap-2 font-medium">
-            <div className="flex size-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
-              <GalleryVerticalEnd className="size-4" />
-            </div>
-            Zentro
+            <Image
+              src="/assets/logos/zentro-logo-2.png"
+              alt="zentor-logo-2"
+              width={150}
+              height={500}
+            />
           </Link>
         </div>
-        <div className="flex flex-1 items-center justify-center">
+        <div className="flex flex-col gap-10 flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
             <RegisterForm />
           </div>
         </div>
+        <FieldDescription className="flex justify-center gap-2">
+          <span>
+            @{new Date().getFullYear()} Zentro Hr & Payroll. All rights reserved.
+          </span>
+          <Link href={"/terms"}>Terms & Conditions</Link>
+          <Link href={"/privacy"}>Privacy Policy</Link>
+        </FieldDescription>
       </div>
       <div className="relative hidden bg-muted lg:block">
         <Image
