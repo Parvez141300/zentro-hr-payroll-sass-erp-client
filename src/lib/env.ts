@@ -4,6 +4,7 @@ interface IEnvVariableConfig {
     BACKEND_URL: string;
     NEXT_PUBLIC_FRONTEND_URL: string;
     NEXT_PUBLIC_BACKEND_URL: string;
+    JWT_TOKEN_SECRET: string;
 }
 
 export const loadEnvVariables = (): IEnvVariableConfig => {
@@ -12,6 +13,7 @@ export const loadEnvVariables = (): IEnvVariableConfig => {
         "BACKEND_URL",
         "NEXT_PUBLIC_FRONTEND_URL",
         "NEXT_PUBLIC_BACKEND_URL",
+        "JWT_TOKEN_SECRET",
     ]
     requiredEnvVariables.forEach((envVariable) => {
         if (!process.env[envVariable]) {
@@ -23,6 +25,7 @@ export const loadEnvVariables = (): IEnvVariableConfig => {
         BACKEND_URL: process.env.BACKEND_URL as string,
         NEXT_PUBLIC_FRONTEND_URL: process.env.NEXT_PUBLIC_FRONTEND_URL as string,
         NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL as string,
+        JWT_TOKEN_SECRET: process.env.JWT_TOKEN_SECRET as string,
     }
 }
 

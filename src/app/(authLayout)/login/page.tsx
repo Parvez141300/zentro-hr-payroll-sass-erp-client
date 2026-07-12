@@ -17,7 +17,7 @@ const LoginPage = () => {
             <div className="w-full max-w-xs">
               <LoginForm />
             </div>
-            <FieldDescription className="flex justify-center gap-2">
+            <FieldDescription className="flex flex-col lg:flex-row text-center justify-center gap-2">
               <span>
                 @{new Date().getFullYear()} Zentro Hr & Payroll. All rights
                 reserved.

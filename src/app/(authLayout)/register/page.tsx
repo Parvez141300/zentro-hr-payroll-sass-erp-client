@@ -17,7 +17,7 @@ const RegisterPage = () => {
             <RegisterForm />
           </div>
         </div>
-        <FieldDescription className="flex justify-center gap-2">
+        <FieldDescription className="flex flex-col lg:flex-row justify-center text-center gap-2">
           <span>
             @{new Date().getFullYear()} Zentro Hr & Payroll. All rights
             reserved.
