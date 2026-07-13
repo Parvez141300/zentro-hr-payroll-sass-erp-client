@@ -3,17 +3,9 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 const verifyToken = async (token: string, secret: string) => {
     try {
         const decoded = jwt.verify(token, secret);
-        return {
-            success: true,
-            data: decoded,
-        }
+        return decoded;
     } catch (error) {
         console.log('This error is from verifyToken: ', error);
-        return {
-            success: false,
-            data: null,
-            error: error,
-        }
     }
 }
 
