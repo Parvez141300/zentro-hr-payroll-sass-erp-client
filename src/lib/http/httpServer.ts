@@ -1,4 +1,4 @@
-import { refreshAccessToken } from "../auth/refresh.server";
+import { serverTokenRefresh } from "../auth/refresh.server";
 import { cookieUtils } from "../cookieUtilts";
 import { tokenUtils } from "../tokenUtils";
 import { axiosServerInstance } from "./axios.server";
@@ -38,7 +38,7 @@ async function checkAndRefreshToken() {
     }
 
     const refreshed =
-        await refreshAccessToken(refreshToken, sessionToken);
+        await serverTokenRefresh(refreshToken, sessionToken);
 
     if (!refreshed) {
         throw new Error("Refresh Failed");

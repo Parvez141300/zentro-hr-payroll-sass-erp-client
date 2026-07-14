@@ -1,6 +1,6 @@
 import { axiosClientInstance } from "../http/axios.client";
 
-export const clientRefreshToken = async () => {
+export const clientTokenRefresh = async () => {
     try {
         await axiosClientInstance.post("/api/v1/refresh-token");
 

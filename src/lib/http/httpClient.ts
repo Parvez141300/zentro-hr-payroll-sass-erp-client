@@ -1,4 +1,4 @@
-import { clientRefreshToken } from "../auth/refresh.client";
+import { clientTokenRefresh } from "../auth/refresh.client";
 import { axiosClientInstance } from "./axios.client";
 import { IApiRequestOptions, IApiResponse } from "./types";
 
@@ -48,7 +48,7 @@ axiosClientInstance.interceptors.response.use(
             isRefreshing = true;
 
             try {
-                const refreshed = await clientRefreshToken();
+                const refreshed = await clientTokenRefresh();
 
                 if (refreshed) {
                     // Refresh successful - process queue

@@ -4,7 +4,7 @@ import { cookieUtils } from "@/lib/cookieUtilts";
 import { envVars } from "@/lib/env";
 import { headers } from "next/headers";
 
-export const refreshAccessToken = async (refreshToken: string, betterAuthSessionToken: string) => {
+export const serverTokenRefresh = async (refreshToken: string, betterAuthSessionToken: string) => {
     try {
         const requestHeaders = await headers();
 
