@@ -1,9 +1,9 @@
-export interface ApiRequestOptions {
+export interface IApiRequestOptions {
     params?: Record<string, unknown>;
     headers?: Record<string, string>;
 }
 
-export interface ApiResponse<T> {
+export interface IApiResponse<T> {
     success: boolean;
     message: string;
     data: T;

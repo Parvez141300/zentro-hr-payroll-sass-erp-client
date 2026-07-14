@@ -1,6 +1,6 @@
 import { clientRefreshToken } from "../auth/refresh.client";
-import { IApiRequestOptions, IApiResponse } from "../axios/httpClient";
 import { axiosClientInstance } from "./axios.client";
+import { IApiRequestOptions, IApiResponse } from "./types";
 
 
 // Track if token refresh is in progress

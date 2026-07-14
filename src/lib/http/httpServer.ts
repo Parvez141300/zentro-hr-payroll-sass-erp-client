@@ -1,8 +1,8 @@
 import { refreshAccessToken } from "../auth/refresh.server";
-import { IApiRequestOptions, IApiResponse } from "../axios/httpClient";
 import { cookieUtils } from "../cookieUtilts";
 import { tokenUtils } from "../tokenUtils";
 import { axiosServerInstance } from "./axios.server";
+import { IApiRequestOptions, IApiResponse } from "./types";
 
 async function checkAndRefreshToken() {
 
