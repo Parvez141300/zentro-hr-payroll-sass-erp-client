@@ -2,7 +2,7 @@ import { refreshAccessToken } from "../auth/refresh.server";
 import { IApiRequestOptions, IApiResponse } from "../axios/httpClient";
 import { cookieUtils } from "../cookieUtilts";
 import { tokenUtils } from "../tokenUtils";
-import { axiosInstance } from "./axios";
+import { axiosServerInstance } from "./axios.server";
 
 async function checkAndRefreshToken() {
 
@@ -48,7 +48,7 @@ async function checkAndRefreshToken() {
 const serverGet = async <TData>(url: string, options?: IApiRequestOptions) => {
     await checkAndRefreshToken();
 
-    const response = await axiosInstance.get<IApiResponse<TData>>(url, {
+    const response = await axiosServerInstance.get<IApiResponse<TData>>(url, {
         params: options?.params,
         headers: options?.headers,
     });
@@ -59,7 +59,7 @@ const serverGet = async <TData>(url: string, options?: IApiRequestOptions) => {
 const serverPost = async <TData>(url: string, data?: unknown, options?: IApiRequestOptions) => {
     await checkAndRefreshToken();
 
-    const response = await axiosInstance.post<IApiResponse<TData>>(url, data, {
+    const response = await axiosServerInstance.post<IApiResponse<TData>>(url, data, {
         params: options?.params,
         headers: options?.headers,
     });
@@ -70,7 +70,7 @@ const serverPost = async <TData>(url: string, data?: unknown, options?: IApiRequ
 const serverPut = async <TData>(url: string, data?: unknown, options?: IApiRequestOptions) => {
     await checkAndRefreshToken();
 
-    const response = await axiosInstance.put<IApiResponse<TData>>(url, data, {
+    const response = await axiosServerInstance.put<IApiResponse<TData>>(url, data, {
         params: options?.params,
         headers: options?.headers,
     });
@@ -81,7 +81,7 @@ const serverPut = async <TData>(url: string, data?: unknown, options?: IApiReque
 const serverPatch = async <TData>(url: string, data?: unknown, options?: IApiRequestOptions) => {
     await checkAndRefreshToken();
 
-    const response = await axiosInstance.patch<IApiResponse<TData>>(url, data, {
+    const response = await axiosServerInstance.patch<IApiResponse<TData>>(url, data, {
         params: options?.params,
         headers: options?.headers,
     });
@@ -92,7 +92,7 @@ const serverPatch = async <TData>(url: string, data?: unknown, options?: IApiReq
 const serverDelete = async <TData>(url: string, options?: IApiRequestOptions) => {
     await checkAndRefreshToken();
 
-    const response = await axiosInstance.delete<IApiResponse<TData>>(url, {
+    const response = await axiosServerInstance.delete<IApiResponse<TData>>(url, {
         params: options?.params,
         headers: options?.headers,
     });
