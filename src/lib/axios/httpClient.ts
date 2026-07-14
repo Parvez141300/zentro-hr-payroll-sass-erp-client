@@ -1,4 +1,4 @@
-import { cookies, headers } from "next/headers";
+
 import { cookieUtils } from "../cookieUtilts"
 import { tokenUtils } from "../tokenUtils";
 import { getNewTokenWithRefreshToken } from "@/actions/auth.action";
@@ -12,35 +12,21 @@ export const axiosInstance = async () => {
     const betterAuthSessionToken = await cookieUtils.getCookie("better-auth.session_token");
 
     if (accessToken && refreshToken && betterAuthSessionToken) {
-        const tokenExpired = await tokenUtils.isTokenExpired(accessToken as string);
-        if (tokenExpired) {
+        const accessTokenExpired = await tokenUtils.isTokenExpired(accessToken as string);
+        const refreshTokenExpired = await tokenUtils.isTokenExpired(refreshToken as string);
+        if (refreshTokenExpired) {
+            // logout
+            throw new Error("Refresh token expired. Please login again.");
+        }
+        if (accessTokenExpired) {
             await getNewTokenWithRefreshToken(refreshToken as string, betterAuthSessionToken as string);
         }
     }
-
-    const requestHeaders = await headers();
-
-    if (refreshToken && betterAuthSessionToken) {
-        if (requestHeaders.get("X-Refresh-Token-Refresh")) {
-            await getNewTokenWithRefreshToken(refreshToken as string, betterAuthSessionToken as string);
-        }
-    }
-
-    const cookieStore = await cookies();
-
-    const cookieHeader = cookieStore
-        .getAll()
-        .map((cookie) => `${cookie.name}=${cookie.value}`)
-        .join("; ");
 
     const instance = axios.create({
         baseURL: envVars.NEXT_PUBLIC_BACKEND_URL,
         timeout: 5000, // 5 seconds if no response then error
-        headers: {
-            "Content-Type": "application/json",
-            Cookie: cookieHeader,
-            Authorization: `Bearer ${accessToken}`,
-        },
+        withCredentials: true,
     });
 
     return instance;
@@ -112,10 +98,10 @@ const httpDelete = async <TData>(url: string, options?: IApiRequestOptions) => {
     return response.data;
 }
 
-export const httpClient = {
-    get: httpGet,
-    post: httpPost,
-    patch: httpPatch,
-    put: httpPut,
-    delete: httpDelete,
-}
+// export const httpClient = {
+//     get: httpGet,
+//     post: httpPost,
+//     patch: httpPatch,
+//     put: httpPut,
+//     delete: httpDelete,
+// }

@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use server";
 
 import { cookieUtils } from "@/lib/cookieUtilts";
 import { envVars } from "@/lib/env";
 import { headers } from "next/headers";
 
-export const getNewTokenWithRefreshToken = async (refreshToken: string, betterAuthSessionToken: string) => {
+export const refreshAccessToken = async (refreshToken: string, betterAuthSessionToken: string) => {
     try {
         const requestHeaders = await headers();
 

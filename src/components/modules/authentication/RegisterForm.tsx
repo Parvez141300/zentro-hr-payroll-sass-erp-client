@@ -58,6 +58,7 @@ const RegisterForm = () => {
     },
     onSubmit: async ({ value }) => {
       try {
+        setFormError(null);
         console.log("this is form register form: ", value);
       } catch (error) {
         setFormError(
