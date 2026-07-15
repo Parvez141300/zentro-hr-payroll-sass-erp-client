@@ -6,17 +6,10 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggleCircular } from "@/components/theme-toggle-circular";
 
 export function ThemeToggle() {
-  const { setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
 
   const toggleTheme = () => {
-    const isDark = document.documentElement.classList.contains("dark");
-    if (isDark) {
-      document.documentElement.classList.remove("dark");
-      setTheme("light");
-    } else {
-      document.documentElement.classList.add("dark");
-      setTheme("dark");
-    }
+    setTheme(resolvedTheme === "dark" ? "light" : "dark");
   };
 
   return (
