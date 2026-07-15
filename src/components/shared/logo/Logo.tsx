@@ -23,6 +23,7 @@ const Logo = ({
         width={width ? width : 100}
         height={height ? height : 50}
         className={cn("w-auto h-auto", className && `${className}`)}
+        loading="eager"
       />
     </Link>
   );
