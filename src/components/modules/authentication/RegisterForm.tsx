@@ -34,6 +34,7 @@ import {
   UserRoundArrowLeft,
 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -41,6 +42,7 @@ const RegisterForm = () => {
   const [step, setStep] = useState<number>(0);
   const [formError, setFormError] = useState<string | null>(null);
   const [show, setShow] = useState<boolean>(false);
+  const router = useRouter();
 
   const form = useForm({
     defaultValues: {
@@ -71,10 +73,15 @@ const RegisterForm = () => {
 
         const register = await registerSuperAdmin(registerPayloadData);
 
-        toast.success("Registration successful", {
-          id: toastId,
-          position: "bottom-center",
-        });
+        if (register.success) {
+          form.reset();
+          setStep(0);
+          router.push("/login");
+          toast.success("Registration successful", {
+            id: toastId,
+            position: "bottom-center",
+          });
+        }
 
         console.log(register);
       } catch (error) {

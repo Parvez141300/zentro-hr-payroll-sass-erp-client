@@ -1,6 +1,7 @@
 import { clientTokenRefresh } from "../auth/refresh.client";
 import { axiosClientInstance } from "./axios.client";
 import { IApiRequestOptions, IApiResponse } from "./types";
+import { handleAxiosError } from "../axios/handleAxiosError";
 
 
 // Track if token refresh is in progress
@@ -81,53 +82,68 @@ axiosClientInstance.interceptors.response.use(
 
 
 const clientGet = async <TData>(url: string, options?: IApiRequestOptions) => {
+    try {
+        const response = await axiosClientInstance.get<IApiResponse<TData>>(url, {
+            params: options?.params,
+            headers: options?.headers,
+        });
 
-    const response = await axiosClientInstance.get<IApiResponse<TData>>(url, {
-        params: options?.params,
-        headers: options?.headers,
-    });
-
-    return response.data;
+        return response.data;
+    } catch (error) {
+        return handleAxiosError(error);
+    }
 }
 
 const clientPost = async <TData>(url: string, data?: unknown, options?: IApiRequestOptions) => {
+    try {
+        const response = await axiosClientInstance.post<IApiResponse<TData>>(url, data, {
+            params: options?.params,
+            headers: options?.headers,
+        });
 
-    const response = await axiosClientInstance.post<IApiResponse<TData>>(url, data, {
-        params: options?.params,
-        headers: options?.headers,
-    });
-
-    return response.data;
+        return response.data;
+    } catch (error) {
+        return handleAxiosError(error);
+    }
 }
 
 const clientPut = async <TData>(url: string, data?: unknown, options?: IApiRequestOptions) => {
+    try {
+        const response = await axiosClientInstance.put<IApiResponse<TData>>(url, data, {
+            params: options?.params,
+            headers: options?.headers,
+        });
 
-    const response = await axiosClientInstance.put<IApiResponse<TData>>(url, data, {
-        params: options?.params,
-        headers: options?.headers,
-    });
-
-    return response.data;
+        return response.data;
+    } catch (error) {
+        return handleAxiosError(error);
+    }
 }
 
 const clientPatch = async <TData>(url: string, data?: unknown, options?: IApiRequestOptions) => {
+    try {
+        const response = await axiosClientInstance.patch<IApiResponse<TData>>(url, data, {
+            params: options?.params,
+            headers: options?.headers,
+        });
 
-    const response = await axiosClientInstance.patch<IApiResponse<TData>>(url, data, {
-        params: options?.params,
-        headers: options?.headers,
-    });
-
-    return response.data;
+        return response.data;
+    } catch (error) {
+        return handleAxiosError(error);
+    }
 }
 
 const clientDelete = async <TData>(url: string, options?: IApiRequestOptions) => {
+    try {
+        const response = await axiosClientInstance.delete<IApiResponse<TData>>(url, {
+            params: options?.params,
+            headers: options?.headers,
+        });
 
-    const response = await axiosClientInstance.delete<IApiResponse<TData>>(url, {
-        params: options?.params,
-        headers: options?.headers,
-    });
-
-    return response.data;
+        return response.data;
+    } catch (error) {
+        return handleAxiosError(error);
+    }
 }
 
 export const httpClient = {
