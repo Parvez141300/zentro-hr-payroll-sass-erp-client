@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Logo from "@/components/shared/logo/Logo";
-import ContactForm from "@/components/modules/contact/ContactForm";
+import ContactForm from "@/components/modules/common/contact/ContactForm";
 
 export const metadata: Metadata = {
   title: "Contact Us - Zentro HR & Payroll",

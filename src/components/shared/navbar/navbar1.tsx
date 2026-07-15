@@ -1,6 +1,15 @@
 "use client";
 
-import { Book, Menu, Sunset, Trees, Zap } from "lucide-react";
+import {
+  Book,
+  Menu,
+  Zap,
+  Siren,
+  PersonStanding,
+  UserCheck,
+  UserRoundX,
+  HandCoins,
+} from "lucide-react";
 
 import {
   Accordion,
@@ -26,6 +35,7 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import Logo from "../logo/Logo";
+import Link from "next/link";
 
 interface MenuItem {
   title: string;
@@ -37,13 +47,6 @@ interface MenuItem {
 
 interface Navbar1Props {
   className?: string;
-  logo?: {
-    url: string;
-    src: string;
-    alt: string;
-    title: string;
-    className?: string;
-  };
   menu?: MenuItem[];
   auth?: {
     login: {
@@ -58,42 +61,36 @@ interface Navbar1Props {
 }
 
 const Navbar1 = ({
-  logo = {
-    url: "https://www.shadcnblocks.com",
-    src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblockscom-icon.svg",
-    alt: "logo",
-    title: "Shadcnblocks.com",
-  },
   menu = [
     { title: "Home", url: "/" },
     {
-      title: "Products",
+      title: "Features",
       url: "#",
       items: [
         {
-          title: "Blog",
-          description: "The latest industry news, updates, and info",
-          icon: <Book className="size-5 shrink-0" />,
-          url: "#",
+          title: "Hr Management",
+          description: "Manage your employees and payroll with ease",
+          icon: <PersonStanding className="size-5 shrink-0" />,
+          url: "/hr-management",
         },
         {
-          title: "Company",
-          description: "Our mission is to innovate and empower the world",
-          icon: <Trees className="size-5 shrink-0" />,
-          url: "#",
+          title: "Attendance",
+          description: "Manage and Track employee attendance",
+          icon: <UserCheck className="size-5 shrink-0" />,
+          url: "/attendance",
         },
         {
-          title: "Careers",
-          description: "Browse job listing and discover our workspace",
-          icon: <Sunset className="size-5 shrink-0" />,
-          url: "#",
+          title: "Leave",
+          description: "Manage and Track employee leave requests",
+          icon: <UserRoundX className="size-5 shrink-0" />,
+          url: "/leave",
         },
         {
-          title: "Support",
+          title: "Payroll",
           description:
-            "Get in touch with our support team or visit our community forums",
-          icon: <Zap className="size-5 shrink-0" />,
-          url: "#",
+            "Generate and manage employee payroll with ease and accuracy",
+          icon: <HandCoins className="size-5 shrink-0" />,
+          url: "/payroll",
         },
       ],
     },
@@ -102,34 +99,28 @@ const Navbar1 = ({
       url: "#",
       items: [
         {
-          title: "Help Center",
-          description: "Get all the answers you need right here",
+          title: "About Us",
+          description: "Get to know about our company and our mission",
           icon: <Zap className="size-5 shrink-0" />,
-          url: "#",
-        },
-        {
-          title: "Contact Us",
-          description: "We are here to help you with any questions you have",
-          icon: <Sunset className="size-5 shrink-0" />,
-          url: "#",
-        },
-        {
-          title: "Status",
-          description: "Check the current status of our services and APIs",
-          icon: <Trees className="size-5 shrink-0" />,
-          url: "#",
+          url: "/about",
         },
         {
           title: "Terms of Service",
           description: "Our terms and conditions for using our services",
           icon: <Book className="size-5 shrink-0" />,
-          url: "#",
+          url: "/terms",
+        },
+        {
+          title: "Privacy & Policy",
+          description: "Our terms and conditions for using our services",
+          icon: <Siren className="size-5 shrink-0" />,
+          url: "/privacy",
         },
       ],
     },
     {
       title: "Pricing",
-      url: "#",
+      url: "/pricing",
     },
     {
       title: "Contact",
@@ -138,18 +129,18 @@ const Navbar1 = ({
   ],
   auth = {
     login: { title: "Login", url: "#" },
-    signup: { title: "Sign up", url: "#" },
+    signup: { title: "Sign up", url: "/register" },
   },
   className,
 }: Navbar1Props) => {
   return (
     <section className={cn("py-4", className)}>
-      <div className="container">
+      <div className="max-w-7xl mx-auto px-4">
         {/* Desktop Menu */}
         <nav className="hidden items-center justify-between lg:flex">
           <div className="flex items-center gap-6">
             {/* Logo */}
-            <Logo />
+            <Logo width={70} height={30} />
             <div className="flex items-center">
               <NavigationMenu>
                 <NavigationMenuList>
@@ -158,9 +149,10 @@ const Navbar1 = ({
               </NavigationMenu>
             </div>
           </div>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm" render={<a href={auth.login.url} />} nativeButton={false}>{auth.login.title}</Button>
-            <Button size="sm" render={<a href={auth.signup.url} />} nativeButton={false}>{auth.signup.title}</Button>
+          <div>
+            <Link href={auth.signup.url}>
+              <Button>{auth.signup.title}</Button>
+            </Link>
           </div>
         </nav>
 
@@ -168,25 +160,15 @@ const Navbar1 = ({
         <div className="block lg:hidden">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <a href={logo.url} className="flex items-center gap-2">
-              <img
-                src={logo.src}
-                className="max-h-8 dark:invert"
-                alt={logo.alt}
-              />
-            </a>
+            <Logo width={50} height={20} />
             <Sheet>
-              <SheetTrigger render={<Button variant="outline" size="icon" />}><Menu className="size-4" /></SheetTrigger>
+              <SheetTrigger render={<Button variant="outline" size="icon" />}>
+                <Menu className="size-4" />
+              </SheetTrigger>
               <SheetContent className="overflow-y-auto">
                 <SheetHeader>
                   <SheetTitle>
-                    <a href={logo.url} className="flex items-center gap-2">
-                      <img
-                        src={logo.src}
-                        className="max-h-8 dark:invert"
-                        alt={logo.alt}
-                      />
-                    </a>
+                    <Logo width={50} height={20} />
                   </SheetTitle>
                 </SheetHeader>
                 <div className="flex flex-col gap-6 p-4">
@@ -199,8 +181,9 @@ const Navbar1 = ({
                   </Accordion>
 
                   <div className="flex flex-col gap-3">
-                    <Button variant="outline" render={<a href={auth.login.url} />} nativeButton={false}>{auth.login.title}</Button>
-                    <Button render={<a href={auth.signup.url} />} nativeButton={false}>{auth.signup.title}</Button>
+                    <Link href={auth.signup.url}>
+                      <Button>{auth.signup.title}</Button>
+                    </Link>
                   </div>
                 </div>
               </SheetContent>
@@ -219,7 +202,11 @@ const renderMenuItem = (item: MenuItem) => {
         <NavigationMenuTrigger>{item.title}</NavigationMenuTrigger>
         <NavigationMenuContent className="bg-popover text-popover-foreground">
           {item.items.map((subItem) => (
-            <NavigationMenuLink key={subItem.title} className="w-80" render={<SubMenuLink item={subItem} />}></NavigationMenuLink>
+            <NavigationMenuLink
+              key={subItem.title}
+              className="w-80"
+              render={<SubMenuLink item={subItem} />}
+            ></NavigationMenuLink>
           ))}
         </NavigationMenuContent>
       </NavigationMenuItem>
