@@ -35,6 +35,8 @@ import {
 import { cn } from "@/lib/utils";
 import Logo from "../logo/Logo";
 import Link from "next/link";
+import BorderBeamButton from "../buttons/BorderBeamButton";
+import { ThemeToggle } from "../themeToggle/ThemeToggle";
 
 interface MenuItem {
   title: string;
@@ -142,9 +144,10 @@ const Navbar1 = ({
               </NavigationMenu>
             </div>
           </div>
-          <div>
+          <div className="flex items-center gap-5">
+            <ThemeToggle />
             <Link href={auth.signup.url}>
-              <Button>{auth.signup.title}</Button>
+              <BorderBeamButton>{auth.signup.title}</BorderBeamButton>
             </Link>
           </div>
         </nav>
@@ -165,15 +168,14 @@ const Navbar1 = ({
                   </SheetTitle>
                 </SheetHeader>
                 <div className="flex flex-col gap-6 p-4">
-                  <Accordion
-                    className="flex w-full flex-col gap-4"
-                  >
+                  <Accordion className="flex w-full flex-col gap-4">
                     {menu.map((item) => renderMobileMenuItem(item))}
                   </Accordion>
 
-                  <div className="flex flex-col gap-3">
+                  <div className="flex items-center justify-between">
+                    <ThemeToggle />
                     <Link href={auth.signup.url}>
-                      <Button>{auth.signup.title}</Button>
+                      <BorderBeamButton>{auth.signup.title}</BorderBeamButton>
                     </Link>
                   </div>
                 </div>
