@@ -52,7 +52,7 @@ const LoginForm = () => {
 
         {/* Error Message */}
         {formError && (
-          <h3 className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-md">
+          <h3 className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-md overflow-auto">
             {formError}
           </h3>
         )}

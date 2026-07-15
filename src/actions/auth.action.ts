@@ -1,5 +1,8 @@
 // /* eslint-disable @typescript-eslint/no-explicit-any */
-// "use server";
+"use server";
+
+import { authService } from "@/services/auth.service";
+import { RegisterPayload } from "@/types/auth.type";
 
 // import { cookieUtils } from "@/lib/cookieUtilts";
 // import { envVars } from "@/lib/env";
@@ -60,4 +63,10 @@
 //         return false;
 //     }
 // };
+
+export const registerSuperAdmin = async (payload: RegisterPayload) => {
+    const result = await authService.registerSuperAdminUser(payload);
+
+    return result;
+};
 

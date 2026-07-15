@@ -11,8 +11,9 @@ const Logo = ({ className }: { className?: string }) => {
       <Image
         src="/assets/logos/zentro-logo-2.png"
         alt="zentor-logo-2"
-        width={150}
-        height={500}
+        width={100}
+        height={50}
+        className="w-auto h-auto"
       />
     </Link>
   );

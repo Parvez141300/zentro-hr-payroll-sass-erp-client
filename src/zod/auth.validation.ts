@@ -5,7 +5,7 @@ export const registerCompanySchema = z.object({
     companyName: z
         .string("Company name is required")
         .min(3, "Company name must be at least 3 characters long")
-        .max(20, "Company name must be at most 20 characters long"),
+        .max(50, "Company name must be at most 50 characters long"),
     phone: z
         .string("Phone number is required")
         .min(11, "Phone number must be at least 11 characters long")
@@ -13,7 +13,7 @@ export const registerCompanySchema = z.object({
     address: z
         .string("Address is required")
         .min(3, "Address must be at least 3 characters long")
-        .max(20, "Address must be at most 20 characters long"),
+        .max(50, "Address must be at most 50 characters long"),
 });
 
 export const registerUserSchema = z.object({

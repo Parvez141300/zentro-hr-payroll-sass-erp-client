@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
 import QueryProviders from "@/providers/QueryProvider";
+import { Toaster } from "sonner";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -59,6 +60,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <QueryProviders>{children}</QueryProviders>
+        <Toaster />
       </body>
     </html>
   );

@@ -1,5 +1,6 @@
 "use client";
 
+import { registerSuperAdmin } from "@/actions/auth.action";
 import AppButton from "@/components/shared/form/AppButton";
 import AppField from "@/components/shared/form/AppField";
 import { Button } from "@/components/ui/button";
@@ -34,6 +35,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const RegisterForm = () => {
   const [step, setStep] = useState<number>(0);
@@ -57,19 +59,42 @@ const RegisterForm = () => {
       onSubmit: completeRegisterFormSchema,
     },
     onSubmit: async ({ value }) => {
+      const toastId = toast.loading("Registering...", {
+        position: "bottom-center",
+      });
       try {
         setFormError(null);
-        console.log("this is form register form: ", value);
+        const registerPayloadData = {
+          ...value.step1,
+          ...value.step2,
+        };
+
+        const register = await registerSuperAdmin(registerPayloadData);
+
+        toast.success("Registration successful", {
+          id: toastId,
+          position: "bottom-center",
+        });
+
+        console.log(register);
       } catch (error) {
         setFormError(
           error instanceof Error ? error.message : "Submission failed",
+        );
+        console.log("This error is from register form", error);
+        toast.error(
+          error instanceof Error ? error.message : "Submission failed",
+          {
+            id: toastId,
+            position: "bottom-center",
+          },
         );
       }
     },
   });
   return (
     <Card>
-      <CardHeader className="space-y-5">
+      <CardHeader className="space-y-5 relative">
         <CardTitle className="text-center font-bold">
           Hi there, Welcome to Zentor Hr & Payroll
         </CardTitle>
@@ -115,9 +140,9 @@ const RegisterForm = () => {
 
         {/* Error Message */}
         {formError && (
-          <h3 className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-md">
+          <p className="mb-4 p-3 bg-accent border border-primary/20 text-red-700 rounded-md overflow-auto">
             {formError}
-          </h3>
+          </p>
         )}
       </CardHeader>
 
@@ -310,6 +335,7 @@ const RegisterForm = () => {
                               // Avoid unexpected resets of form elements (especially <select> elements)
                               e.preventDefault();
                               form.reset();
+                              setStep(0);
                             }}
                           >
                             Reset

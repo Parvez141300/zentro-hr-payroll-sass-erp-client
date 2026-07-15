@@ -1452,7 +1452,7 @@ import SSLCommerzPayment from "sslcommerz-lts";
 
 const store_id = process.env.SSLCOMMERZ_STORE_ID!;
 const store_passwd = process.env.SSLCOMMERZ_STORE_PASSWORD!;
-const is_live = process.env.NODE_ENV === "production"; // false = sandbox
+const is_live = process.env.APP_ENV === "production"; // false = sandbox
 
 export const initiateSSLCommerzPayment = async (
   tranId: string,

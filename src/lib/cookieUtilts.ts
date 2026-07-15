@@ -10,7 +10,7 @@ const setCookie = async (name: string, value: string, maxAgeInSeconds: number) =
         maxAge: maxAgeInSeconds,
         path: "/",
         sameSite: "strict",
-        secure: envVars.NODE_ENV === "development" ? false : true,
+        secure: envVars.APP_ENV === "development" ? false : true,
     });
 }
 
