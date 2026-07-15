@@ -82,7 +82,7 @@ const BENEFITS = [
 
 export default function Attendance() {
   return (
-    <div className="container max-w-7xl mx-auto py-12 px-4">
+    <div className="">
       {/* Header */}
       <div className="text-center mb-12">
         <Badge variant="secondary" className="mb-4">

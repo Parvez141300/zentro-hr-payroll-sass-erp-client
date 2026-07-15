@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "Attendance Tracking - Zentro HR & Payroll",
+  title: "Attendance Tracking",
   description:
     "Real-time attendance tracking with biometric integration, mobile check-in, and automated reports",
 };
