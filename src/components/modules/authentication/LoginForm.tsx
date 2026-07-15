@@ -1,5 +1,6 @@
 "use client";
 
+import { loginUser } from "@/actions/auth.action";
 import AppButton from "@/components/shared/form/AppButton";
 import AppField from "@/components/shared/form/AppField";
 import {
@@ -34,8 +35,12 @@ const LoginForm = () => {
     onSubmit: async ({ value }) => {
       const toastId = toast.loading("User logging in...");
       try {
-        console.log("this is form register form: ", value);
-        toast.success("Successfully Logged in", { id: toastId });
+        const userLogin = await loginUser(value);
+        console.log("this is form register form: ", userLogin);
+        if (userLogin?.success) {
+          toast.success("Successfully Logged in", { id: toastId });
+          form.reset();
+        }
       } catch (error) {
         setFormError(
           error instanceof Error ? error.message : "Submission failed",

@@ -2,7 +2,7 @@
 "use server";
 
 import { authService } from "@/services/auth.service";
-import { RegisterPayload } from "@/types/auth.type";
+import { ILoginPayload, IRegisterPayload } from "@/types/auth.type";
 
 // import { cookieUtils } from "@/lib/cookieUtilts";
 // import { envVars } from "@/lib/env";
@@ -64,9 +64,14 @@ import { RegisterPayload } from "@/types/auth.type";
 //     }
 // };
 
-export const registerSuperAdmin = async (payload: RegisterPayload) => {
+export const registerSuperAdmin = async (payload: IRegisterPayload) => {
     const result = await authService.registerSuperAdminUser(payload);
 
     return result;
 };
 
+export const loginUser = async (payload: ILoginPayload, redirectPath?: string) => {
+    const result = await authService.loginUser(payload, redirectPath);
+
+    return result;
+};
