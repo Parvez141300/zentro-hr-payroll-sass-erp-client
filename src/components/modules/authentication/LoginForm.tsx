@@ -17,6 +17,7 @@ import { useForm } from "@tanstack/react-form";
 import { Eye, EyeOff, LockKeyhole, LogIn, Mail } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
+import { toast } from "sonner";
 
 const LoginForm = () => {
   const [show, setShow] = useState<boolean>(false);
@@ -31,11 +32,17 @@ const LoginForm = () => {
       onSubmit: loginSchema,
     },
     onSubmit: async ({ value }) => {
+      const toastId = toast.loading("User logging in...");
       try {
         console.log("this is form register form: ", value);
+        toast.success("Successfully Logged in", { id: toastId });
       } catch (error) {
         setFormError(
           error instanceof Error ? error.message : "Submission failed",
+        );
+        toast.error(
+          error instanceof Error ? error.message : "Submission failed",
+          { id: toastId },
         );
       }
     },

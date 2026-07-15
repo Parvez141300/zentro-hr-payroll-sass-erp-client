@@ -61,9 +61,7 @@ const RegisterForm = () => {
       onSubmit: completeRegisterFormSchema,
     },
     onSubmit: async ({ value }) => {
-      const toastId = toast.loading("Registering...", {
-        position: "bottom-center",
-      });
+      const toastId = toast.loading("Registering...");
       try {
         setFormError(null);
         const registerPayloadData = {
@@ -79,7 +77,6 @@ const RegisterForm = () => {
           router.push("/login");
           toast.success("Registration successful", {
             id: toastId,
-            position: "bottom-center",
           });
         }
 
@@ -93,7 +90,6 @@ const RegisterForm = () => {
           error instanceof Error ? error.message : "Submission failed",
           {
             id: toastId,
-            position: "bottom-center",
           },
         );
       }

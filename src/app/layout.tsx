@@ -60,7 +60,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <QueryProviders>{children}</QueryProviders>
-        <Toaster />
+        <Toaster position="bottom-center"/>
       </body>
     </html>
   );
