@@ -58,7 +58,7 @@ export default function RootLayout({
       className={`${geistSans.className} ${poppins.variable} ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <QueryProviders>{children}</QueryProviders>
         <Toaster position="bottom-center"/>
       </body>
