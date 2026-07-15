@@ -1,9 +1,17 @@
+import About from '@/components/modules/common/about/About';
+import { Metadata } from 'next';
 import React from 'react'
 
-const AboutPage = () => {
+export const metadata: Metadata = {
+  title: "About Us",
+  description:
+    "Learn about Zentro, the modern HR and Payroll ERP platform built for growing organizations.",
+};
+
+const AboutUsPage = () => {
   return (
-    <div>AboutPage</div>
+    <About />
   )
 }
 
-export default AboutPage
+export default AboutUsPage
