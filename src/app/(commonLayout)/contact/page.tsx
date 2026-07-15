@@ -49,7 +49,7 @@ const contactInfo = [
 
 export default function ContactPage() {
   return (
-    <div className="container py-12 px-4">
+    <div className="">
       {/* Header Section */}
       <div className="text-center mb-12">
         <div className="flex justify-center mb-4">
