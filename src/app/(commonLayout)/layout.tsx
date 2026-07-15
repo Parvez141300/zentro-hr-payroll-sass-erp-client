@@ -7,7 +7,7 @@ const CommonLayout = ({ children }: { children: React.ReactNode }) => {
       <nav>
         <Navbar1 className="bg-accent" />
       </nav>
-      <main className="max-w-7xl mx-auto my-10 px-4">{children}</main>
+      <main className="max-w-7xl mx-auto my-10 px-4 w-full">{children}</main>
     </>
   );
 };

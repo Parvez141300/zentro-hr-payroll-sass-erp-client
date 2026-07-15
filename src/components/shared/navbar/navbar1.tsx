@@ -5,7 +5,6 @@ import {
   Menu,
   Zap,
   Siren,
-  PersonStanding,
   UserCheck,
   UserRoundX,
   HandCoins,
@@ -67,12 +66,6 @@ const Navbar1 = ({
       title: "Features",
       url: "#",
       items: [
-        {
-          title: "Hr Management",
-          description: "Manage your employees and payroll with ease",
-          icon: <PersonStanding className="size-5 shrink-0" />,
-          url: "/hr-management",
-        },
         {
           title: "Attendance",
           description: "Manage and Track employee attendance",
@@ -173,8 +166,6 @@ const Navbar1 = ({
                 </SheetHeader>
                 <div className="flex flex-col gap-6 p-4">
                   <Accordion
-                    type="single"
-                    collapsible
                     className="flex w-full flex-col gap-4"
                   >
                     {menu.map((item) => renderMobileMenuItem(item))}
