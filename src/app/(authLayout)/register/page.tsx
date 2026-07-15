@@ -35,6 +35,14 @@ const RegisterPage = () => {
           loading="eager"
           className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
         />
+        <div className="h-72 absolute bg-primary/80 w-full bottom-0 text-secondary flex flex-col pl-10 justify-center">
+          <div className="space-y-5">
+            <h1 className="text-4xl font-bold">
+              Lets empower <br /> our employees today
+            </h1>
+            <p>We help you grow your business with us and your employees</p>
+          </div>
+        </div>
       </div>
     </div>
   );
