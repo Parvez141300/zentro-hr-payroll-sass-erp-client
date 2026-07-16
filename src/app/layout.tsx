@@ -3,7 +3,7 @@ import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
 import QueryProviders from "@/providers/QueryProvider";
 import { Toaster } from "sonner";
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider } from "@/providers/ThemeProvider";
 
 const poppins = Poppins({
   variable: "--font-poppins",
