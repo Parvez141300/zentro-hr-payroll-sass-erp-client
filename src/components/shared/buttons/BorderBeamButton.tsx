@@ -10,11 +10,11 @@ const BorderBeamButton = ({ children }: { children: React.ReactNode }) => {
       <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-secondary px-8 py-1 text-sm font-medium text-primary backdrop-blur-3xl hover:bg-primary hover:text-secondary transition-all duration-500">
         {children}
         <BorderBeam
-          size={40}
-          duration={4}
+          size={20}
+          duration={1}
           delay={0}
           radius={9999}
-          borderWidth={2}
+          borderWidth={0}
         />
       </span>
     </Button>
