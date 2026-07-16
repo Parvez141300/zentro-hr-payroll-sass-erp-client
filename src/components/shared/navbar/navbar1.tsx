@@ -37,6 +37,7 @@ import Logo from "../logo/Logo";
 import Link from "next/link";
 import BorderBeamButton from "../buttons/BorderBeamButton";
 import { ThemeToggle } from "../themeToggle/ThemeToggle";
+import { usePathname } from "next/navigation";
 
 interface MenuItem {
   title: string;
@@ -128,6 +129,7 @@ const Navbar1 = ({
   },
   className,
 }: Navbar1Props) => {
+  const pathName = usePathname();
   return (
     <section className={cn("py-4", className)}>
       <div className="max-w-7xl mx-auto px-4">
@@ -139,7 +141,7 @@ const Navbar1 = ({
             <div className="flex items-center">
               <NavigationMenu>
                 <NavigationMenuList>
-                  {menu.map((item) => renderMenuItem(item))}
+                  {menu.map((item) => renderMenuItem(item, pathName))}
                 </NavigationMenuList>
               </NavigationMenu>
             </div>
@@ -169,7 +171,7 @@ const Navbar1 = ({
                 </SheetHeader>
                 <div className="flex flex-col gap-6 p-4">
                   <Accordion className="flex w-full flex-col gap-4">
-                    {menu.map((item) => renderMobileMenuItem(item))}
+                    {menu.map((item) => renderMobileMenuItem(item, pathName))}
                   </Accordion>
 
                   <div className="flex items-center justify-between">
@@ -188,7 +190,8 @@ const Navbar1 = ({
   );
 };
 
-const renderMenuItem = (item: MenuItem) => {
+const renderMenuItem = (item: MenuItem, pathName: string) => {
+  const isActive = pathName === item.url;
   if (item.items) {
     return (
       <NavigationMenuItem key={item.title}>
@@ -208,17 +211,22 @@ const renderMenuItem = (item: MenuItem) => {
 
   return (
     <NavigationMenuItem key={item.title}>
-      <NavigationMenuLink
+      <Link
         href={item.url}
-        className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-accent-foreground"
+        className={cn(
+          "group inline-flex h-10 w-max items-center justify-center px-4 py-2 text-sm font-medium hover:underline",
+          isActive ? "underline font-bold" : "",
+        )}
       >
         {item.title}
-      </NavigationMenuLink>
+      </Link>
     </NavigationMenuItem>
   );
 };
 
-const renderMobileMenuItem = (item: MenuItem) => {
+const renderMobileMenuItem = (item: MenuItem, pathName: string) => {
+  const isActive = pathName === item.url;
+
   if (item.items) {
     return (
       <AccordionItem key={item.title} value={item.title} className="border-b-0">
@@ -235,16 +243,20 @@ const renderMobileMenuItem = (item: MenuItem) => {
   }
 
   return (
-    <a key={item.title} href={item.url} className="text-md font-semibold">
+    <Link
+      key={item.title}
+      href={item.url}
+      className={cn("text-md font-semibold hover:no-underline", isActive ? "underline font-bold" : "")}
+    >
       {item.title}
-    </a>
+    </Link>
   );
 };
 
 const SubMenuLink = ({ item }: { item: MenuItem }) => {
   return (
-    <a
-      className="flex min-w-80 flex-row gap-4 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none hover:bg-muted hover:text-accent-foreground"
+    <Link
+      className="flex min-w-80 flex-row gap-4 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none hover:bg-muted hover:text-accent-foreground hover:underline"
       href={item.url}
     >
       <div className="text-foreground">{item.icon}</div>
@@ -256,7 +268,7 @@ const SubMenuLink = ({ item }: { item: MenuItem }) => {
           </p>
         )}
       </div>
-    </a>
+    </Link>
   );
 };
 
