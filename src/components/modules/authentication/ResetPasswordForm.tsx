@@ -98,6 +98,7 @@ const ResetPasswordForm = () => {
   const handleResetOtpCode = async (email: string | null) => {
     if (!email) {
       toast.error("Please submit email in forgot password page again.");
+      setFormError("Please submit email in forgot password page again.");
       return;
     }
     setFormError(null);
