@@ -1,5 +1,6 @@
 "use client";
 
+import { forgotPassword } from "@/actions/auth.action";
 import AppButton from "@/components/shared/form/AppButton";
 import AppField from "@/components/shared/form/AppField";
 import Logo from "@/components/shared/logo/Logo";
@@ -16,20 +17,30 @@ import { loginSchema } from "@/zod/auth.validation";
 import { useForm } from "@tanstack/react-form";
 import { ArrowLeftFromLine, Mail, Send } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const ForgotPasswordForm = () => {
+  const [formError, setFormError] = React.useState<string | null>(null);
+  const router = useRouter();
   const form = useForm({
     defaultValues: {
       email: "",
     },
     onSubmit: async ({ value }) => {
+      setFormError(null);
       try {
-        console.log("this is form register form: ", value);
+        console.log("this is form forgot password form: ", value);
+        const result = await forgotPassword(value.email);
+        if (result.success) {
+          router.push("/reset-password");
+        }
       } catch (error) {
-        throw new Error(
+        setFormError(
           error instanceof Error ? error.message : "Submission failed",
         );
+
+        console.log("This error is from register form", error);
       }
     },
   });
@@ -42,6 +53,12 @@ const ForgotPasswordForm = () => {
           Enter your email. We will send you an email otp to reset your
           password.
         </CardDescription>
+        {/* Error Message */}
+        {formError && (
+          <p className="mb-4 p-3 bg-accent border border-primary/20 text-red-700 rounded-md overflow-auto">
+            {formError}
+          </p>
+        )}
       </CardHeader>
       <CardContent>
         <form

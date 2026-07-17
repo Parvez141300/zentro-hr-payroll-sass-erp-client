@@ -75,3 +75,9 @@ export const loginUser = async (payload: ILoginPayload, redirectPath?: string) =
 
     return result;
 };
+
+export const forgotPassword = async (email: string) => {
+    const result = await authService.forgotPassword(email);
+
+    return result;
+}

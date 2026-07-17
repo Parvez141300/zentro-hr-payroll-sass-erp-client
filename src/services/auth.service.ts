@@ -32,7 +32,14 @@ const loginUser = async (payload: ILoginPayload, redirectPath?: string) => {
     }
 }
 
+const forgotPassword = async (email: string) => {
+    const result = await httpServer.post("/api/v1/auth/forget-password", { email });
+
+    return result;
+}
+
 export const authService = {
     registerSuperAdminUser,
     loginUser,
+    forgotPassword,
 }
