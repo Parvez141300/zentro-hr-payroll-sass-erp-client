@@ -48,3 +48,9 @@ export interface ILoginResponse {
         deletedAt?: Date | null | undefined;
     };
 }
+
+export interface IResetPasswordPayload {
+    email: string;
+    otp: string;
+    newPassword: string;
+}

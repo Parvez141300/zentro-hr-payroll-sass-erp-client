@@ -49,10 +49,6 @@ export const loginSchema = z.object({
 });
 
 export const resetPasswordSchema = z.object({
-    email: z
-        .email("Email is required")
-        .min(3, "Email must be at least 3 characters long")
-        .max(50, "Email must be at most 50 characters long"),
     otp: z
         .string()
         .min(6, "OTP must be at least 6 characters long")

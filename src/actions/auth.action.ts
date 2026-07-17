@@ -2,7 +2,7 @@
 "use server";
 
 import { authService } from "@/services/auth.service";
-import { ILoginPayload, IRegisterPayload } from "@/types/auth.type";
+import { ILoginPayload, IRegisterPayload, IResetPasswordPayload } from "@/types/auth.type";
 
 // import { cookieUtils } from "@/lib/cookieUtilts";
 // import { envVars } from "@/lib/env";
@@ -78,6 +78,12 @@ export const loginUser = async (payload: ILoginPayload, redirectPath?: string) =
 
 export const forgotPassword = async (email: string) => {
     const result = await authService.forgotPassword(email);
+
+    return result;
+}
+
+export const resetPassword = async (payload: IResetPasswordPayload) => {
+    const result = await authService.resetPassword(payload);
 
     return result;
 }

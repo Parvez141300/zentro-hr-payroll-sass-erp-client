@@ -33,14 +33,14 @@ const ForgotPasswordForm = () => {
         console.log("this is form forgot password form: ", value);
         const result = await forgotPassword(value.email);
         if (result.success) {
-          router.push("/reset-password");
+          router.push(`/reset-password?email=${value.email}`);
         }
       } catch (error) {
         setFormError(
           error instanceof Error ? error.message : "Submission failed",
         );
 
-        console.log("This error is from register form", error);
+        console.log("This error is from forgot password form", error);
       }
     },
   });

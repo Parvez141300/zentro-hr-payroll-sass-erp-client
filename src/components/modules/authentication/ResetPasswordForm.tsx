@@ -1,8 +1,10 @@
 "use client";
 
+import { forgotPassword, resetPassword } from "@/actions/auth.action";
 import AppButton from "@/components/shared/form/AppButton";
 import AppField from "@/components/shared/form/AppField";
 import Logo from "@/components/shared/logo/Logo";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -11,23 +13,42 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { FieldDescription } from "@/components/ui/field";
+import {
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "@/components/ui/field";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
 import { loginSchema, resetPasswordSchema } from "@/zod/auth.validation";
 import { useForm } from "@tanstack/react-form";
 import {
   ArrowLeftFromLine,
+  Eye,
+  EyeOff,
   LockKeyhole,
-  Mail,
-  RectangleEllipsis,
+  RefreshCwIcon,
   Send,
 } from "lucide-react";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
+import { toast } from "sonner";
 
 const ResetPasswordForm = () => {
+  const searchParams = useSearchParams();
+  const email = searchParams.get("email");
+  const router = useRouter();
+  const [formError, setFormError] = React.useState<string | null>(null);
+  const [show, setShow] = React.useState<boolean>(false);
+  const [otpLoading, setOtpLoading] = React.useState<boolean>(false);
+
   const form = useForm({
     defaultValues: {
-      email: "",
       otp: "",
       password: "",
     },
@@ -35,17 +56,69 @@ const ResetPasswordForm = () => {
       onSubmit: resetPasswordSchema,
     },
     onSubmit: async ({ value }) => {
+      setFormError(null);
+      const toastId = toast.loading("Reseting your password...");
       try {
-        console.log("this is form register form: ", value);
+        if (!email) {
+          setFormError(
+            "Email is required please submit email in forgot password page again.",
+          );
+          toast.error(
+            "Email is required please submit email in forgot password page again.",
+            { id: toastId },
+          );
+          return;
+        }
+        const resetPasswordPayload = {
+          email: email as string,
+          otp: value.otp,
+          newPassword: value.password,
+        };
+        const result = await resetPassword(resetPasswordPayload);
+        if (result.success) {
+          form.reset();
+          router.push("/login");
+          toast.success("Password reset successful", { id: toastId });
+        }
+        console.log("this is from reset password", resetPasswordPayload);
       } catch (error) {
-        throw new Error(
+        setFormError(
           error instanceof Error ? error.message : "Submission failed",
         );
+        toast.error(
+          error instanceof Error ? error.message : "Submission failed",
+          { id: toastId },
+        );
+
+        console.log("This error is from reset password form", error);
       }
     },
   });
+
+  const handleResetOtpCode = async (email: string | null) => {
+    if (!email) {
+      toast.error("Please submit email in forgot password page again.");
+      return;
+    }
+    setFormError(null);
+    setOtpLoading(true);
+    try {
+      const toastId = toast.loading("Sending otp...");
+      const result = await forgotPassword(email);
+      if (result.success) {
+        toast.success("OTP sent to your email", { id: toastId });
+        setOtpLoading(false);
+      }
+    } catch (error) {
+      setFormError(
+        error instanceof Error ? error.message : "Submission failed",
+      );
+      setOtpLoading(false);
+      console.log("This error is from forgot password form", error);
+    }
+  };
   return (
-    <Card className="max-w-5xl p-5">
+    <Card className="max-w-xl p-5">
       <CardHeader className="text-center space-y-2">
         <Logo />
         <CardTitle>Reset/Update Your Password</CardTitle>
@@ -53,6 +126,13 @@ const ResetPasswordForm = () => {
           Enter your email, otp, and new password to reset/update your password.
         </CardDescription>
       </CardHeader>
+
+      {/* Error Message */}
+      {formError && (
+        <p className="mb-4 p-3 bg-accent border border-primary/20 text-red-700 rounded-md overflow-auto">
+          {formError}
+        </p>
+      )}
       <CardContent>
         <form
           onSubmit={(e) => {
@@ -62,24 +142,6 @@ const ResetPasswordForm = () => {
           }}
           className="space-y-5"
         >
-          {/* email field */}
-          <form.Field
-            name="email"
-            validators={{
-              onChange: loginSchema.shape.email,
-            }}
-          >
-            {(field) => (
-              <AppField
-                field={field}
-                label="Email"
-                type="email"
-                placeholder="Enter your email"
-                prepend={<Mail />}
-              />
-            )}
-          </form.Field>
-
           {/* otp field */}
           <form.Field
             name="otp"
@@ -87,15 +149,63 @@ const ResetPasswordForm = () => {
               onChange: resetPasswordSchema.shape.otp,
             }}
           >
-            {(field) => (
-              <AppField
-                field={field}
-                label="OTP"
-                type="text"
-                placeholder="Enter your otp"
-                prepend={<RectangleEllipsis />}
-              />
-            )}
+            {(field) => {
+              const isInvalid =
+                field.state.meta.isTouched && !field.state.meta.isValid;
+              return (
+                <div className="w-full space-y-2">
+                  <div className="flex items-center justify-between">
+                    <FieldLabel htmlFor="otp-verification">
+                      OTP Verification
+                    </FieldLabel>
+                    <Button
+                      variant="outline"
+                      size="xs"
+                      onClick={() => handleResetOtpCode(email)}
+                      disabled={otpLoading}
+                    >
+                      {otpLoading ? (
+                        <>
+                          <RefreshCwIcon className="animate-spin" />
+                          Resend Code
+                        </>
+                      ) : (
+                        <>
+                          <RefreshCwIcon />
+                          Resend Code
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                  <InputOTP
+                    id="otp-verification"
+                    maxLength={6}
+                    name={field.name}
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e)}
+                    onBlur={field.handleBlur}
+                    autoComplete="off"
+                    className="w-full"
+                  >
+                    <InputOTPGroup>
+                      <InputOTPSlot index={0} />
+                      <InputOTPSlot index={1} />
+                    </InputOTPGroup>
+                    <InputOTPSeparator />
+                    <InputOTPGroup>
+                      <InputOTPSlot index={2} />
+                      <InputOTPSlot index={3} />
+                    </InputOTPGroup>
+                    <InputOTPSeparator />
+                    <InputOTPGroup>
+                      <InputOTPSlot index={4} />
+                      <InputOTPSlot index={5} />
+                    </InputOTPGroup>
+                  </InputOTP>
+                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                </div>
+              );
+            }}
           </form.Field>
 
           {/* password field */}
@@ -109,9 +219,20 @@ const ResetPasswordForm = () => {
               <AppField
                 field={field}
                 label="Password"
-                type="password"
+                type={show ? "text" : "password"}
                 placeholder="Enter your password"
                 prepend={<LockKeyhole />}
+                append={
+                  <AppButton
+                    type="button"
+                    varient="ghost"
+                    onClick={() => {
+                      setShow((prev) => !prev);
+                    }}
+                  >
+                    {show ? <Eye /> : <EyeOff />}
+                  </AppButton>
+                }
               />
             )}
           </form.Field>
@@ -120,7 +241,7 @@ const ResetPasswordForm = () => {
             selector={(state) => [state.canSubmit, state.isSubmitting]}
           >
             {([canSubmit, isSubmitting]) => (
-              <div className="space-y-2">
+              <div className="space-y-2 w-full">
                 <AppButton
                   className="w-full"
                   type="submit"
