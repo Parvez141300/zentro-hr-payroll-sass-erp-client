@@ -1,5 +1,6 @@
 
 import { cookieUtils } from "@/lib/cookieUtilts";
+import { httpClient } from "@/lib/http/httpClient";
 import { httpServer } from "@/lib/http/httpServer";
 import { ILoginPayload, ILoginResponse, IRegisterPayload, IRegisterResponse, IResetPasswordPayload } from "@/types/auth.type";
 
@@ -44,9 +45,16 @@ const resetPassword = async (payload: IResetPasswordPayload) => {
     return result;
 }
 
+const getClientLoggedInUserInfo = async () => {
+    const info = await httpClient.get("/api/v1/auth/me");
+
+    return info;
+}
+
 export const authService = {
     registerSuperAdminUser,
     loginUser,
     forgotPassword,
     resetPassword,
+    getClientLoggedInUserInfo,
 }

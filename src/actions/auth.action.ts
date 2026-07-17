@@ -87,3 +87,9 @@ export const resetPassword = async (payload: IResetPasswordPayload) => {
 
     return result;
 }
+
+export const getClientLoggedInUserInfo = async () => {
+    const result = await authService.getClientLoggedInUserInfo();
+
+    return result;
+}

@@ -36,10 +36,14 @@ const LoginForm = () => {
       const toastId = toast.loading("User logging in...");
       try {
         const userLogin = await loginUser(value);
-        console.log("this is form register form: ", userLogin);
         if (userLogin?.success) {
+          setFormError(null);
           toast.success("Successfully Logged in", { id: toastId });
           form.reset();
+        }
+        if (!userLogin) {
+          setFormError("This user does not exist");
+          toast.error("This user does not exist", { id: toastId });
         }
       } catch (error) {
         setFormError(

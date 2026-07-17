@@ -38,6 +38,8 @@ import Link from "next/link";
 import BorderBeamButton from "../buttons/BorderBeamButton";
 import { ThemeToggle } from "../themeToggle/ThemeToggle";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { getClientLoggedInUserInfo } from "@/actions/auth.action";
 
 interface MenuItem {
   title: string;
@@ -130,6 +132,28 @@ const Navbar1 = ({
   className,
 }: Navbar1Props) => {
   const pathName = usePathname();
+  const [session, setSession] = useState<unknown>(null);
+  const [loading, setLoading] = useState(true);
+
+  console.log(session, "this from session data")
+
+  useEffect(() => {
+    const fetchSession = async () => {
+      setLoading(true);
+      try {
+        const response = await getClientLoggedInUserInfo();
+        const data = response.data;
+        setSession(data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching session:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchSession();
+  }, [])
+
   return (
     <section className={cn("py-4", className)}>
       <div className="max-w-7xl mx-auto px-4">
