@@ -1,5 +1,5 @@
 "use client";
-import { BorderBeam } from "@/components/border-beam";
+import { BorderBeam } from "@/components/ui/border-beam";
 import { Button } from "@/components/ui/button";
 import React from "react";
 

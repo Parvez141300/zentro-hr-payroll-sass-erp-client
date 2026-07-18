@@ -3,7 +3,7 @@
 import { useTheme } from "next-themes";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ThemeToggleCircular } from "@/components/theme-toggle-circular";
+import { ThemeToggleCircular } from "@/components/ui/theme-toggle-circular";
 
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
