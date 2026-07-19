@@ -7,7 +7,7 @@ import React from "react";
 import { Loader2 } from "lucide-react";
 import PricingPlans, { Plan } from "./PricingPlans";
 
-export default function PricingPage() {
+export default function PricingData() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["subscription-plans-config"],
     queryFn: () => getAllSubscriptionPlanConfig(),

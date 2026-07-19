@@ -1,5 +1,6 @@
-import { getAllSubscriptionPlanConfig } from "@/actions/subscriptionPlanConfig.action";
+
 import PricingData from "@/components/modules/common/pricing/PricingData";
+import { subscriptionPlanConfigService } from "@/services/subscriptionPlanConfig.service";
 import {
   dehydrate,
   HydrationBoundary,
@@ -12,7 +13,7 @@ const PricingPage = async () => {
 
   await queryClient.prefetchQuery({
     queryKey: ["subscription-plans-config"],
-    queryFn: () => getAllSubscriptionPlanConfig(),
+    queryFn: () => subscriptionPlanConfigService.getAllSubscriptionPlanConfig(),
     staleTime: 1000 * 60 * 60, // 1 hour
     gcTime: 1000 * 60 * 60 * 24, // 1 day
   });
