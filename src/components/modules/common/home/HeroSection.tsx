@@ -12,7 +12,7 @@ import Link from "next/link";
 
 // Hero Section
 const HeroSection = () => (
-  <section className="relative overflow-hidden py-20 md:py-32 rounded-xl">
+  <section className="relative overflow-hidden py-16 rounded-xl">
     {/* Background Gradient */}
     <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-secondary/5 to-transparent" />
     <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent" />
@@ -76,7 +76,7 @@ const HeroSection = () => (
         </div>
 
         <div className="relative">
-          <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-border/50">
+          <div className="relative rounded-2xl overflow-hidden shadow-xl border border-border/50">
             <div className="aspect-video bg-linear-to-br from-primary/20 to-secondary/20 flex items-center justify-center p-8">
               <div className="text-center">
                 <Building2 className="h-16 w-16 text-primary mx-auto mb-4" />
