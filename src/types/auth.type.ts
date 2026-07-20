@@ -54,3 +54,110 @@ export interface IResetPasswordPayload {
     otp: string;
     newPassword: string;
 }
+
+// types/auth.type.ts
+
+export enum UserRole {
+    PLATFORM_SUPER_ADMIN = "PLATFORM_SUPER_ADMIN",
+    SUPER_ADMIN = "Super_ADMIN",
+    HR_MANAGER = "HR_MANAGER",
+    ACCOUNTANT = "ACCOUNTANT",
+    DEPARTMENT_HEAD = "DEPARTMENT_HEAD",
+    EMPLOYEE = "EMPLOYEE",
+}
+
+export interface IPlatformSuperAdmin {
+    id: string;
+    userId: string;
+    name: string;
+    photoUrl: string | null;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface ISuperAdmin {
+    id: string;
+    userId: string;
+    name: string;
+    phone: string;
+    photoUrl: string | null;
+    isDeleted: boolean;
+    deletedAt: string | null;
+    createdAt: string;
+    updatedAt: string;
+    companyId: string;
+}
+
+export interface IHrManager {
+    id: string;
+    userId: string;
+    name: string;
+    phone: string;
+    photoUrl: string | null;
+    isDeleted: boolean;
+    deletedAt: string | null;
+    createdAt: string;
+    updatedAt: string;
+    companyId: string;
+}
+
+export interface IAccountant {
+    id: string;
+    userId: string;
+    name: string;
+    phone: string;
+    photoUrl: string | null;
+    isDeleted: boolean;
+    deletedAt: string | null;
+    createdAt: string;
+    updatedAt: string;
+    companyId: string;
+}
+
+export interface IDepartmentHead {
+    id: string;
+    userId: string;
+    name: string;
+    phone: string;
+    photoUrl: string | null;
+    isDeleted: boolean;
+    deletedAt: string | null;
+    createdAt: string;
+    updatedAt: string;
+    companyId: string;
+    departmentId?: string;
+}
+
+export interface IEmployee {
+    id: string;
+    userId: string;
+    name: string;
+    phone: string;
+    photoUrl: string | null;
+    isDeleted: boolean;
+    deletedAt: string | null;
+    createdAt: string;
+    updatedAt: string;
+    companyId: string;
+}
+
+export interface ISessionUser {
+    id: string;
+    name: string;
+    email: string;
+    role: UserRole;
+    isActive: boolean;
+    isDeleted: boolean;
+    deletedAt: string | null;
+    emailVerified: boolean;
+    image: string | null;
+    createdAt: string;
+    updatedAt: string;
+    companyId: string;
+    platformSuperAdmin: IPlatformSuperAdmin | null;
+    superAdmin: ISuperAdmin | null;
+    hrManager: IHrManager | null;
+    accountant: IAccountant | null;
+    departmentHead: IDepartmentHead | null;
+    employee: IEmployee | null;
+}

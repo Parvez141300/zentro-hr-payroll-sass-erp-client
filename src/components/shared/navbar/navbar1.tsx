@@ -40,6 +40,8 @@ import { ThemeToggle } from "../themeToggle/ThemeToggle";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getClientLoggedInUserInfo } from "@/actions/auth.action";
+import { Spinner } from "@/components/ui/spinner";
+import DropdownNavMenu from "./DropdownNavMenu";
 
 interface MenuItem {
   title: string;
@@ -135,7 +137,7 @@ const Navbar1 = ({
   const [session, setSession] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
 
-  console.log(session, "this from session data")
+  console.log(session, "this from session data");
 
   useEffect(() => {
     const fetchSession = async () => {
@@ -152,7 +154,7 @@ const Navbar1 = ({
     };
 
     fetchSession();
-  }, [])
+  }, []);
 
   return (
     <section className={cn("py-4", className)}>
@@ -172,9 +174,15 @@ const Navbar1 = ({
           </div>
           <div className="flex items-center gap-5">
             <ThemeToggle />
-            <Link href={auth.signup.url}>
-              <BorderBeamButton>{auth.signup.title}</BorderBeamButton>
-            </Link>
+            {loading ? (
+              <Spinner />
+            ) : session ? (
+              <DropdownNavMenu sessionUser={session} setSession={setSession} />
+            ) : (
+              <Link href={auth.signup.url}>
+                <BorderBeamButton>{auth.signup.title}</BorderBeamButton>
+              </Link>
+            )}
           </div>
         </nav>
 
@@ -200,9 +208,15 @@ const Navbar1 = ({
 
                   <div className="flex items-center justify-between">
                     <ThemeToggle />
-                    <Link href={auth.signup.url}>
-                      <BorderBeamButton>{auth.signup.title}</BorderBeamButton>
-                    </Link>
+                    {loading ? (
+                      <Spinner />
+                    ) : session ? (
+                      <DropdownNavMenu setSession={setSession} />
+                    ) : (
+                      <Link href={auth.signup.url}>
+                        <BorderBeamButton>{auth.signup.title}</BorderBeamButton>
+                      </Link>
+                    )}
                   </div>
                 </div>
               </SheetContent>
@@ -270,7 +284,10 @@ const renderMobileMenuItem = (item: MenuItem, pathName: string) => {
     <Link
       key={item.title}
       href={item.url}
-      className={cn("text-md font-semibold hover:no-underline", isActive ? "underline font-bold" : "")}
+      className={cn(
+        "text-md font-semibold hover:no-underline",
+        isActive ? "underline font-bold" : "",
+      )}
     >
       {item.title}
     </Link>

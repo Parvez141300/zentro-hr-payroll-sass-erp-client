@@ -93,3 +93,9 @@ export const getClientLoggedInUserInfo = async () => {
 
     return result;
 }
+
+export const logoutUser = async () => {
+    const result = await authService.logoutUser();
+
+    return result;
+}

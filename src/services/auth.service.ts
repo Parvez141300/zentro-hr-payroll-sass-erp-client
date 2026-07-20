@@ -1,7 +1,7 @@
 
 import { cookieUtils } from "@/lib/cookieUtilts";
 import { httpServer } from "@/lib/http/httpServer";
-import { ILoginPayload, ILoginResponse, IRegisterPayload, IRegisterResponse, IResetPasswordPayload } from "@/types/auth.type";
+import { ILoginPayload, ILoginResponse, IRegisterPayload, IRegisterResponse, IResetPasswordPayload, ISessionUser } from "@/types/auth.type";
 
 
 const registerSuperAdminUser = async (payload: IRegisterPayload) => {
@@ -45,9 +45,22 @@ const resetPassword = async (payload: IResetPasswordPayload) => {
 }
 
 const getClientLoggedInUserInfo = async () => {
-    const info = await httpServer.get("/api/v1/auth/me");
+    const info = await httpServer.get<ISessionUser>("/api/v1/auth/me");
 
     return info;
+}
+
+const logoutUser = async () => {
+    try {
+        const result = await httpServer.post("/api/v1/auth/logout");
+
+        return result;
+    }
+    finally {
+        await cookieUtils.deleteCookie("better-auth.session_token");
+        await cookieUtils.deleteCookie("accessToken");
+        await cookieUtils.deleteCookie("refreshToken");
+    }
 }
 
 export const authService = {
@@ -56,4 +69,5 @@ export const authService = {
     forgotPassword,
     resetPassword,
     getClientLoggedInUserInfo,
+    logoutUser,
 }
