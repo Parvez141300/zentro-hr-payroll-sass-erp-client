@@ -1,4 +1,5 @@
 import CTASection from "@/components/modules/common/home/CTASection";
+import FaqSection from "@/components/modules/common/home/FaqSection";
 import FeaturesSection from "@/components/modules/common/home/FeaturesSection";
 import HeroSection from "@/components/modules/common/home/HeroSection";
 import HowItWorksSection from "@/components/modules/common/home/HowItWorksSection";
@@ -21,6 +22,7 @@ export default function HomePage() {
       <HowItWorksSection />
       <TestimonialsSection />
       <CTASection />
+      <FaqSection />
     </div>
   );
 }
