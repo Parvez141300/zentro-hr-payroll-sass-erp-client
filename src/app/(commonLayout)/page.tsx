@@ -1,5 +1,6 @@
 import FeaturesSection from "@/components/modules/common/home/FeaturesSection";
 import HeroSection from "@/components/modules/common/home/HeroSection";
+import HowItWorksSection from "@/components/modules/common/home/HowItWorksSection";
 import StatsSection from "@/components/modules/common/home/StatsSection";
 import { Metadata } from "next";
 
@@ -15,6 +16,7 @@ export default function HomePage() {
       <HeroSection />
       <StatsSection />
       <FeaturesSection />
+      <HowItWorksSection />
     </div>
   );
 }
