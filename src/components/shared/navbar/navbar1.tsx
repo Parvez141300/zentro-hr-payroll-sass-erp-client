@@ -8,6 +8,7 @@ import {
   UserCheck,
   UserRoundX,
   HandCoins,
+  ArrowRight,
 } from "lucide-react";
 
 import {
@@ -42,6 +43,7 @@ import { useEffect, useState } from "react";
 import { getClientLoggedInUserInfo } from "@/actions/auth.action";
 import { Spinner } from "@/components/ui/spinner";
 import DropdownNavMenu from "./DropdownNavMenu";
+import { ISessionUser } from "@/types/auth.type";
 
 interface MenuItem {
   title: string;
@@ -129,12 +131,12 @@ const Navbar1 = ({
   ],
   auth = {
     login: { title: "Login", url: "#" },
-    signup: { title: "Sign up", url: "/register" },
+    signup: { title: "Get Started", url: "/register" },
   },
   className,
 }: Navbar1Props) => {
   const pathName = usePathname();
-  const [session, setSession] = useState<unknown>(null);
+  const [session, setSession] = useState<ISessionUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   console.log(session, "this from session data");
@@ -148,7 +150,10 @@ const Navbar1 = ({
         setSession(data);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching session:", error);
+        console.error(error instanceof Error && error.message);
+        setSession(null);
+        setLoading(false);
+      } finally {
         setLoading(false);
       }
     };
@@ -180,7 +185,10 @@ const Navbar1 = ({
               <DropdownNavMenu sessionUser={session} setSession={setSession} />
             ) : (
               <Link href={auth.signup.url}>
-                <BorderBeamButton>{auth.signup.title}</BorderBeamButton>
+                <BorderBeamButton>
+                  {auth.signup.title} 
+                  <ArrowRight />
+                </BorderBeamButton>
               </Link>
             )}
           </div>
@@ -211,10 +219,16 @@ const Navbar1 = ({
                     {loading ? (
                       <Spinner />
                     ) : session ? (
-                      <DropdownNavMenu setSession={setSession} />
+                      <DropdownNavMenu
+                        sessionUser={session}
+                        setSession={setSession}
+                      />
                     ) : (
                       <Link href={auth.signup.url}>
-                        <BorderBeamButton>{auth.signup.title}</BorderBeamButton>
+                        <BorderBeamButton>
+                          {auth.signup.title} 
+                          <ArrowRight />
+                        </BorderBeamButton>
                       </Link>
                     )}
                   </div>
