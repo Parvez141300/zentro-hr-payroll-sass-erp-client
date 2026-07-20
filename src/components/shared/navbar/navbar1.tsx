@@ -150,6 +150,11 @@ const Navbar1 = ({
         setSession(data);
         setLoading(false);
       } catch (error) {
+        if (error instanceof Error) {
+          if (error.message === "Access token is missing") {
+            return;
+          }
+        }
         console.error(error instanceof Error && error.message);
         setSession(null);
         setLoading(false);
@@ -186,7 +191,7 @@ const Navbar1 = ({
             ) : (
               <Link href={auth.signup.url}>
                 <BorderBeamButton>
-                  {auth.signup.title} 
+                  {auth.signup.title}
                   <ArrowRight />
                 </BorderBeamButton>
               </Link>
@@ -226,7 +231,7 @@ const Navbar1 = ({
                     ) : (
                       <Link href={auth.signup.url}>
                         <BorderBeamButton>
-                          {auth.signup.title} 
+                          {auth.signup.title}
                           <ArrowRight />
                         </BorderBeamButton>
                       </Link>
