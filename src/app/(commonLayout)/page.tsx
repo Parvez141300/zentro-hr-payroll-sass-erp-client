@@ -1,4 +1,5 @@
 import HeroSection from "@/components/modules/common/home/HeroSection";
+import StatsSection from "@/components/modules/common/home/StatsSection";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -11,6 +12,7 @@ export default function HomePage() {
   return (
     <div>
       <HeroSection />
+      <StatsSection />
     </div>
   );
 }
