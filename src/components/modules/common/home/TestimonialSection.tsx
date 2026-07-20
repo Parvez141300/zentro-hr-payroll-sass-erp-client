@@ -49,7 +49,7 @@ const TestimonialsSection = () => {
 
   return (
     <section className="py-20">
-      <div className="container max-w-7xl mx-auto px-4">
+      <div>
         <div className="text-center mb-12">
           <Badge variant="secondary" className="mb-4">
             Testimonials
