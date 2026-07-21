@@ -18,6 +18,7 @@ import React from "react";
 import { toast } from "sonner";
 import AppButton from "../form/AppButton";
 import { ISessionUser } from "@/types/auth.type";
+import Link from "next/link";
 
 const DropdownNavMenu = ({
   sessionUser,
@@ -70,13 +71,19 @@ const DropdownNavMenu = ({
       <DropdownMenuContent align="end">
         <DropdownMenuGroup>
           <DropdownMenuLabel>My Dashboard</DropdownMenuLabel>
-          <DropdownMenuItem>Dashboard</DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link href="/dashboard">Dashboard</Link>
+          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuItem>Profile</DropdownMenuItem>
-          <DropdownMenuItem>Settings</DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link href="/profile">Profile</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link href="/settings">Settings</Link>
+          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
