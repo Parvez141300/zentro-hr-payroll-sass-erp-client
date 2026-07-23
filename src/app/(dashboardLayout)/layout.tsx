@@ -1,17 +1,16 @@
 import { AppSidebar } from "@/components/modules/dashboard/app-sidebar";
+import { NavMain } from "@/components/modules/dashboard/nav-main";
+import { NavUser } from "@/components/modules/dashboard/nav-user";
+import AppButton from "@/components/shared/form/AppButton";
+import Logo from "@/components/shared/logo/Logo";
+import { ThemeToggle } from "@/components/shared/themeToggle/ThemeToggle";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Separator } from "@/components/ui/separator";
-import {
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
   SidebarInset,
   SidebarProvider,
-  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { getDashboardNavItemsByRole } from "@/lib/dashboardUtils";
 import { authService } from "@/services/auth.service";
@@ -20,6 +19,7 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
+import { Menu } from "lucide-react";
 import React from "react";
 
 const RootDashboardLayout = async ({
@@ -32,8 +32,8 @@ const RootDashboardLayout = async ({
     queryKey: ["user-info"],
     queryFn: () => authService.getClientLoggedInUserInfo(),
   });
-  // const userInfo = await authService.getClientLoggedInUserInfo();
-  // const sidebarNavItems = getDashboardNavItemsByRole(userInfo.data.role);
+  const userInfo = await authService.getClientLoggedInUserInfo();
+  const sidebarNavItems = getDashboardNavItemsByRole(userInfo.data.role);
   return (
     <div>
       {" "}
@@ -42,26 +42,34 @@ const RootDashboardLayout = async ({
           <AppSidebar />
         </HydrationBoundary>
         <SidebarInset>
-          <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-            <div className="flex items-center gap-2 px-4">
-              <SidebarTrigger className="-ml-1" />
-              <Separator
-                orientation="vertical"
-                className="mr-2 data-vertical:h-4 data-vertical:self-auto"
-              />
-              <Breadcrumb>
-                <BreadcrumbList>
-                  <BreadcrumbItem className="hidden md:block">
-                    <BreadcrumbLink href="#">
-                      Build Your Application
-                    </BreadcrumbLink>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator className="hidden md:block" />
-                  <BreadcrumbItem>
-                    <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-                  </BreadcrumbItem>
-                </BreadcrumbList>
-              </Breadcrumb>
+          {/* for mobile sidebar */}
+          <header className="p-4 flex items-center justify-between">
+            <div className="md:hidden">
+              <Logo />
+            </div>
+
+            <div className="flex items-center gap-2 w-full justify-end md:justify-end">
+              <ThemeToggle />
+              <Sheet>
+                <SheetTrigger
+                  render={
+                    <AppButton varient="secondary" className="md:hidden">
+                      <Menu className="w-5 h-5" />
+                    </AppButton>
+                  }
+                />
+                <SheetContent side="left">
+                  <SidebarHeader>
+                    <Logo />
+                  </SidebarHeader>
+                  <SidebarContent>
+                    <NavMain items={sidebarNavItems} />
+                  </SidebarContent>
+                  <SidebarFooter>
+                    <NavUser user={userInfo!.data} />
+                  </SidebarFooter>
+                </SheetContent>
+              </Sheet>
             </div>
           </header>
           <div className="flex flex-1 flex-col gap-4 p-4 pt-0">

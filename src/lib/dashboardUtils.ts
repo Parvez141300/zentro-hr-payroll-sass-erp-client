@@ -29,7 +29,7 @@ export const getDashboardCommonProtectedRoute = (role: UserRole) => {
                 {
                     title: "Dashboard",
                     href: commonRoute,
-                    icon: "Dashboard",
+                    icon: "LayoutDashboard",
                 },
                 {
                     title: "Profile",
