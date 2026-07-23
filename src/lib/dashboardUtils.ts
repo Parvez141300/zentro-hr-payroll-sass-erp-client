@@ -83,7 +83,7 @@ const platformSuperAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
             {
                 title: "Manage Users",
                 href: "/platform-super-admin/manage-users",
-                icon: "Users",
+                icon: "UserRoundCog",
             },
         ],
     },
@@ -116,7 +116,12 @@ const superAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
             {
                 title: "Manage Attendance",
                 href: "/super-admin/manage-attendance",
-                icon: "Users",
+                icon: "UserRoundCheck",
+            },
+            {
+                title: "Create Attendance",
+                href: "/super-admin/create-attendance",
+                icon: "Plus",
             },
         ],
     },
@@ -141,7 +146,7 @@ const superAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
             {
                 title: "Generate Payroll",
                 href: "/super-admin/generate-payroll",
-                icon: "Plus",
+                icon: "HandCoins",
             }
         ],
     },
@@ -234,7 +239,12 @@ const hrManagerSidebarNavItems: IDashboardSidebarNavSection[] = [
             {
                 title: "Manage Attendance",
                 href: "/super-admin/manage-attendance",
-                icon: "Users",
+                icon: "UserRoundCheck",
+            },
+            {
+                title: "Create Attendance",
+                href: "/hr-manager/create-attendance",
+                icon: "Plus",
             },
         ],
     },
@@ -292,7 +302,7 @@ const accountantSidebarNavItems: IDashboardSidebarNavSection[] = [
             {
                 title: "Generate Payroll",
                 href: "/super-admin/generate-payroll",
-                icon: "Plus",
+                icon: "HandCoins",
             }
         ],
     },
@@ -330,16 +340,11 @@ const departmentHeadSidebarNavItems: IDashboardSidebarNavSection[] = [
             {
                 title: "Attendance",
                 href: "/department-head/all-attendance",
-                icon: "Users",
+                icon: "UserRoundCheck",
             },
             {
                 title: "Create Attendance",
                 href: "/department-head/create-attendance",
-                icon: "Plus",
-            },
-            {
-                title: "Update Attendance",
-                href: "/department-head/update-attendance",
                 icon: "Plus",
             },
         ],
@@ -373,7 +378,7 @@ const employeeSidebarNavItems: IDashboardSidebarNavSection[] = [
             {
                 title: "Attendance",
                 href: "/employee/attendance",
-                icon: "Users",
+                icon: "UserRoundCheck",
             },
         ],
     },
@@ -390,11 +395,6 @@ const employeeSidebarNavItems: IDashboardSidebarNavSection[] = [
                 href: "/employee/apply-leave",
                 icon: "Plus",
             },
-            {
-                title: "Update Leave",
-                href: "/employee/update-leave",
-                icon: "Plus",
-            }
         ],
     },
     {
@@ -403,7 +403,7 @@ const employeeSidebarNavItems: IDashboardSidebarNavSection[] = [
             {
                 title: "Payroll",
                 href: "/employee/payroll",
-                icon: "Users",
+                icon: "CircleDollarSign",
             },
         ],
     },
