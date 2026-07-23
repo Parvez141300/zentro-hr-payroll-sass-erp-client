@@ -1,50 +1,54 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { NavMain } from "@/components/modules/dashboard/nav-main"
-import { NavProjects } from "@/components/modules/dashboard/nav-projects"
-import { NavUser } from "@/components/modules/dashboard/nav-user"
-import { TeamSwitcher } from "@/components/modules/dashboard/team-switcher"
+import { NavMain } from "@/components/modules/dashboard/nav-main";
+import { NavUser } from "@/components/modules/dashboard/nav-user";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from "@/components/ui/sidebar"
-import { GalleryVerticalEndIcon, AudioLinesIcon, TerminalIcon, TerminalSquareIcon, BotIcon, BookOpenIcon, Settings2Icon, FrameIcon, PieChartIcon, MapIcon } from "lucide-react"
+} from "@/components/ui/sidebar";
+import {
+  GalleryVerticalEndIcon,
+  AudioLinesIcon,
+  TerminalIcon,
+  TerminalSquareIcon,
+  BotIcon,
+  BookOpenIcon,
+  Settings2Icon,
+  FrameIcon,
+  PieChartIcon,
+  MapIcon,
+} from "lucide-react";
+import Logo from "@/components/shared/logo/Logo";
+import { useQuery } from "@tanstack/react-query";
+import { getClientLoggedInUserInfo } from "@/actions/auth.action";
+import { getDashboardNavItemsByRole } from "@/lib/dashboardUtils";
 
 // This is sample data.
 const data = {
   user: {
     name: "shadcn",
     email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    image: "/avatars/shadcn.jpg",
   },
   teams: [
     {
       name: "Acme Inc",
-      logo: (
-        <GalleryVerticalEndIcon
-        />
-      ),
+      logo: <GalleryVerticalEndIcon />,
       plan: "Enterprise",
     },
     {
       name: "Acme Corp.",
-      logo: (
-        <AudioLinesIcon
-        />
-      ),
+      logo: <AudioLinesIcon />,
       plan: "Startup",
     },
     {
       name: "Evil Corp.",
-      logo: (
-        <TerminalIcon
-        />
-      ),
+      logo: <TerminalIcon />,
       plan: "Free",
     },
   ],
@@ -52,10 +56,7 @@ const data = {
     {
       title: "Playground",
       url: "#",
-      icon: (
-        <TerminalSquareIcon
-        />
-      ),
+      icon: <TerminalSquareIcon />,
       isActive: true,
       items: [
         {
@@ -75,10 +76,7 @@ const data = {
     {
       title: "Models",
       url: "#",
-      icon: (
-        <BotIcon
-        />
-      ),
+      icon: <BotIcon />,
       items: [
         {
           title: "Genesis",
@@ -97,10 +95,7 @@ const data = {
     {
       title: "Documentation",
       url: "#",
-      icon: (
-        <BookOpenIcon
-        />
-      ),
+      icon: <BookOpenIcon />,
       items: [
         {
           title: "Introduction",
@@ -123,10 +118,7 @@ const data = {
     {
       title: "Settings",
       url: "#",
-      icon: (
-        <Settings2Icon
-        />
-      ),
+      icon: <Settings2Icon />,
       items: [
         {
           title: "General",
@@ -151,44 +143,43 @@ const data = {
     {
       name: "Design Engineering",
       url: "#",
-      icon: (
-        <FrameIcon
-        />
-      ),
+      icon: <FrameIcon />,
     },
     {
       name: "Sales & Marketing",
       url: "#",
-      icon: (
-        <PieChartIcon
-        />
-      ),
+      icon: <PieChartIcon />,
     },
     {
       name: "Travel",
       url: "#",
-      icon: (
-        <MapIcon
-        />
-      ),
+      icon: <MapIcon />,
     },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { data: userInfo } = useQuery({
+    queryKey: ["user-info"],
+    queryFn: () => getClientLoggedInUserInfo(),
+  });
+
+  console.log("userInfo", userInfo);
+  const sidebarNavItems = getDashboardNavItemsByRole(userInfo!.data.role);
+  console.log("sidebarNavItems", sidebarNavItems);
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <Logo />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={userInfo!.data} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }

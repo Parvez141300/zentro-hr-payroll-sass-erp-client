@@ -13,14 +13,34 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { getDashboardNavItemsByRole } from "@/lib/dashboardUtils";
+import { authService } from "@/services/auth.service";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 import React from "react";
 
-const RootDashboardLayout = ({ children }: { children: React.ReactNode }) => {
+const RootDashboardLayout = async ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery({
+    queryKey: ["user-info"],
+    queryFn: () => authService.getClientLoggedInUserInfo(),
+  });
+  // const userInfo = await authService.getClientLoggedInUserInfo();
+  // const sidebarNavItems = getDashboardNavItemsByRole(userInfo.data.role);
   return (
     <div>
       {" "}
       <SidebarProvider>
-        <AppSidebar />
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          <AppSidebar />
+        </HydrationBoundary>
         <SidebarInset>
           <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
             <div className="flex items-center gap-2 px-4">

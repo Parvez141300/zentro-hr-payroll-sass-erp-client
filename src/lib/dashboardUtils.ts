@@ -27,11 +27,6 @@ export const getDashboardCommonProtectedRoute = (role: UserRole) => {
         {
             items: [
                 {
-                    title: "Home",
-                    href: "/",
-                    icon: "Home",
-                },
-                {
                     title: "Dashboard",
                     href: commonRoute,
                     icon: "Dashboard",

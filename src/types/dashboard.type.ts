@@ -5,6 +5,6 @@ export interface IDashboardSidebarNavItem {
 }
 
 export interface IDashboardSidebarNavSection {
-    title: string;
+    title?: string;
     items: IDashboardSidebarNavItem[];
 }
