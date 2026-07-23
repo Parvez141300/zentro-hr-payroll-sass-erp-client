@@ -70,19 +70,20 @@ const DropdownNavMenu = ({
       />
       <DropdownMenuContent align="end">
         <DropdownMenuGroup>
-          <DropdownMenuLabel>My Dashboard</DropdownMenuLabel>
-          <DropdownMenuItem>
-            <Link href="/dashboard">Dashboard</Link>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuItem>
             <Link href="/profile">Profile</Link>
           </DropdownMenuItem>
+          <DropdownMenuLabel>Settings</DropdownMenuLabel>
           <DropdownMenuItem>
-            <Link href="/settings">Settings</Link>
+            <Link href="/change-password">Change Password</Link>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>My Dashboard</DropdownMenuLabel>
+          <DropdownMenuItem>
+            <Link href="/dashboard">Dashboard</Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
