@@ -85,7 +85,7 @@ const superAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Manage Department",
-                href: "/super-admin/manage-department",
+                href: "/super-admin/dashboard/manage-department",
                 icon: "Building2",
             },
         ],

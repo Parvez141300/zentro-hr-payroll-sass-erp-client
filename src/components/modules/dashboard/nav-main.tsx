@@ -23,7 +23,7 @@ export function NavMain({ items, className }: NavMainProps) {
 
   // Check if a path is active
   const isActive = (href: string) => {
-    return pathname === href || pathname.startsWith(href + "/");
+    return pathname === href;
   };
 
   return (
