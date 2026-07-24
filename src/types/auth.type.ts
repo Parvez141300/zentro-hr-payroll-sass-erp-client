@@ -1,3 +1,12 @@
+import { IAccountant } from "./accountant.type";
+import { IDepartmentHead } from "./departmentHead.type";
+import { IEmployee } from "./employee.type";
+import { UserRole } from "./enums.type";
+import { IHrManager } from "./hrManager.type";
+import { IPlatformSuperAdmin } from "./platformSuperAdmin.type";
+import { ISuperAdmin } from "./superAdmin.type";
+
+
 export interface IRegisterPayload {
     name: string;
     companyName: string;
@@ -55,92 +64,6 @@ export interface IResetPasswordPayload {
     newPassword: string;
 }
 
-// types/auth.type.ts
-
-export enum UserRole {
-    PLATFORM_SUPER_ADMIN = "PLATFORM_SUPER_ADMIN",
-    SUPER_ADMIN = "Super_ADMIN",
-    HR_MANAGER = "HR_MANAGER",
-    ACCOUNTANT = "ACCOUNTANT",
-    DEPARTMENT_HEAD = "DEPARTMENT_HEAD",
-    EMPLOYEE = "EMPLOYEE",
-}
-
-export interface IPlatformSuperAdmin {
-    id: string;
-    userId: string;
-    name: string;
-    photoUrl: string | null;
-    createdAt: string;
-    updatedAt: string;
-}
-
-export interface ISuperAdmin {
-    id: string;
-    userId: string;
-    name: string;
-    phone: string;
-    photoUrl: string | null;
-    isDeleted: boolean;
-    deletedAt: string | null;
-    createdAt: string;
-    updatedAt: string;
-    companyId: string;
-}
-
-export interface IHrManager {
-    id: string;
-    userId: string;
-    name: string;
-    phone: string;
-    photoUrl: string | null;
-    isDeleted: boolean;
-    deletedAt: string | null;
-    createdAt: string;
-    updatedAt: string;
-    companyId: string;
-}
-
-export interface IAccountant {
-    id: string;
-    userId: string;
-    name: string;
-    phone: string;
-    photoUrl: string | null;
-    isDeleted: boolean;
-    deletedAt: string | null;
-    createdAt: string;
-    updatedAt: string;
-    companyId: string;
-}
-
-export interface IDepartmentHead {
-    id: string;
-    userId: string;
-    name: string;
-    phone: string;
-    photoUrl: string | null;
-    isDeleted: boolean;
-    deletedAt: string | null;
-    createdAt: string;
-    updatedAt: string;
-    companyId: string;
-    departmentId?: string;
-}
-
-export interface IEmployee {
-    id: string;
-    userId: string;
-    name: string;
-    phone: string;
-    photoUrl: string | null;
-    isDeleted: boolean;
-    deletedAt: string | null;
-    createdAt: string;
-    updatedAt: string;
-    companyId: string;
-}
-
 export interface ISessionUser {
     id: string;
     name: string;
@@ -161,3 +84,5 @@ export interface ISessionUser {
     departmentHead: IDepartmentHead | null;
     employee: IEmployee | null;
 }
+
+

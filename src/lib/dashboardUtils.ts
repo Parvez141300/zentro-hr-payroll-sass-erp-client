@@ -1,5 +1,6 @@
-import { UserRole } from "@/types/auth.type";
+
 import { IDashboardSidebarNavSection } from "@/types/dashboard.type";
+import { UserRole } from "@/types/enums.type";
 
 const getDefaultDashboardRoute = (role: UserRole) => {
     switch (role) {
@@ -47,7 +48,7 @@ const platformSuperAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Manage Companies",
-                href: "/platform-super-admin/manage-companies",
+                href: "/platform-super-admin/dashboard/manage-companies",
                 icon: "Building2",
             },
         ],
@@ -57,12 +58,12 @@ const platformSuperAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Manage Subscription Plan",
-                href: "/platform-super-admin/manage-subscription-plan",
+                href: "/platform-super-admin/dashboard/manage-subscription-plan",
                 icon: "CreditCard",
             },
             {
                 title: "Create Subscription Plan",
-                href: "/platform-super-admin/create-subscription-plan",
+                href: "/platform-super-admin/dashboard/create-subscription-plan",
                 icon: "Plus",
             }
         ],
@@ -72,7 +73,7 @@ const platformSuperAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Manage Users",
-                href: "/platform-super-admin/manage-users",
+                href: "/platform-super-admin/dashboard/manage-users",
                 icon: "UserRoundCog",
             },
         ],
@@ -208,7 +209,7 @@ const hrManagerSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Manage Department",
-                href: "/super-admin/manage-department",
+                href: "/hr-manager/dashboard/manage-department",
                 icon: "Building2",
             },
         ],
@@ -218,7 +219,7 @@ const hrManagerSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Manage Designation",
-                href: "/super-admin/manage-designation",
+                href: "/hr-manager/dashboard/manage-designation",
                 icon: "Building2",
             },
         ]
@@ -228,12 +229,12 @@ const hrManagerSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Manage Attendance",
-                href: "/super-admin/manage-attendance",
+                href: "/hr-manager/dashboard/manage-attendance",
                 icon: "UserRoundCheck",
             },
             {
                 title: "Create Attendance",
-                href: "/hr-manager/create-attendance",
+                href: "/hr-manager/dashboard/create-attendance",
                 icon: "Plus",
             },
         ],
@@ -243,7 +244,7 @@ const hrManagerSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Manage Leave",
-                href: "/super-admin/manage-leave",
+                href: "/hr-manager/dashboard/manage-leave",
                 icon: "Users",
             },
         ],
@@ -253,12 +254,12 @@ const hrManagerSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Manage Department Head",
-                href: "/super-admin/manage-department-head",
+                href: "/hr-manager/dashboard/manage-department-head",
                 icon: "Users",
             },
             {
                 title: "Create Department Head",
-                href: "/super-admin/create-department-head",
+                href: "/hr-manager/dashboard/create-department-head",
                 icon: "Plus",
             },
         ],
@@ -268,12 +269,12 @@ const hrManagerSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Manage Employee",
-                href: "/super-admin/manage-employee",
+                href: "/hr-manager/dashboard/manage-employee",
                 icon: "Users",
             },
             {
                 title: "Create Employee",
-                href: "/super-admin/create-employee",
+                href: "/hr-manager/dashboard/create-employee",
                 icon: "Plus",
             },
         ],
@@ -286,12 +287,12 @@ const accountantSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Manage Payroll",
-                href: "/super-admin/manage-payroll",
+                href: "/accountant/dashboard/manage-payroll",
                 icon: "Users",
             },
             {
                 title: "Generate Payroll",
-                href: "/super-admin/generate-payroll",
+                href: "/accountant/dashboard/generate-payroll",
                 icon: "HandCoins",
             }
         ],
@@ -301,7 +302,7 @@ const accountantSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Manage Employee",
-                href: "/super-admin/get-all-employee",
+                href: "/accountant/dashboard/get-all-employee",
                 icon: "Users",
             },
         ],
@@ -314,12 +315,12 @@ const departmentHeadSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Manage Employee",
-                href: "/department-head/get-all-employee",
+                href: "/department-head/dashboard/get-all-employee",
                 icon: "Users",
             },
             {
                 title: "Create Employee",
-                href: "/department-head/create-employee",
+                href: "/department-head/dashboard/create-employee",
                 icon: "Plus",
             }
         ],
@@ -329,12 +330,12 @@ const departmentHeadSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Attendance",
-                href: "/department-head/all-attendance",
+                href: "/department-head/dashboard/all-attendance",
                 icon: "UserRoundCheck",
             },
             {
                 title: "Create Attendance",
-                href: "/department-head/create-attendance",
+                href: "/department-head/dashboard/create-attendance",
                 icon: "Plus",
             },
         ],
@@ -344,7 +345,7 @@ const departmentHeadSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Leave",
-                href: "/department-head/all-leave",
+                href: "/department-head/dashboard/all-leave",
                 icon: "Users",
             },
         ],
@@ -354,7 +355,7 @@ const departmentHeadSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "All Department Head",
-                href: "/super-admin/all-department-head",
+                href: "/department-head/dashboard/all-department-head",
                 icon: "Users",
             },
         ],
@@ -367,7 +368,7 @@ const employeeSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Attendance",
-                href: "/employee/attendance",
+                href: "/dashboard/attendance",
                 icon: "UserRoundCheck",
             },
         ],
@@ -377,12 +378,12 @@ const employeeSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Leave",
-                href: "/employee/leave",
+                href: "/dashboard/leave",
                 icon: "Users",
             },
             {
                 title: "Apply Leave",
-                href: "/employee/apply-leave",
+                href: "/dashboard/apply-leave",
                 icon: "Plus",
             },
         ],
@@ -392,7 +393,7 @@ const employeeSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Payroll",
-                href: "/employee/payroll",
+                href: "/dashboard/payroll",
                 icon: "CircleDollarSign",
             },
         ],
