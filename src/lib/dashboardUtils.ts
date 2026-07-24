@@ -38,16 +38,6 @@ export const getDashboardCommonProtectedRoute = (role: UserRole) => {
                 },
             ]
         },
-        {
-            title: "Settings",
-            items: [
-                {
-                    title: "Change Password",
-                    href: "/change-password",
-                    icon: "Key",
-                },
-            ],
-        },
     ]
 }
 

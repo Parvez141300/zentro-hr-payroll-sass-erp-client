@@ -127,6 +127,13 @@ export function NavUser({ user }: { user: ISessionUser }) {
               </DropdownMenuItem> */}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuLabel>Settings</DropdownMenuLabel>
+              <DropdownMenuItem>
+                <Link href="/change-password">Change Password</Link>
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>
               <LogOutIcon />
               Log out
