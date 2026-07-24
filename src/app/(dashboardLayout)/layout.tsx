@@ -2,10 +2,7 @@ import { AppSidebar } from "@/components/modules/dashboard/app-sidebar";
 import SidebarMobile from "@/components/modules/dashboard/SidebarMobile";
 import Logo from "@/components/shared/logo/Logo";
 import { ThemeToggle } from "@/components/shared/themeToggle/ThemeToggle";
-import {
-  SidebarInset,
-  SidebarProvider,
-} from "@/components/ui/sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { getDashboardNavItemsByRole } from "@/lib/dashboardUtils";
 import { authService } from "@/services/auth.service";
 import {
@@ -41,7 +38,10 @@ const RootDashboardLayout = async ({
               <Logo />
             </div>
 
-            <div className="flex items-center gap-2 w-full justify-end md:justify-end">
+            <div className="flex items-center gap-2 w-full justify-end md:justify-between">
+              <h2 className="hidden md:block text-xl font-bold">
+                Welcome Back, {userInfo!.data.name.toUpperCase()}
+              </h2>
               <ThemeToggle />
               <SidebarMobile
                 sidebarNavItems={sidebarNavItems}
