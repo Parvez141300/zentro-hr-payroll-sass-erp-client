@@ -105,7 +105,7 @@ const superAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Manage Designation",
-                href: "/super-admin/manage-designation",
+                href: "/super-admin/dashboard/manage-designation",
                 icon: "Building2",
             },
         ]
@@ -115,12 +115,12 @@ const superAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Manage Attendance",
-                href: "/super-admin/manage-attendance",
+                href: "/super-admin/dashboard/manage-attendance",
                 icon: "UserRoundCheck",
             },
             {
                 title: "Create Attendance",
-                href: "/super-admin/create-attendance",
+                href: "/super-admin/dashboard/create-attendance",
                 icon: "Plus",
             },
         ],
@@ -130,7 +130,7 @@ const superAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Manage Leave",
-                href: "/super-admin/manage-leave",
+                href: "/super-admin/dashboard/manage-leave",
                 icon: "Users",
             },
         ],
@@ -140,12 +140,12 @@ const superAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Manage Payroll",
-                href: "/super-admin/manage-payroll",
+                href: "/super-admin/dashboard/manage-payroll",
                 icon: "Users",
             },
             {
                 title: "Generate Payroll",
-                href: "/super-admin/generate-payroll",
+                href: "/super-admin/dashboard/generate-payroll",
                 icon: "HandCoins",
             }
         ],
@@ -155,12 +155,12 @@ const superAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Manage Hr Manager",
-                href: "/super-admin/manage-hr-manager",
+                href: "/super-admin/dashboard/manage-hr-manager",
                 icon: "Users",
             },
             {
                 title: "Create Hr Manager",
-                href: "/super-admin/create-hr-manager",
+                href: "/super-admin/dashboard/create-hr-manager",
                 icon: "Plus",
             },
         ],
@@ -170,12 +170,12 @@ const superAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Manage Accountant",
-                href: "/super-admin/manage-accountant",
+                href: "/super-admin/dashboard/manage-accountant",
                 icon: "Users",
             },
             {
                 title: "Create Accountant",
-                href: "/super-admin/create-accountant",
+                href: "/super-admin/dashboard/create-accountant",
                 icon: "Plus",
             },
         ],
@@ -185,12 +185,12 @@ const superAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Manage Department Head",
-                href: "/super-admin/manage-department-head",
+                href: "/super-admin/dashboard/manage-department-head",
                 icon: "Users",
             },
             {
                 title: "Create Department Head",
-                href: "/super-admin/create-department-head",
+                href: "/super-admin/dashboard/create-department-head",
                 icon: "Plus",
             },
         ],
@@ -200,12 +200,12 @@ const superAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Manage Employee",
-                href: "/super-admin/manage-employee",
+                href: "/super-admin/dashboard/manage-employee",
                 icon: "Users",
             },
             {
                 title: "Create Employee",
-                href: "/super-admin/create-employee",
+                href: "/super-admin/dashboard/create-employee",
                 icon: "Plus",
             },
         ],

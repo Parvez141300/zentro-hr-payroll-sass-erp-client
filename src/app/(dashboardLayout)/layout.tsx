@@ -1,14 +1,8 @@
 import { AppSidebar } from "@/components/modules/dashboard/app-sidebar";
-import { NavMain } from "@/components/modules/dashboard/nav-main";
-import { NavUser } from "@/components/modules/dashboard/nav-user";
-import AppButton from "@/components/shared/form/AppButton";
+import SidebarMobile from "@/components/modules/dashboard/SidebarMobile";
 import Logo from "@/components/shared/logo/Logo";
 import { ThemeToggle } from "@/components/shared/themeToggle/ThemeToggle";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar";
@@ -19,7 +13,6 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-import { Menu } from "lucide-react";
 import React from "react";
 
 const RootDashboardLayout = async ({
@@ -50,26 +43,10 @@ const RootDashboardLayout = async ({
 
             <div className="flex items-center gap-2 w-full justify-end md:justify-end">
               <ThemeToggle />
-              <Sheet>
-                <SheetTrigger
-                  render={
-                    <AppButton varient="secondary" className="md:hidden">
-                      <Menu className="w-5 h-5" />
-                    </AppButton>
-                  }
-                />
-                <SheetContent side="left">
-                  <SidebarHeader>
-                    <Logo />
-                  </SidebarHeader>
-                  <SidebarContent>
-                    <NavMain items={sidebarNavItems} />
-                  </SidebarContent>
-                  <SidebarFooter>
-                    <NavUser user={userInfo!.data} />
-                  </SidebarFooter>
-                </SheetContent>
-              </Sheet>
+              <SidebarMobile
+                sidebarNavItems={sidebarNavItems}
+                userInfo={userInfo!.data}
+              />
             </div>
           </header>
           <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
