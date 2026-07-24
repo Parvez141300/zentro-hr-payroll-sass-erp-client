@@ -10,8 +10,8 @@ async function getValidCookieHeader(): Promise<string> {
     const refreshToken = await cookieUtils.getCookie("refreshToken");
     const sessionToken = await cookieUtils.getCookie("better-auth.session_token");
 
-    if (accessToken && refreshToken && sessionToken) {
-        const accessExpired = await tokenUtils.isTokenExpired(accessToken);
+    if (refreshToken && sessionToken) {
+        const accessExpired = await tokenUtils.isTokenExpired(accessToken as string);
 
         if (accessExpired) {
             const refreshExpired = await tokenUtils.isTokenExpired(refreshToken);

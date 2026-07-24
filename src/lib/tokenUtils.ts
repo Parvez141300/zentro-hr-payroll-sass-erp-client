@@ -16,8 +16,8 @@ const getTokenSecondsRemaining = async (token: string) => {
 const setTokenInCookie = async (name: string, value: string, fallbackMaxAgeInSeconds = 60 * 60 * 24) => {
     let maxAgeInSeconds;
 
-    if(name !== "better-auth.session_token") {
-        maxAgeInSeconds = 60 * 60 * 24;
+    if (name !== "better-auth.session_token") {
+        maxAgeInSeconds = 60 * 60 * 24 * 3; // 3 days
     } else {
         maxAgeInSeconds = fallbackMaxAgeInSeconds;
     }
@@ -26,8 +26,13 @@ const setTokenInCookie = async (name: string, value: string, fallbackMaxAgeInSec
 }
 
 const isTokenExpired = async (token: string) => {
-    const secondsRemaining = await getTokenSecondsRemaining(token);
-    return secondsRemaining === 0;
+    try {
+        const secondsRemaining = await getTokenSecondsRemaining(token);
+        return secondsRemaining === 0;
+    } catch (error) {
+        console.log(`This error is from isTokenExpired: ${error instanceof Error && error.message}`);
+        return true;
+    }
 }
 
 export const tokenUtils = {
