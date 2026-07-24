@@ -7,7 +7,6 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuSub,
-  SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { getIconComponent } from "@/lib/iconMapper";
@@ -51,33 +50,39 @@ export function NavMain({ items, className }: NavMainProps) {
 
                     return (
                       <SidebarMenuSubItem key={itemIndex}>
-                        <SidebarMenuSubButton
+                        <Link href={item.href}
                           className={cn(
                             "group relative h-9 w-full transition-all duration-200",
-                            "hover:bg-secondary/50 hover:text-foreground",
+                            "hover:bg-secondary/50 hover:text-foreground flex items-center gap-3 px-2 rounded",
                             active && [
                               "bg-primary/10 text-primary",
                               "hover:bg-primary/15 hover:text-primary",
                               "before:absolute before:left-0 before:top-1/2 before:h-6 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-primary",
-                            ]
+                            ],
                           )}
                         >
-                          <Link href={item.href} className="flex items-center gap-3">
-                            <Icon className={cn(
+                          <Icon
+                            className={cn(
                               "h-4 w-4 shrink-0 transition-colors",
-                              active ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
-                            )} />
-                            <span className={cn(
-                              "text-sm transition-colors",
-                              active ? "font-medium text-foreground" : "text-muted-foreground group-hover:text-foreground"
-                            )}>
-                              {item.title}
-                            </span>
-                            {active && (
-                              <span className="ml-auto h-1.5 w-1.5 rounded-full bg-primary" />
+                              active
+                                ? "text-primary"
+                                : "text-muted-foreground group-hover:text-foreground",
                             )}
-                          </Link>
-                        </SidebarMenuSubButton>
+                          />
+                          <span
+                            className={cn(
+                              "text-sm transition-colors",
+                              active
+                                ? "font-medium text-foreground"
+                                : "text-muted-foreground group-hover:text-foreground",
+                            )}
+                          >
+                            {item.title}
+                          </span>
+                          {active && (
+                            <span className="ml-auto h-1.5 w-1.5 rounded-full bg-primary" />
+                          )}
+                        </Link>
                       </SidebarMenuSubItem>
                     );
                   })}
