@@ -2,8 +2,8 @@
 
 import * as React from "react";
 
-import { NavMain } from "@/components/modules/dashboard/nav-main";
-import { NavUser } from "@/components/modules/dashboard/nav-user";
+import { NavMain } from "@/components/shared/dashboardLayouts/nav-main";
+import { NavUser } from "@/components/shared/dashboardLayouts/nav-user";
 import {
   Sidebar,
   SidebarContent,

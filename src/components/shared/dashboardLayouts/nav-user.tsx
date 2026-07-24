@@ -25,6 +25,7 @@ import {
   CreditCardIcon,
   // BellIcon,
   LogOutIcon,
+  Key,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -130,7 +131,12 @@ export function NavUser({ user }: { user: ISessionUser }) {
             <DropdownMenuGroup>
               <DropdownMenuLabel>Settings</DropdownMenuLabel>
               <DropdownMenuItem>
-                <Link href="/change-password">Change Password</Link>
+                <Link
+                  href="/change-password"
+                  className="flex items-center gap-2"
+                >
+                  <Key /> Change Password
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

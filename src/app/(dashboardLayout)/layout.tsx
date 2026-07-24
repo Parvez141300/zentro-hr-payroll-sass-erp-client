@@ -1,5 +1,5 @@
-import { AppSidebar } from "@/components/modules/dashboard/app-sidebar";
-import SidebarMobile from "@/components/modules/dashboard/SidebarMobile";
+import { AppSidebar } from "@/components/shared/dashboardLayouts/app-sidebar";
+import SidebarMobile from "@/components/shared/dashboardLayouts/SidebarMobile";
 import Logo from "@/components/shared/logo/Logo";
 import { ThemeToggle } from "@/components/shared/themeToggle/ThemeToggle";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
