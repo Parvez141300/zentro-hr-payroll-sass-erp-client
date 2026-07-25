@@ -1,4 +1,5 @@
 
+import FaqSection from "@/components/modules/common/home/FaqSection";
 import PricingData from "@/components/modules/common/pricing/PricingData";
 import { subscriptionPlanConfigService } from "@/services/subscriptionPlanConfig.service";
 import {
@@ -21,6 +22,7 @@ const PricingPage = async () => {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <PricingData />
+      <FaqSection />
     </HydrationBoundary>
   );
 };
