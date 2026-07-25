@@ -2,7 +2,7 @@
 "use server";
 
 import { authService } from "@/services/auth.service";
-import { ILoginPayload, IRegisterPayload, IResetPasswordPayload } from "@/types/auth.type";
+import { IChangePassword, ILoginPayload, IRegisterPayload, IResetPasswordPayload } from "@/types/auth.type";
 
 // import { cookieUtils } from "@/lib/cookieUtilts";
 // import { envVars } from "@/lib/env";
@@ -96,6 +96,12 @@ export const getClientLoggedInUserInfo = async () => {
 
 export const logoutUser = async () => {
     const result = await authService.logoutUser();
+
+    return result;
+}
+
+export const changeUserPassword = async (payload: IChangePassword) => {
+    const result = await authService.changeUserPassword(payload);
 
     return result;
 }

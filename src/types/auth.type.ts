@@ -85,4 +85,7 @@ export interface ISessionUser {
     employee: IEmployee | null;
 }
 
-
+export interface IChangePassword {
+    currentPassword: string;
+    newPassword: string;
+}

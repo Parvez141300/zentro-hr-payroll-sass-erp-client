@@ -1,9 +1,12 @@
-import React from 'react'
+import ChangePasswordForm from "@/components/modules/(dashboard)/(common)/changePassword/ChangePasswordForm";
+import React from "react";
 
 const ChangePassword = () => {
   return (
-    <div>ChangePassword</div>
-  )
-}
+    <div>
+      <ChangePasswordForm />
+    </div>
+  );
+};
 
-export default ChangePassword
+export default ChangePassword;
