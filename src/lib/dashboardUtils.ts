@@ -82,6 +82,16 @@ const platformSuperAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
 
 const superAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
     {
+        title:"Company",
+        items: [
+            {
+                title: "Company",
+                href: "/super-admin/dashboard/company",
+                icon: "Factory",
+            },
+        ],
+    },
+    {
         title: "Department",
         items: [
             {

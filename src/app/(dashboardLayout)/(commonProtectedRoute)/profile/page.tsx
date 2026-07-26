@@ -11,7 +11,6 @@ const ProfilePage = async() => {
   });
   return (
     <div>
-      ProfilePage
       <ProfileData />
     </div>
   );
