@@ -7,6 +7,8 @@ import SuperAdminProfile from "./superAdminProfile/SuperAdminProfile";
 import PlatformSuperAdminProfile from "./platformSuperAdminProfile/PlatformSuperAdminProfile";
 import HrManagerProfile from "./hrManagerProfile/HrManagerProfile";
 import AccountantProfile from "./accountantProfile/AccountantProfile";
+import DepartmentHeadProfile from "./departmentHeadProfile/DepartmentHeadProfile";
+import EmployeeProfile from "./employeeProfile/EmployeeProfile";
 
 const ProfileData = () => {
   const { data, isLoading, error } = useQuery({
@@ -73,24 +75,22 @@ const ProfileData = () => {
             }}
           />
         );
-      // case UserRole.DEPARTMENT_HEAD:
-      //   return (
-      //     <DepartmentHeadProfile
-      //       userData={{
-      //         ...baseProps,
-      //         departmentHead: userData.departmentHead,
-      //       }}
-      //     />
-      //   );
-      // case UserRole.EMPLOYEE:
-      //   return (
-      //     <EmployeeProfile
-      //       userData={{
-      //         ...baseProps,
-      //         employee: userData.employee,
-      //       }}
-      //     />
-      //   );
+      case UserRole.DEPARTMENT_HEAD:
+        return (
+          <DepartmentHeadProfile
+            userData={{
+              ...userData,
+            }}
+          />
+        );
+      case UserRole.EMPLOYEE:
+        return (
+          <EmployeeProfile
+            userData={{
+              ...userData,
+            }}
+          />
+        );
       default:
         return (
           <div className="text-center text-red-500">
