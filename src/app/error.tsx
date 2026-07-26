@@ -41,7 +41,7 @@ export default function ErrorComponent({ error, reset }: ErrorProps) {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <Card className="max-w-md w-full border-destructive/20 shadow-lg">
+      <Card className="max-w-2xl w-full border-destructive/20 shadow-lg">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
             <div className="w-24 h-24 rounded-full bg-destructive/10 flex items-center justify-center animate-ping">

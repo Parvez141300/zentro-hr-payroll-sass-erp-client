@@ -1,7 +1,8 @@
 
 import { cookieUtils } from "@/lib/cookieUtilts";
 import { httpServer } from "@/lib/http/httpServer";
-import { IChangePassword, ILoginPayload, ILoginResponse, IRegisterPayload, IRegisterResponse, IResetPasswordPayload, ISessionUser } from "@/types/auth.type";
+import { IChangePassword, ILoginPayload, ILoginResponse, IRegisterPayload, IRegisterResponse, IResetPasswordPayload } from "@/types/auth.type";
+import { IUser } from "@/types/user.type";
 
 
 const registerSuperAdminUser = async (payload: IRegisterPayload) => {
@@ -45,7 +46,7 @@ const resetPassword = async (payload: IResetPasswordPayload) => {
 }
 
 const getClientLoggedInUserInfo = async () => {
-    const info = await httpServer.get<ISessionUser>("/api/v1/auth/me");
+    const info = await httpServer.get<IUser>("/api/v1/auth/me");
 
     return info;
 }
@@ -67,7 +68,7 @@ const changeUserPassword = async (payload: IChangePassword) => {
     const result = await httpServer.post("/api/v1/auth/change-password", payload);
 
     return result;
- }
+}
 
 export const authService = {
     registerSuperAdminUser,

@@ -23,6 +23,7 @@
   },
   "registries": {
     "@shadcnblocks": "https://shadcnblocks.com/r/{name}.json",
-    "@animbits": "https://animbits.dev/r/{name}.json"
+    "@animbits": "https://animbits.dev/r/{name}.json",
+    "@reui": "https://reui.io/r/{style}/{name}.json"
   }
 }
