@@ -4,6 +4,7 @@ import { UserRole } from "@/types/enums.type";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import SuperAdminProfile from "./superAdminProfile/SuperAdminProfile";
+import PlatformSuperAdminProfile from "./platformSuperAdminProfile/PlatformSuperAdminProfile";
 
 const ProfileData = () => {
   const { data, isLoading, error } = useQuery({
@@ -38,15 +39,14 @@ const ProfileData = () => {
 
   const renderProfile = () => {
     switch (role) {
-      // case UserRole.PLATFORM_SUPER_ADMIN:
-      //   return (
-      //     <PlatformSuperAdminProfile
-      //       userData={{
-      //         ...baseProps,
-      //         platformSuperAdmin: userData.platformSuperAdmin,
-      //       }}
-      //     />
-      //   );
+      case UserRole.PLATFORM_SUPER_ADMIN:
+        return (
+          <PlatformSuperAdminProfile
+            userData={{
+              ...userData,
+            }}
+          />
+        );
       case UserRole.SUPER_ADMIN:
         return (
           <SuperAdminProfile
