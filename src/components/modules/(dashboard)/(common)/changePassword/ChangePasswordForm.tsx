@@ -60,8 +60,8 @@ export default function ChangePasswordForm() {
         <div className="grid lg:grid-cols-2">
           {/* LEFT SIDE */}
 
-          <div className="hidden border-r lg:flex">
-            <div className="flex flex-col items-center justify-center px-10 py-12">
+          <div className="hidden border-r lg:flex w-full">
+            <div className="w-full flex flex-col items-center justify-center px-10 py-12">
               <Image
                 src="/assets/authImages/change-password.png"
                 alt="Change Password"
