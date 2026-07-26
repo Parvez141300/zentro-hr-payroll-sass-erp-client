@@ -6,6 +6,7 @@ import React from "react";
 import SuperAdminProfile from "./superAdminProfile/SuperAdminProfile";
 import PlatformSuperAdminProfile from "./platformSuperAdminProfile/PlatformSuperAdminProfile";
 import HrManagerProfile from "./hrManagerProfile/HrManagerProfile";
+import AccountantProfile from "./accountantProfile/AccountantProfile";
 
 const ProfileData = () => {
   const { data, isLoading, error } = useQuery({
@@ -64,14 +65,14 @@ const ProfileData = () => {
             }}
           />
         );
-      // case UserRole.ACCOUNTANT:
-      //   return (
-      //     <AccountantProfile            userData={{
-      //         ...baseProps,
-      //         accountant: userData.accountant,
-      //       }}
-      //     />
-      //   );
+      case UserRole.ACCOUNTANT:
+        return (
+          <AccountantProfile
+            userData={{
+              ...userData,
+            }}
+          />
+        );
       // case UserRole.DEPARTMENT_HEAD:
       //   return (
       //     <DepartmentHeadProfile
