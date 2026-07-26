@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import SuperAdminProfile from "./superAdminProfile/SuperAdminProfile";
 import PlatformSuperAdminProfile from "./platformSuperAdminProfile/PlatformSuperAdminProfile";
+import HrManagerProfile from "./hrManagerProfile/HrManagerProfile";
 
 const ProfileData = () => {
   const { data, isLoading, error } = useQuery({
@@ -55,15 +56,14 @@ const ProfileData = () => {
             }}
           />
         );
-      // case UserRole.HR_MANAGER:
-      //   return (
-      //     <HrManagerProfile
-      //       userData={{
-      //         ...baseProps,
-      //         hrManager: userData.hrManager,
-      //       }}
-      //     />
-      //   );
+      case UserRole.HR_MANAGER:
+        return (
+          <HrManagerProfile
+            userData={{
+              ...userData,
+            }}
+          />
+        );
       // case UserRole.ACCOUNTANT:
       //   return (
       //     <AccountantProfile            userData={{
