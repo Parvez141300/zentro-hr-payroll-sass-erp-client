@@ -44,3 +44,24 @@ export interface ICompany {
   departments?: IDepartment[];
   designations?: IDesignation[];
 }
+
+export interface IUpdateCompany {
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  taxId: string;
+
+  logoUrl: string | null;
+  bannerUrl: string | null;
+
+  websiteUrl: string | null;
+  facebookUrl: string | null;
+  instagramUrl: string | null;
+  linkedinUrl: string | null;
+  youtubeUrl: string | null;
+  twitterUrl: string | null;
+
+  fiscalYearStart: string | null;
+  fiscalYearEnd: string | null;
+}
