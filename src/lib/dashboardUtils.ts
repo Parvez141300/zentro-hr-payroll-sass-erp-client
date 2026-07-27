@@ -85,8 +85,13 @@ const superAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
         title:"Company",
         items: [
             {
-                title: "Company",
-                href: "/super-admin/dashboard/company",
+                title: "Company Details",
+                href: "/super-admin/dashboard/company-details",
+                icon: "Factory",
+            },
+            {
+                title: "Edit Company",
+                href: "/super-admin/dashboard/edit-company",
                 icon: "Factory",
             },
         ],
@@ -215,6 +220,16 @@ const superAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
 
 const hrManagerSidebarNavItems: IDashboardSidebarNavSection[] = [
     {
+        title:"Company",
+        items: [
+            {
+                title: "Company Details",
+                href: "/hr-manager/dashboard/company-details",
+                icon: "Factory",
+            },
+        ],
+    },
+    {
         title: "Department",
         items: [
             {
@@ -293,6 +308,16 @@ const hrManagerSidebarNavItems: IDashboardSidebarNavSection[] = [
 
 const accountantSidebarNavItems: IDashboardSidebarNavSection[] = [
     {
+        title: "Company",
+        items: [
+            {
+                title: "Company Details",
+                href: "/accountant/dashboard/company-details",
+                icon: "Factory",
+            },
+        ]
+    },
+    {
         title: "Payroll",
         items: [
             {
@@ -320,6 +345,16 @@ const accountantSidebarNavItems: IDashboardSidebarNavSection[] = [
 ]
 
 const departmentHeadSidebarNavItems: IDashboardSidebarNavSection[] = [
+    {
+        title: "Company",
+        items: [
+            {
+                title: "Company Details",
+                href: "/department-head/dashboard/company-details",
+                icon: "Factory",
+            },
+        ]
+    },
     {
         title: "Employee",
         items: [
@@ -373,6 +408,16 @@ const departmentHeadSidebarNavItems: IDashboardSidebarNavSection[] = [
 ]
 
 const employeeSidebarNavItems: IDashboardSidebarNavSection[] = [
+    {
+        title: "Company",
+        items: [
+            {
+                title: "Company Details",
+                href: "/dashboard/company-details",
+                icon: "Factory",
+            },
+        ]
+    },
     {
         title: "Attendance",
         items: [
