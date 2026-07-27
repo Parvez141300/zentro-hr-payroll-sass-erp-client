@@ -20,14 +20,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
-import { cn } from "@/lib/utils";
 import { companyEditSchema } from "@/zod/company.validation";
 import { AvatarUpload } from "@/components/shared/uploadFile/ProfileUpload";
 import { BannerUpload } from "@/components/shared/uploadFile/BannerUpload";
 import { FileWithPreview } from "@/hooks/use-file-upload";
+import AppField from "@/components/shared/form/AppField";
 
 type CompanyEditFormData = z.infer<typeof companyEditSchema>;
 
@@ -184,28 +182,12 @@ const EditCompanyDetailsForm = () => {
                   }}
                 >
                   {(field) => (
-                    <div className="space-y-2">
-                      <Label htmlFor={field.name}>Company Name *</Label>
-                      <Input
-                        id={field.name}
-                        name={field.name}
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChange={(e) => field.handleChange(e.target.value)}
-                        placeholder="Enter company name"
-                        className={cn(
-                          field.state.meta.isTouched &&
-                            field.state.meta.errors.length > 0 &&
-                            "border-destructive",
-                        )}
-                      />
-                      {field.state.meta.isTouched &&
-                        field.state.meta.errors.length > 0 && (
-                          <p className="text-sm text-destructive">
-                            {field.state.meta.errors.join(", ")}
-                          </p>
-                        )}
-                    </div>
+                    <AppField
+                      field={field}
+                      label="Company Name"
+                      type="text"
+                      placeholder="Enter you company Name"
+                    />
                   )}
                 </form.Field>
 
@@ -217,29 +199,12 @@ const EditCompanyDetailsForm = () => {
                     }}
                   >
                     {(field) => (
-                      <div className="space-y-2">
-                        <Label htmlFor={field.name}>Email *</Label>
-                        <Input
-                          id={field.name}
-                          name={field.name}
-                          type="email"
-                          value={field.state.value}
-                          onBlur={field.handleBlur}
-                          onChange={(e) => field.handleChange(e.target.value)}
-                          placeholder="Enter company email"
-                          className={cn(
-                            field.state.meta.isTouched &&
-                              field.state.meta.errors.length > 0 &&
-                              "border-destructive",
-                          )}
-                        />
-                        {field.state.meta.isTouched &&
-                          field.state.meta.errors.length > 0 && (
-                            <p className="text-sm text-destructive">
-                              {field.state.meta.errors.join(", ")}
-                            </p>
-                          )}
-                      </div>
+                      <AppField
+                        field={field}
+                        label="Email"
+                        type="email"
+                        placeholder="Enter company email"
+                      />
                     )}
                   </form.Field>
 
@@ -250,28 +215,12 @@ const EditCompanyDetailsForm = () => {
                     }}
                   >
                     {(field) => (
-                      <div className="space-y-2">
-                        <Label htmlFor={field.name}>Phone *</Label>
-                        <Input
-                          id={field.name}
-                          name={field.name}
-                          value={field.state.value}
-                          onBlur={field.handleBlur}
-                          onChange={(e) => field.handleChange(e.target.value)}
-                          placeholder="Enter company phone"
-                          className={cn(
-                            field.state.meta.isTouched &&
-                              field.state.meta.errors.length > 0 &&
-                              "border-destructive",
-                          )}
-                        />
-                        {field.state.meta.isTouched &&
-                          field.state.meta.errors.length > 0 && (
-                            <p className="text-sm text-destructive">
-                              {field.state.meta.errors.join(", ")}
-                            </p>
-                          )}
-                      </div>
+                      <AppField
+                        field={field}
+                        label="Company Phone"
+                        type="text"
+                        placeholder="Enter company phone"
+                      />
                     )}
                   </form.Field>
                 </div>
@@ -283,28 +232,12 @@ const EditCompanyDetailsForm = () => {
                   }}
                 >
                   {(field) => (
-                    <div className="space-y-2">
-                      <Label htmlFor={field.name}>Address *</Label>
-                      <Input
-                        id={field.name}
-                        name={field.name}
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChange={(e) => field.handleChange(e.target.value)}
-                        placeholder="Enter company address"
-                        className={cn(
-                          field.state.meta.isTouched &&
-                            field.state.meta.errors.length > 0 &&
-                            "border-destructive",
-                        )}
-                      />
-                      {field.state.meta.isTouched &&
-                        field.state.meta.errors.length > 0 && (
-                          <p className="text-sm text-destructive">
-                            {field.state.meta.errors.join(", ")}
-                          </p>
-                        )}
-                    </div>
+                    <AppField
+                      field={field}
+                      label="Company Address"
+                      type="text"
+                      placeholder="Enter company address"
+                    />
                   )}
                 </form.Field>
               </CardContent>
@@ -326,29 +259,12 @@ const EditCompanyDetailsForm = () => {
                   }}
                 >
                   {(field) => (
-                    <div className="space-y-2">
-                      <Label htmlFor={field.name}>Website</Label>
-                      <Input
-                        id={field.name}
-                        name={field.name}
-                        type="url"
-                        value={field.state.value || ""}
-                        onBlur={field.handleBlur}
-                        onChange={(e) => field.handleChange(e.target.value)}
-                        placeholder="https://example.com"
-                        className={cn(
-                          field.state.meta.isTouched &&
-                            field.state.meta.errors.length > 0 &&
-                            "border-destructive",
-                        )}
-                      />
-                      {field.state.meta.isTouched &&
-                        field.state.meta.errors.length > 0 && (
-                          <p className="text-sm text-destructive">
-                            {field.state.meta.errors.join(", ")}
-                          </p>
-                        )}
-                    </div>
+                    <AppField
+                      field={field}
+                      label="Company Website"
+                      type="url"
+                      placeholder="https://www.example.com"
+                    />
                   )}
                 </form.Field>
 
@@ -360,29 +276,12 @@ const EditCompanyDetailsForm = () => {
                     }}
                   >
                     {(field) => (
-                      <div className="space-y-2">
-                        <Label htmlFor={field.name}>Facebook</Label>
-                        <Input
-                          id={field.name}
-                          name={field.name}
-                          type="url"
-                          value={field.state.value || ""}
-                          onBlur={field.handleBlur}
-                          onChange={(e) => field.handleChange(e.target.value)}
-                          placeholder="https://facebook.com/your-page"
-                          className={cn(
-                            field.state.meta.isTouched &&
-                              field.state.meta.errors.length > 0 &&
-                              "border-destructive",
-                          )}
-                        />
-                        {field.state.meta.isTouched &&
-                          field.state.meta.errors.length > 0 && (
-                            <p className="text-sm text-destructive">
-                              {field.state.meta.errors.join(", ")}
-                            </p>
-                          )}
-                      </div>
+                      <AppField
+                        field={field}
+                        label="Facebook"
+                        type="url"
+                        placeholder="https://www.facebook.com/your-page"
+                      />
                     )}
                   </form.Field>
 
@@ -393,29 +292,12 @@ const EditCompanyDetailsForm = () => {
                     }}
                   >
                     {(field) => (
-                      <div className="space-y-2">
-                        <Label htmlFor={field.name}>Twitter / X</Label>
-                        <Input
-                          id={field.name}
-                          name={field.name}
-                          type="url"
-                          value={field.state.value || ""}
-                          onBlur={field.handleBlur}
-                          onChange={(e) => field.handleChange(e.target.value)}
-                          placeholder="https://twitter.com/your-handle"
-                          className={cn(
-                            field.state.meta.isTouched &&
-                              field.state.meta.errors.length > 0 &&
-                              "border-destructive",
-                          )}
-                        />
-                        {field.state.meta.isTouched &&
-                          field.state.meta.errors.length > 0 && (
-                            <p className="text-sm text-destructive">
-                              {field.state.meta.errors.join(", ")}
-                            </p>
-                          )}
-                      </div>
+                      <AppField
+                        field={field}
+                        label="Twitter"
+                        type="url"
+                        placeholder="https://twitter.com/your-account"
+                      />
                     )}
                   </form.Field>
 
@@ -426,29 +308,12 @@ const EditCompanyDetailsForm = () => {
                     }}
                   >
                     {(field) => (
-                      <div className="space-y-2">
-                        <Label htmlFor={field.name}>LinkedIn</Label>
-                        <Input
-                          id={field.name}
-                          name={field.name}
-                          type="url"
-                          value={field.state.value || ""}
-                          onBlur={field.handleBlur}
-                          onChange={(e) => field.handleChange(e.target.value)}
-                          placeholder="https://linkedin.com/company/your-company"
-                          className={cn(
-                            field.state.meta.isTouched &&
-                              field.state.meta.errors.length > 0 &&
-                              "border-destructive",
-                          )}
-                        />
-                        {field.state.meta.isTouched &&
-                          field.state.meta.errors.length > 0 && (
-                            <p className="text-sm text-destructive">
-                              {field.state.meta.errors.join(", ")}
-                            </p>
-                          )}
-                      </div>
+                      <AppField
+                        field={field}
+                        label="LinkedIn"
+                        type="url"
+                        placeholder="https://linkedin.com/your-profile"
+                      />
                     )}
                   </form.Field>
 
@@ -459,29 +324,12 @@ const EditCompanyDetailsForm = () => {
                     }}
                   >
                     {(field) => (
-                      <div className="space-y-2">
-                        <Label htmlFor={field.name}>Instagram</Label>
-                        <Input
-                          id={field.name}
-                          name={field.name}
-                          type="url"
-                          value={field.state.value || ""}
-                          onBlur={field.handleBlur}
-                          onChange={(e) => field.handleChange(e.target.value)}
-                          placeholder="https://instagram.com/your-handle"
-                          className={cn(
-                            field.state.meta.isTouched &&
-                              field.state.meta.errors.length > 0 &&
-                              "border-destructive",
-                          )}
-                        />
-                        {field.state.meta.isTouched &&
-                          field.state.meta.errors.length > 0 && (
-                            <p className="text-sm text-destructive">
-                              {field.state.meta.errors.join(", ")}
-                            </p>
-                          )}
-                      </div>
+                      <AppField
+                        field={field}
+                        label="Instagram"
+                        type="url"
+                        placeholder="https://instagram.com/your-account"
+                      />
                     )}
                   </form.Field>
 
@@ -492,29 +340,12 @@ const EditCompanyDetailsForm = () => {
                     }}
                   >
                     {(field) => (
-                      <div className="space-y-2">
-                        <Label htmlFor={field.name}>YouTube</Label>
-                        <Input
-                          id={field.name}
-                          name={field.name}
-                          type="url"
-                          value={field.state.value || ""}
-                          onBlur={field.handleBlur}
-                          onChange={(e) => field.handleChange(e.target.value)}
-                          placeholder="https://youtube.com/@your-channel"
-                          className={cn(
-                            field.state.meta.isTouched &&
-                              field.state.meta.errors.length > 0 &&
-                              "border-destructive",
-                          )}
-                        />
-                        {field.state.meta.isTouched &&
-                          field.state.meta.errors.length > 0 && (
-                            <p className="text-sm text-destructive">
-                              {field.state.meta.errors.join(", ")}
-                            </p>
-                          )}
-                      </div>
+                      <AppField
+                        field={field}
+                        label="YouTube"
+                        type="url"
+                        placeholder="https://youtube.com/your-channel"
+                      />
                     )}
                   </form.Field>
                 </div>
@@ -564,7 +395,10 @@ const EditCompanyDetailsForm = () => {
         {/* Form Actions */}
         <div className="flex flex-col sm:flex-row items-center justify-end gap-3 pt-4 border-t border-border">
           <Button variant="outline">
-            <Link href="/super-admin/dashboard/company-details" className="flex items-center">
+            <Link
+              href="/super-admin/dashboard/company-details"
+              className="flex items-center"
+            >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back
             </Link>

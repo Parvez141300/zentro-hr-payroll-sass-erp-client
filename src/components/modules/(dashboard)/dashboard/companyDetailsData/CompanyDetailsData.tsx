@@ -234,7 +234,7 @@ const CompanyDetailsData = () => {
                   </p>
                 </div>
               </div>
-              <div className="flex items-start gap-3">
+              <div className="flex items-start gap-3 overflow-auto">
                 <Globe className="w-5 h-5 text-muted-foreground mt-0.5" />
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">
@@ -246,7 +246,7 @@ const CompanyDetailsData = () => {
                         href={company.websiteUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-primary hover:underline"
+                        className="text-primary hover:underline text-wrap"
                       >
                         {company.websiteUrl.replace(/^https?:\/\//, "")}
                       </Link>
@@ -275,7 +275,7 @@ const CompanyDetailsData = () => {
                     href={company.facebookUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-4 py-2 bg-accent rounded-lg hover:bg-accent/80 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-accent rounded-lg hover:bg-accent/80 transition-colors overflow-auto"
                   >
                     <span className="text-sm text-foreground">Facebook</span>
                   </Link>
@@ -285,7 +285,7 @@ const CompanyDetailsData = () => {
                     href={company.twitterUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-4 py-2 bg-accent rounded-lg hover:bg-accent/80 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-accent rounded-lg hover:bg-accent/80 transition-colors overflow-auto"
                   >
                     <span className="text-sm text-foreground">Twitter</span>
                   </Link>
@@ -295,7 +295,7 @@ const CompanyDetailsData = () => {
                     href={company.linkedinUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-4 py-2 bg-accent rounded-lg hover:bg-accent/80 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-accent rounded-lg hover:bg-accent/80 transition-colors overflow-auto"
                   >
                     <span className="text-sm text-foreground">LinkedIn</span>
                   </Link>
@@ -305,7 +305,7 @@ const CompanyDetailsData = () => {
                     href={company.instagramUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-4 py-2 bg-accent rounded-lg hover:bg-accent/80 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-accent rounded-lg hover:bg-accent/80 transition-colors overflow-auto"
                   >
                     <span className="text-sm text-foreground">Instagram</span>
                   </Link>
@@ -315,7 +315,7 @@ const CompanyDetailsData = () => {
                     href={company.youtubeUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-4 py-2 bg-accent rounded-lg hover:bg-accent/80 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-accent rounded-lg hover:bg-accent/80 transition-colors overflow-auto"
                   >
                     <span className="text-sm text-foreground">YouTube</span>
                   </Link>

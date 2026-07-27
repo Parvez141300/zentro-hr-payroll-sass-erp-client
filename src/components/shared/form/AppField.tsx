@@ -12,7 +12,16 @@ import { FieldError } from "@/components/ui/field";
 type AppFieldProps = {
   field: AnyFieldApi;
   label: string;
-  type: "text" | "email" | "password";
+  type:
+    | "text"
+    | "email"
+    | "password"
+    | "tel"
+    | "number"
+    | "textarea"
+    | "file"
+    | "date"
+    | "url";
   placeholder?: string;
   className?: string;
   disabled?: boolean;
