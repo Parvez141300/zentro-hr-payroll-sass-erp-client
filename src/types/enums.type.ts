@@ -2,12 +2,12 @@
 // ============ Enums ============
 
 export enum UserRole {
-    PLATFORM_SUPER_ADMIN = "PLATFORM_SUPER_ADMIN",
-    SUPER_ADMIN = "Super_ADMIN",
-    HR_MANAGER = "HR_MANAGER",
-    ACCOUNTANT = "ACCOUNTANT",
-    DEPARTMENT_HEAD = "DEPARTMENT_HEAD",
-    EMPLOYEE = "EMPLOYEE",
+  PLATFORM_SUPER_ADMIN = "PLATFORM_SUPER_ADMIN",
+  SUPER_ADMIN = "Super_ADMIN",
+  HR_MANAGER = "HR_MANAGER",
+  ACCOUNTANT = "ACCOUNTANT",
+  DEPARTMENT_HEAD = "DEPARTMENT_HEAD",
+  EMPLOYEE = "EMPLOYEE",
 }
 
 export enum Gender {
@@ -64,6 +64,23 @@ export enum PayrollStatus {
 export enum HrScope {
   COMPANY_WIDE = "COMPANY_WIDE",
   DEPARTMENT_SPECIFIC = "DEPARTMENT_SPECIFIC",
+}
+
+// Subscription Plan Enum
+export enum SubscriptionPlan {
+  FREE = "FREE",
+  BASIC = "BASIC",
+  PRO = "PRO",
+  ENTERPRISE = "ENTERPRISE",
+}
+
+// Subscription Status Enum
+export enum SubscriptionStatus {
+  ACTIVE = "ACTIVE",
+  EXPIRED = "EXPIRED",
+  CANCELLED = "CANCELLED",
+  TRIAL = "TRIAL",
+  PAST_DUE = "PAST_DUE",
 }
 
 // ============ end Enums ============
