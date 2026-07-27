@@ -92,7 +92,7 @@ const superAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
             {
                 title: "Edit Company",
                 href: "/super-admin/dashboard/edit-company",
-                icon: "Factory",
+                icon: "Edit",
             },
         ],
     },
