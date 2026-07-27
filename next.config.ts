@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "10mb", // আপনার maxSize (5MB banner + 2MB logo) অনুযায়ী যথেষ্ট বড় করে দিন
+    },
+  },
 };
 
 export default nextConfig;

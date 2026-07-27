@@ -7,7 +7,7 @@ import {
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "@tanstack/react-form";
 import { z } from "zod";
-import { AlertCircle, Save, X } from "lucide-react";
+import { AlertCircle, ArrowLeft, Save } from "lucide-react";
 import React, { useState } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -89,7 +89,7 @@ const EditCompanyDetailsForm = () => {
       // Append logo if changed
       if (logoFile) {
         formData.append(
-          "file1",
+          "logo",
           logoFile.file instanceof File ? logoFile.file : "",
         );
       }
@@ -97,7 +97,7 @@ const EditCompanyDetailsForm = () => {
       // Append banner if changed
       if (bannerFiles.length > 0) {
         bannerFiles.forEach((file) => {
-          formData.append("file2", file);
+          formData.append("banner", file);
         });
       }
 
@@ -153,22 +153,6 @@ const EditCompanyDetailsForm = () => {
           <p className="text-muted-foreground">
             Update your company information and settings
           </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button variant="outline">
-            <Link href="/company-details" className="flex items-center">
-              <X className="h-4 w-4 mr-2" />
-              Cancel
-            </Link>
-          </Button>
-          <Button
-            onClick={() => form.handleSubmit()}
-            disabled={updateMutation.isPending}
-            className="gap-2"
-          >
-            <Save className="h-4 w-4" />
-            {updateMutation.isPending ? "Saving..." : "Save Changes"}
-          </Button>
         </div>
       </div>
 
@@ -580,12 +564,16 @@ const EditCompanyDetailsForm = () => {
         {/* Form Actions */}
         <div className="flex flex-col sm:flex-row items-center justify-end gap-3 pt-4 border-t border-border">
           <Button variant="outline">
-            <Link href="/company-details">Cancel</Link>
+            <Link href="/super-admin/dashboard/company-details" className="flex items-center">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back
+            </Link>
           </Button>
           <Button
             type="submit"
-            disabled={updateMutation.isPending}
             className="gap-2 min-w-30"
+            onClick={() => form.handleSubmit()}
+            disabled={updateMutation.isPending}
           >
             {updateMutation.isPending ? (
               <>

@@ -3,6 +3,6 @@ import { envVars } from "../env";
 
 export const axiosServerInstance = axios.create({
     baseURL: envVars.BACKEND_URL,
-    timeout: 10000,
+    timeout: 60000, // 60 seconds
     withCredentials: true,
 });
