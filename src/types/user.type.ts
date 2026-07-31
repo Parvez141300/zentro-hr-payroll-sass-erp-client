@@ -1,7 +1,7 @@
 import { IAccountant } from "./accountant.type";
 import { IDepartmentHead } from "./departmentHead.type";
 import { IEmployee } from "./employee.type";
-import { UserRole } from "./enums.type";
+import { HrScope, UserRole } from "./enums.type";
 import { IHrManager } from "./hrManager.type";
 import { IPlatformSuperAdmin } from "./platformSuperAdmin.type";
 import { ISuperAdmin } from "./superAdmin.type";
@@ -25,4 +25,26 @@ export interface IUser {
   accountant?: IAccountant;
   departmentHead?: IDepartmentHead;
   employee?: IEmployee;
+}
+
+export interface ICreateHRManagerPayload {
+    // User fields
+    email: string;
+    password: string;
+
+    // Profile fields
+    name: string;
+    phone?: string;
+    photoUrl?: string;
+
+    // Job fields
+    joinDate?: Date;
+    hrLicenseNumber?: string;
+    officePhone?: string;
+    bio?: string;
+
+    // 🆕 Scope & Department
+    scope: HrScope;  // "COMPANY_WIDE" or "DEPARTMENT_SPECIFIC"
+    departmentId?: string;  // Required if scope is "DEPARTMENT_SPECIFIC"
+    designationId?: string;
 }
