@@ -3,8 +3,8 @@
 import { departmentService } from "@/services/department.service";
 
 
-export const getCompanyDepartments = async () => {
-    const result = departmentService.getCompanyDepartments();
+export const getCompanyDepartments = async (queryString?: string) => {
+    const result = departmentService.getCompanyDepartments(queryString);
 
     return result;
 }

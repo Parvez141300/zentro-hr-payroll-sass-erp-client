@@ -7,17 +7,30 @@ import {
 } from "@tanstack/react-query";
 import React from "react";
 
-const ManageDepartment = async () => {
+const ManageDepartment = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) => {
+  const queryParamsObject = await searchParams;
+
+  const queryString = Object.keys(queryParamsObject)
+    .map((key) => `${key}=${queryParamsObject[key]}`)
+    .join("&");
+
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["companyDepartments"],
-    queryFn: () => getCompanyDepartments(),
+    queryKey: ["companyDepartments", queryString],
+    queryFn: () => getCompanyDepartments(queryString),
   });
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <ManageDepartmentTable />
+      <ManageDepartmentTable
+        queryString={queryString}
+        queryParamsObject={queryParamsObject}
+      />
     </HydrationBoundary>
   );
 };

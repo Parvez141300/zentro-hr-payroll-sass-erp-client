@@ -7,11 +7,18 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { departmentColumns } from "./ManageDepartmentColumn";
 
-const ManageDepartmentTable = () => {
+const ManageDepartmentTable = ({
+  queryString,
+  queryParamsObject,
+}: {
+  queryString?: string;
+  queryParamsObject?: { [key: string]: string | string[] | undefined };
+}) => {
+  console.log("queryParamsObject", queryParamsObject);
 
   const { data: departmentResponse, isLoading } = useQuery({
-    queryKey: ["companyDepartments"],
-    queryFn: () => getCompanyDepartments(),
+    queryKey: ["companyDepartments", queryString],
+    queryFn: () => getCompanyDepartments(queryString),
   });
 
   console.log("departmentResponse", departmentResponse);
