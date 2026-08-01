@@ -1,5 +1,6 @@
-import { getCompanyDepartments } from "@/actions/department.action";
+
 import ManageDepartmentTable from "@/components/modules/(dashboard)/dashboard/manageDepartmentTable/ManageDepartmentTable";
+import { departmentService } from "@/services/department.service";
 import {
   dehydrate,
   HydrationBoundary,
@@ -22,7 +23,7 @@ const ManageDepartment = async ({
 
   await queryClient.prefetchQuery({
     queryKey: ["companyDepartments", queryString],
-    queryFn: () => getCompanyDepartments(queryString),
+    queryFn: () => departmentService.getCompanyDepartments(queryString),
   });
 
   return (
