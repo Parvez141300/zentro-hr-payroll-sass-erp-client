@@ -30,8 +30,7 @@ const ManageDepartmentTable = ({ queryString }: { queryString?: string }) => {
   const departmentData = departmentResponse?.data;
   const departments = departmentData?.data;
   const paginationMeta = departmentData?.pagination;
-
-  const handleView = (department: IDepartment) => console.log("View", department);
+  
   const handleEdit = (department: IDepartment) => console.log("Edit", department);
   const handleDelete = (department: IDepartment) => console.log("Delete", department);
 
@@ -64,7 +63,6 @@ const ManageDepartmentTable = ({ queryString }: { queryString?: string }) => {
           : undefined
       }
       actions={{
-        onView: handleView,
         onEdit: handleEdit,
         onDelete: handleDelete,
       }}

@@ -113,22 +113,37 @@ const DataTable = <TData,>({
                 />
                 <DropdownMenuContent align="end">
                   <DropdownMenuGroup>
-                    <DropdownMenuItem onClick={() => actions.onView?.(rowData)}>
-                      <Eye /> View
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => actions.onEdit?.(rowData)}>
-                      <PencilIcon /> Edit
-                    </DropdownMenuItem>
+                    {actions.onView && (
+                      <DropdownMenuItem
+                        onClick={() => actions.onView?.(rowData)}
+                      >
+                        <Eye /> View
+                      </DropdownMenuItem>
+                    )}
+                    {
+                      // edit
+                      actions.onEdit && (
+                        <DropdownMenuItem
+                          onClick={() => actions.onEdit?.(rowData)}
+                        >
+                          <PencilIcon /> Edit
+                        </DropdownMenuItem>
+                      )
+                    }
                   </DropdownMenuGroup>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuGroup>
-                    <DropdownMenuItem
-                      variant="destructive"
-                      onClick={() => actions.onDelete?.(rowData)}
-                    >
-                      <TrashIcon /> Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuGroup>
+                  {actions.onDelete && (
+                    <>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuGroup>
+                        <DropdownMenuItem
+                          variant="destructive"
+                          onClick={() => actions.onDelete?.(rowData)}
+                        >
+                          <TrashIcon /> Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuGroup>
+                    </>
+                  )}
                 </DropdownMenuContent>
               </DropdownMenu>
             );
