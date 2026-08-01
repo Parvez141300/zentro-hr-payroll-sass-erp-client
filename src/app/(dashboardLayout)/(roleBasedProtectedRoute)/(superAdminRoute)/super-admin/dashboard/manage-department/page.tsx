@@ -29,7 +29,6 @@ const ManageDepartment = async ({
     <HydrationBoundary state={dehydrate(queryClient)}>
       <ManageDepartmentTable
         queryString={queryString}
-        queryParamsObject={queryParamsObject}
       />
     </HydrationBoundary>
   );

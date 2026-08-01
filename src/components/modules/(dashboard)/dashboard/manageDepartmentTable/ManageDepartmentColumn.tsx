@@ -18,8 +18,7 @@ export const departmentColumns: ColumnDef<IDepartment, any>[] = [
     header: "Description",
     cell: ({ row }) => <span>{row.original.description || "N/A"}</span>,
   }),
-  columnHelper.display({
-    id: "date",
+  columnHelper.accessor("createdAt", {
     header: "Date & Time",
     cell: ({ row }) => {
       return (

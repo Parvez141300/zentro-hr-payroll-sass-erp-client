@@ -17,3 +17,13 @@ export interface IDepartment {
   employees?: IEmployee[];
   designations?: IDesignation[];
 }
+
+export interface ICreateCompanyDepartment {
+  name: string;
+  description: string | null;
+}
+
+export interface IUpdateCompanyDepartment {
+  name?: string;
+  description?: string | null;
+}
