@@ -9,6 +9,7 @@ import { useTableQueryParams } from "@/hooks/useTableQueryParams";
 import CreateDepartmentDialog from "./CreateDepartmentDialog";
 import UpdateDepartmentDialog from "./UpdateDepartmentDialog";
 import { getCompanyDepartments } from "@/actions/department.action";
+import DeleteDepartmentDialog from "./DeleteDepartmentDialog";
 
 const ManageDepartmentTable = ({ queryString }: { queryString?: string }) => {
   const {
@@ -34,13 +35,16 @@ const ManageDepartmentTable = ({ queryString }: { queryString?: string }) => {
   // edit dialog এর জন্য state — কোন department edit হচ্ছে সেটা এখানেই রাখা হচ্ছে
   const [editingDepartment, setEditingDepartment] =
     useState<IDepartment | null>(null);
+  const [deletingDepartment, setDeletingDepartment] =
+    useState<IDepartment | null>(null);
 
   const handleEdit = (department: IDepartment) => {
     setEditingDepartment(department); // শুধু state সেট করছি, dialog নিজে বাইরে render হবে
   };
 
-  const handleDelete = (department: IDepartment) =>
-    console.log("Delete", department);
+  const handleDelete = (department: IDepartment) => {
+    setDeletingDepartment(department);
+  };
 
   return (
     <>
@@ -82,6 +86,14 @@ const ManageDepartmentTable = ({ queryString }: { queryString?: string }) => {
         open={!!editingDepartment}
         onOpenChange={(open) => {
           if (!open) setEditingDepartment(null);
+        }}
+      />
+
+      <DeleteDepartmentDialog
+        departmentData={deletingDepartment}
+        open={!!deletingDepartment}
+        onOpenChange={(open) => {
+          if (!open) setDeletingDepartment(null);
         }}
       />
     </>
