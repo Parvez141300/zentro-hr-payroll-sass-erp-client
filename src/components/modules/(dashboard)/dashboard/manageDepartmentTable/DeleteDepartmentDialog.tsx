@@ -30,7 +30,7 @@ const DeleteDepartmentDialog = ({
   const { mutate, isPending } = useMutation({
     mutationFn: () => {
       if (!departmentData) throw new Error("No department selected");
-      return deleteCompanyDepartment(departmentData.companyId);
+      return deleteCompanyDepartment(departmentData.id);
     },
     onSuccess: () => {
       toast.success("Department updated successfully");
