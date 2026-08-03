@@ -50,6 +50,8 @@ const ManageDepartmentTable = ({ queryString }: { queryString?: string }) => {
     <>
       {/* departments table */}
       <DataTable
+        title="Departments"
+        description="Manage your department"
         data={departments || []}
         columns={departmentColumns}
         isLoading={isLoading}

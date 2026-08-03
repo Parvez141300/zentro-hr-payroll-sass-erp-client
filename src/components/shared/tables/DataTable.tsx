@@ -2,7 +2,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,13 +33,13 @@ import {
   EllipsisVertical,
   Eye,
   PencilIcon,
-  Search,
   TrashIcon,
   X,
 } from "lucide-react";
 import React from "react";
 import LoadingCircle from "../loadings/LoadingCircle";
 import TablePagination from "./TablePagination";
+import TableSearchField from "./TableSearchField";
 
 interface IDataTableActions<TData> {
   onView?: (data: TData) => void;
@@ -70,6 +69,8 @@ interface IDataTablePagination {
 }
 
 interface IDataTableProps<TData> {
+  title: string;
+  description?: string;
   data: TData[];
   columns: ColumnDef<TData>[];
   actions?: IDataTableActions<TData>;
@@ -84,6 +85,8 @@ interface IDataTableProps<TData> {
 }
 
 const DataTable = <TData,>({
+  title,
+  description,
   data,
   columns,
   actions,
@@ -181,21 +184,36 @@ const DataTable = <TData,>({
 
   return (
     <div className="relative">
+      <div className="flex justify-between items-end mb-8">
+        <div className="space-y-1">
+          <h2 className="text-xl font-bold">{title}</h2>
+          <p className="text-muted-foreground">{description}</p>
+        </div>
+        {toolbar?.actions && <div>{toolbar.actions}</div>}
+      </div>
       {/* Toolbar: search + filters (left) | create action (right) */}
       {hasToolbar && (
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4">
           <div className="flex flex-1 flex-wrap items-center gap-2">
             {toolbar?.search && (
-              <div className="relative w-full max-w-xs">
-                <Search className="absolute left-2.5 top-2.5 w-4 h-4 text-muted-foreground" />
-                <Input
-                  type="search"
-                  placeholder={toolbar.search.placeholder || "Search..."}
+              <>
+                {/* <div className="relative w-full max-w-xs">
+                  <Search className="absolute left-2.5 top-2.5 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    type="search"
+                    placeholder={toolbar.search.placeholder || "Search..."}
+                    value={toolbar.search.value}
+                    onChange={(e) => toolbar.search?.onChange(e.target.value)}
+                    className="pl-8"
+                  />
+                </div> */}
+
+                <TableSearchField
                   value={toolbar.search.value}
-                  onChange={(e) => toolbar.search?.onChange(e.target.value)}
-                  className="pl-8"
+                  onChange={toolbar.search.onChange}
+                  placeholder="Please search"
                 />
-              </div>
+              </>
             )}
 
             {toolbar?.filters}
@@ -211,8 +229,6 @@ const DataTable = <TData,>({
               </Button>
             )}
           </div>
-
-          {toolbar?.actions && <div>{toolbar.actions}</div>}
         </div>
       )}
 
