@@ -48,6 +48,7 @@ const ManageDepartmentTable = ({ queryString }: { queryString?: string }) => {
 
   return (
     <>
+      {/* departments table */}
       <DataTable
         data={departments || []}
         columns={departmentColumns}
@@ -89,6 +90,7 @@ const ManageDepartmentTable = ({ queryString }: { queryString?: string }) => {
         }}
       />
 
+      {/* delete department dialog */}
       <DeleteDepartmentDialog
         departmentData={deletingDepartment}
         open={!!deletingDepartment}
