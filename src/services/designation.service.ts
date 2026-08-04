@@ -1,5 +1,5 @@
 import { httpServer } from "@/lib/http/httpServer";
-import { IDesignation } from "@/types/designation.type";
+import { ICreateCompanyDesignation, IDesignation } from "@/types/designation.type";
 import { IPaginatedData } from "@/types/pagination.type";
 
 const getCompanyDesignations = async (queryString?: string) => {
@@ -8,6 +8,13 @@ const getCompanyDesignations = async (queryString?: string) => {
     return response;
 };
 
+const createCompanyDesignation = async (payload: ICreateCompanyDesignation) => {
+    const response = await httpServer.post("/api/v1/designations", payload);
+
+    return response;
+};
+
 export const designationService = {
-    getCompanyDesignations
+    getCompanyDesignations,
+    createCompanyDesignation,
 };

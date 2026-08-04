@@ -1,5 +1,6 @@
-import { getCompanyDesignations } from "@/actions/designation.action";
+
 import ManageDesignationTable from "@/components/modules/(dashboard)/dashboard/manageDesignationTable/ManageDesignationTable";
+import { designationService } from "@/services/designation.service";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 import React from "react";
 
@@ -18,7 +19,7 @@ const ManageDesignation = async ({
 
   await queryClient.prefetchQuery({
     queryKey: ["companyDesignations", queryString],
-    queryFn: () => getCompanyDesignations(queryString),
+    queryFn: () => designationService.getCompanyDesignations(queryString),
   });
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

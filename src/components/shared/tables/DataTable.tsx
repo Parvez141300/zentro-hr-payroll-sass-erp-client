@@ -212,7 +212,7 @@ const DataTable = <TData,>({
                 <TableSearchField
                   value={toolbar.search.value}
                   onChange={toolbar.search.onChange}
-                  placeholder="Please search"
+                  placeholder={toolbar.search.placeholder}
                 />
               </>
             )}

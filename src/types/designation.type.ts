@@ -18,3 +18,9 @@ export interface IDesignation {
   departmentHeads?: IDepartmentHead[];
   employees?: IEmployee[];
 }
+
+export interface ICreateCompanyDesignation {
+  departmentId: string;
+  title: string;
+  description: string | null;
+}
