@@ -1,9 +1,21 @@
-import React from 'react'
+"use client";
+import { getCompanyDesignations } from "@/actions/designation.action";
+import { useQuery } from "@tanstack/react-query";
+import React from "react";
 
-const ManageDesignationTable = () => {
-  return (
-    <div>ManageDesignationTable</div>
-  )
-}
+const ManageDesignationTable = ({ queryString }: { queryString?: string }) => {
+    const { data: departmentResponse, isLoading } = useQuery({
+    queryKey: ["companyDesignations", queryString],
+    queryFn: () => getCompanyDesignations(queryString),
+  });
 
-export default ManageDesignationTable
+  const departmentData = departmentResponse?.data;
+  const designations = departmentData?.data;
+  const paginationMeta = departmentData?.pagination;
+
+  console.log('designation & paginationMeta', designations, paginationMeta);
+
+  return <div>ManageDesignationTable</div>;
+};
+
+export default ManageDesignationTable;

@@ -195,6 +195,7 @@ const DataTable = <TData,>({
       {hasToolbar && (
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4">
           <div className="flex flex-1 flex-wrap items-center gap-2">
+            {/* search field */}
             {toolbar?.search && (
               <>
                 {/* <div className="relative w-full max-w-xs">
@@ -216,8 +217,10 @@ const DataTable = <TData,>({
               </>
             )}
 
+            {/* filter component */}
             {toolbar?.filters}
 
+            {/* clear filters button */}
             {toolbar?.onClearFilters && (
               <Button
                 variant="ghost"
@@ -238,6 +241,7 @@ const DataTable = <TData,>({
         </div>
       )}
 
+      {/* Table */}
       <div className="overflow-hidden rounded-md border">
         <Table>
           <TableHeader>
@@ -305,6 +309,7 @@ const DataTable = <TData,>({
         </Table>
       </div>
 
+      {/* pagination component */}
       {pagination && (
         <TablePagination
           page={pagination.page}

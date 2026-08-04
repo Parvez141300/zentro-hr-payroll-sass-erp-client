@@ -6,10 +6,8 @@ import { IHrManager } from "./hrManager.type";
 
 export interface IDesignation {
   id: string;
-  name: string;
-  code: string;
+  title: string;
   description: string | null;
-  isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
   companyId: string;

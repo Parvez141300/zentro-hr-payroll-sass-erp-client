@@ -1,5 +1,6 @@
 import { getCompanyDesignations } from "@/actions/designation.action";
-import { QueryClient } from "@tanstack/react-query";
+import ManageDesignationTable from "@/components/modules/(dashboard)/dashboard/manageDesignationTable/ManageDesignationTable";
+import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 import React from "react";
 
 const ManageDesignation = async ({
@@ -19,7 +20,11 @@ const ManageDesignation = async ({
     queryKey: ["companyDesignations", queryString],
     queryFn: () => getCompanyDesignations(queryString),
   });
-  return <div>ManageDesignation</div>;
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <ManageDesignationTable queryString={queryString} />
+    </HydrationBoundary>
+  );
 };
 
 export default ManageDesignation;
