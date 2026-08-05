@@ -3,10 +3,11 @@ import { getCompanyDesignations } from "@/actions/designation.action";
 import DataTable from "@/components/shared/tables/DataTable";
 import { useTableQueryParams } from "@/hooks/useTableQueryParams";
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useState } from "react";
 import { IDesignation } from "@/types/designation.type";
 import { designationColumns } from "./ManageDesignationColumn";
 import CreateDesignationDialog from "./CreateDesignationDialog";
+import DeleteDesignationDialog from "./DeleteDesignationDialog";
 
 const ManageDesignationTable = ({ queryString }: { queryString?: string }) => {
   const {
@@ -29,6 +30,11 @@ const ManageDesignationTable = ({ queryString }: { queryString?: string }) => {
   const designations = departmentData?.data;
   const paginationMeta = departmentData?.pagination;
 
+  const [editingDesignation, setEditingDesignation] =
+    useState<IDesignation | null>(null);
+  const [deletingDesignation, setDeletingDesignation] =
+    useState<IDesignation | null>(null);
+
   console.log("designation & paginationMeta", designations, paginationMeta);
 
   const handleEdit = (designation: IDesignation) => {
@@ -36,7 +42,7 @@ const ManageDesignationTable = ({ queryString }: { queryString?: string }) => {
   };
 
   const handleDelete = (designation: IDesignation) => {
-    console.log("Delete designation:", designation);
+    setDeletingDesignation(designation);
   };
 
   return (
@@ -86,13 +92,13 @@ const ManageDesignationTable = ({ queryString }: { queryString?: string }) => {
       /> */}
 
       {/* delete department dialog */}
-      {/* <DeleteDepartmentDialog
-        departmentData={deletingDepartment}
-        open={!!deletingDepartment}
+      <DeleteDesignationDialog
+        designationData={deletingDesignation}
+        open={!!deletingDesignation}
         onOpenChange={(open) => {
-          if (!open) setDeletingDepartment(null);
+          if (!open) setDeletingDesignation(null);
         }}
-      /> */}
+      />
     </>
   );
 };

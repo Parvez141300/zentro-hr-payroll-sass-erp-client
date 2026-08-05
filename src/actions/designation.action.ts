@@ -14,3 +14,9 @@ export const createCompanyDesignation = async (payload: ICreateCompanyDesignatio
 
     return result;
 };
+
+export const deleteCompanyDesignation = async (designationId: string) => {
+    const result = await designationService.deleteCompanyDesignation(designationId);
+
+    return result;
+}

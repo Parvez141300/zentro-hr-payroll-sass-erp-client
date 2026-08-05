@@ -14,7 +14,14 @@ const createCompanyDesignation = async (payload: ICreateCompanyDesignation) => {
     return response;
 };
 
+const deleteCompanyDesignation = async (designationId: string) => {
+    const response = await httpServer.delete(`/api/v1/designations/${designationId}`);
+
+    return response;
+}
+
 export const designationService = {
     getCompanyDesignations,
     createCompanyDesignation,
+    deleteCompanyDesignation,
 };

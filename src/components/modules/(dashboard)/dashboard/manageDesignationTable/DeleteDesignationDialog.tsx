@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteCompanyDepartment } from "@/actions/department.action";
+import { deleteCompanyDesignation } from "@/actions/designation.action";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,18 +10,18 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { IDepartment } from "@/types/department.type";
+import { IDesignation } from "@/types/designation.type";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 interface IUpdateDepartmentDialogProps {
-  departmentData: IDepartment | null;
+  designationData: IDesignation | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-const DeleteDepartmentDialog = ({
-  departmentData,
+const DeleteDesignationDialog = ({
+  designationData,
   open,
   onOpenChange,
 }: IUpdateDepartmentDialogProps) => {
@@ -29,17 +29,17 @@ const DeleteDepartmentDialog = ({
 
   const { mutate, isPending } = useMutation({
     mutationFn: () => {
-      if (!departmentData) throw new Error("No department selected");
-      return deleteCompanyDepartment(departmentData.id);
+      if (!designationData) throw new Error("No designation selected");
+      return deleteCompanyDesignation(designationData.id);
     },
     onSuccess: () => {
       toast.success("Department deleted successfully");
-      queryClient.invalidateQueries({ queryKey: ["companyDepartments"] });
+      queryClient.invalidateQueries({ queryKey: ["companyDesignations"] });
       onOpenChange(false);
     },
     onError: (err) => {
       toast.error(
-        err instanceof Error ? err.message : "Failed to delete department",
+        err instanceof Error ? err.message : "Failed to delete designation",
       );
     },
   });
@@ -49,12 +49,12 @@ const DeleteDepartmentDialog = ({
       {/* কোনো DialogTrigger নেই — trigger হচ্ছে টেবিলের dropdown এর "Edit" item, বাইরে থেকে */}
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete Department</DialogTitle>
+          <DialogTitle>Delete Designation</DialogTitle>
         </DialogHeader>
 
         <div className="text-center py-2">
           <p className="text-sm text-muted-foreground">
-            Are you sure you want to delete this department? This action cannot
+            Are you sure you want to delete this designation? This action cannot
             be undone.
           </p>
         </div>
@@ -70,4 +70,4 @@ const DeleteDepartmentDialog = ({
   );
 };
 
-export default DeleteDepartmentDialog;
+export default DeleteDesignationDialog;
