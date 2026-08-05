@@ -24,3 +24,9 @@ export interface ICreateCompanyDesignation {
   title: string;
   description: string | null;
 }
+
+export interface IUpdateCompanyDesignation {
+  departmentId: string | null;
+  title: string | null;
+  description: string | null;
+}

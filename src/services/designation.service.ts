@@ -1,5 +1,5 @@
 import { httpServer } from "@/lib/http/httpServer";
-import { ICreateCompanyDesignation, IDesignation } from "@/types/designation.type";
+import { ICreateCompanyDesignation, IDesignation, IUpdateCompanyDesignation } from "@/types/designation.type";
 import { IPaginatedData } from "@/types/pagination.type";
 
 const getCompanyDesignations = async (queryString?: string) => {
@@ -14,6 +14,12 @@ const createCompanyDesignation = async (payload: ICreateCompanyDesignation) => {
     return response;
 };
 
+const updateCompanyDesignation = async (designationId: string, payload: IUpdateCompanyDesignation) => {
+    const response = await httpServer.patch(`/api/v1/designations/${designationId}`, payload);
+
+    return response;
+};
+
 const deleteCompanyDesignation = async (designationId: string) => {
     const response = await httpServer.delete(`/api/v1/designations/${designationId}`);
 
@@ -23,5 +29,6 @@ const deleteCompanyDesignation = async (designationId: string) => {
 export const designationService = {
     getCompanyDesignations,
     createCompanyDesignation,
+    updateCompanyDesignation,
     deleteCompanyDesignation,
 };

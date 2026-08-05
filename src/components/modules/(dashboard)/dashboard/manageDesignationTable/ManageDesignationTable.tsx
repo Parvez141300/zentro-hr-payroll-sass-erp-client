@@ -8,6 +8,7 @@ import { IDesignation } from "@/types/designation.type";
 import { designationColumns } from "./ManageDesignationColumn";
 import CreateDesignationDialog from "./CreateDesignationDialog";
 import DeleteDesignationDialog from "./DeleteDesignationDialog";
+import UpdateDesignationDialog from "./UpdateDesignationDialog";
 
 const ManageDesignationTable = ({ queryString }: { queryString?: string }) => {
   const {
@@ -38,7 +39,7 @@ const ManageDesignationTable = ({ queryString }: { queryString?: string }) => {
   console.log("designation & paginationMeta", designations, paginationMeta);
 
   const handleEdit = (designation: IDesignation) => {
-    console.log("Edit designation:", designation);
+    setEditingDesignation(designation);
   };
 
   const handleDelete = (designation: IDesignation) => {
@@ -83,13 +84,13 @@ const ManageDesignationTable = ({ queryString }: { queryString?: string }) => {
       />
 
       {/* টেবিলের বাইরে একবারই render হচ্ছে, open/departmentData state দিয়ে control হচ্ছে */}
-      {/* <UpdateDepartmentDialog
-        departmentData={editingDepartment}
-        open={!!editingDepartment}
+      <UpdateDesignationDialog
+        designationData={editingDesignation}
+        open={!!editingDesignation}
         onOpenChange={(open) => {
-          if (!open) setEditingDepartment(null);
+          if (!open) setEditingDesignation(null);
         }}
-      /> */}
+      />
 
       {/* delete department dialog */}
       <DeleteDesignationDialog
