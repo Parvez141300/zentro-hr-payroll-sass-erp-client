@@ -1,5 +1,8 @@
 "use client";
-import { getCompanyDesignations } from "@/actions/designation.action";
+import {
+  deleteCompanyDesignation,
+  getCompanyDesignations,
+} from "@/actions/designation.action";
 import DataTable from "@/components/shared/tables/DataTable";
 import { useTableQueryParams } from "@/hooks/useTableQueryParams";
 import { useQuery } from "@tanstack/react-query";
@@ -7,8 +10,8 @@ import React, { useState } from "react";
 import { IDesignation } from "@/types/designation.type";
 import { designationColumns } from "./ManageDesignationColumn";
 import CreateDesignationDialog from "./CreateDesignationDialog";
-import DeleteDesignationDialog from "./DeleteDesignationDialog";
 import UpdateDesignationDialog from "./UpdateDesignationDialog";
+import DeletePopUpDialog from "@/components/shared/tables/DeletePopUpDialog";
 
 const ManageDesignationTable = ({ queryString }: { queryString?: string }) => {
   const {
@@ -92,13 +95,18 @@ const ManageDesignationTable = ({ queryString }: { queryString?: string }) => {
         }}
       />
 
-      {/* delete department dialog */}
-      <DeleteDesignationDialog
-        designationData={deletingDesignation}
+      {/* delete designation dialog */}
+      <DeletePopUpDialog
         open={!!deletingDesignation}
         onOpenChange={(open) => {
           if (!open) setDeletingDesignation(null);
         }}
+        title="Delete Designation"
+        itemName={deletingDesignation?.title}
+        deleteAction={() => deleteCompanyDesignation(deletingDesignation!.id)}
+        queryKey={["companyDesignations"]}
+        successMessage="Designation deleted successfully"
+        errorMessage="Failed to delete Designation"
       />
     </>
   );

@@ -8,8 +8,11 @@ import { departmentColumns } from "./ManageDepartmentColumn";
 import { useTableQueryParams } from "@/hooks/useTableQueryParams";
 import CreateDepartmentDialog from "./CreateDepartmentDialog";
 import UpdateDepartmentDialog from "./UpdateDepartmentDialog";
-import { getCompanyDepartments } from "@/actions/department.action";
-import DeleteDepartmentDialog from "./DeleteDepartmentDialog";
+import {
+  deleteCompanyDepartment,
+  getCompanyDepartments,
+} from "@/actions/department.action";
+import DeletePopUpDialog from "@/components/shared/tables/DeletePopUpDialog";
 
 const ManageDepartmentTable = ({ queryString }: { queryString?: string }) => {
   const {
@@ -92,13 +95,18 @@ const ManageDepartmentTable = ({ queryString }: { queryString?: string }) => {
         }}
       />
 
-      {/* delete department dialog */}
-      <DeleteDepartmentDialog
-        departmentData={deletingDepartment}
+      {/* Delete department dialog */}
+      <DeletePopUpDialog
         open={!!deletingDepartment}
         onOpenChange={(open) => {
           if (!open) setDeletingDepartment(null);
         }}
+        title="Delete Department"
+        itemName={deletingDepartment?.name}
+        deleteAction={() => deleteCompanyDepartment(deletingDepartment!.id)}
+        queryKey={["companyDepartments"]}
+        successMessage="Department deleted successfully"
+        errorMessage="Failed to delete Department"
       />
     </>
   );
