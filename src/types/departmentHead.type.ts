@@ -10,12 +10,12 @@ export interface IDepartmentHead {
   phone: string | null;
   photoUrl: string | null;
   employeeCode: string | null;
-  joinDate: Date | null;
+  joinDate: string | null;
   officeLocation: string | null;
   linkedinUrl: string | null;
   bio: string | null;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   userId: string;
   user?: IUser;
   departmentId: string | null;

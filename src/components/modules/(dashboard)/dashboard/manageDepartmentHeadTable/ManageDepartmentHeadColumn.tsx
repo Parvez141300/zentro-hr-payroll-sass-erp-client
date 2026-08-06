@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { IHrManager } from "@/types/hrManager.type";
+import { IDepartmentHead } from "@/types/departmentHead.type";
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 
-const columnHelper = createColumnHelper<IHrManager>();
+const columnHelper = createColumnHelper<IDepartmentHead>();
 
-export const ManageHrColumn: ColumnDef<IHrManager, any>[] = [
+export const departmentHeadColumn: ColumnDef<IDepartmentHead, any>[] = [
   columnHelper.display({
     id: "serial",
     header: "SL",
-    cell: ({ row }) => <span>{row.index + 1}</span>,
+    cell: (info) => info.row.index + 1,
   }),
   columnHelper.accessor("employeeCode", {
     header: "Employee Code",
@@ -23,7 +23,7 @@ export const ManageHrColumn: ColumnDef<IHrManager, any>[] = [
     enableSorting: false,
     cell: ({ row }) => {
       const photoUrl = row.original.photoUrl;
-      return photoUrl ? (
+      return (
         <Avatar>
           <AvatarImage
             src={photoUrl || "https://github.com/shadcn.png"}
@@ -33,15 +33,17 @@ export const ManageHrColumn: ColumnDef<IHrManager, any>[] = [
             {row.original.name.charAt(0).toUpperCase()}
           </AvatarFallback>
         </Avatar>
-      ) : (
-        "N/A"
       );
     },
   }),
   columnHelper.accessor("name", {
     header: "Name",
   }),
-  columnHelper.accessor("officePhone", {
-    header: "Office Phone",
+  columnHelper.accessor("phone", {
+    header: "Phone",
+    cell: ({row}) => {
+        const phone = row.original.phone;
+        return <span>{phone || "N/A"}</span>;
+    }
   }),
 ];

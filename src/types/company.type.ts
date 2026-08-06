@@ -33,6 +33,12 @@ export interface ICompany {
   fiscalYearStart: string | null;
   fiscalYearEnd: string | null;
 
+  stripeCustomerId: string | null;
+  stripeSubscriptionId: string | null;
+  sslCommerzStoreId: string | null;
+  sslCommerzCustomerId: string | null;
+  sslCommerzToken: string | null;
+
   createdAt: string;
   updatedAt: string;
 

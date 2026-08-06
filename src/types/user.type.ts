@@ -14,9 +14,8 @@ export interface IUser {
   password: string;
   role: UserRole;
   image: string | null;
-  isVerified: boolean;
+  emailVerified: boolean;
   isActive: boolean;
-  lastLogin: Date | null;
   createdAt: Date;
   updatedAt: Date;
   platformSuperAdmin?: IPlatformSuperAdmin;
