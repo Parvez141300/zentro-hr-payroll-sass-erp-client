@@ -11,13 +11,13 @@ export interface IHrManager {
   phone: string | null;
   photoUrl: string | null;
   employeeCode: string | null;
-  joinDate: Date | null;
+  joinDate: string | null;
   hrLicenseNumber: string | null;
   officePhone: string | null;
   bio: string | null;
   scope: HrScope;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   userId: string;
   user?: IUser;
   departmentId: string | null;
