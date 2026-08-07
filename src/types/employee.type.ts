@@ -13,13 +13,13 @@ export interface IEmployee {
   name: string;
   phone: string | null;
   photoUrl: string | null;
-  dateOfBirth: Date | null;
+  dateOfBirth: string | null;
   gender: Gender | null;
   address: string | null;
   nidNumber: string | null;
   bloodGroup: string | null;
   employeeCode: string | null;
-  joinDate: Date | null;
+  joinDate: string | null;
   employmentType: EmploymentType;
   status: EmployeeStatus;
   basicSalary: number;
@@ -31,8 +31,8 @@ export interface IEmployee {
   emergencyName: string | null;
   emergencyPhone: string | null;
   emergencyRelation: string | null;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   userId: string;
   user?: IUser;
   departmentId: string | null;
