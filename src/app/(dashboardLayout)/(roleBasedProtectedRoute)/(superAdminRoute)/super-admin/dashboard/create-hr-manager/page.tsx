@@ -1,9 +1,12 @@
-import React from 'react'
+import CreateCompanyHrForm from "@/components/modules/(dashboard)/dashboard/createCompanyHrForm/CreateCompanyHrForm";
+import React from "react";
 
 const CreateHrManager = () => {
   return (
-    <div>CreateHrManager</div>
-  )
-}
+    <div>
+      <CreateCompanyHrForm />
+    </div>
+  );
+};
 
-export default CreateHrManager
+export default CreateHrManager;

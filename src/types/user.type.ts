@@ -26,6 +26,7 @@ export interface IUser {
   employee?: IEmployee;
 }
 
+
 export interface ICreateHRManagerPayload {
     // User fields
     email: string;
