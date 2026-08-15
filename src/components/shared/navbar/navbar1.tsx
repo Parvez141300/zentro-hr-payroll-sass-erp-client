@@ -9,6 +9,7 @@ import {
   UserRoundX,
   HandCoins,
   ArrowRight,
+  MessageSquareText,
 } from "lucide-react";
 
 import {
@@ -117,6 +118,12 @@ const Navbar1 = ({
           description: "Our terms and conditions for using our services",
           icon: <Siren className="size-5 shrink-0" />,
           url: "/privacy",
+        },
+        {
+          title: "FAQs",
+          description: "Our terms and conditions for using our services",
+          icon: <MessageSquareText className="size-5 shrink-0" />,
+          url: "/faq",
         },
       ],
     },
