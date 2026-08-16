@@ -77,6 +77,7 @@ const CreateEmployeeForm = () => {
       toast.success("Employee created successfully");
       queryClient.invalidateQueries({ queryKey: ["companyEmployees"] });
       form.reset();
+      setAvatarFile(null);
     },
     onError: (error: Error) => {
       toast.error(error.message || "Failed to create Employee");
