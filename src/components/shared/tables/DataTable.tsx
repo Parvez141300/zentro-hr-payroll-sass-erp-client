@@ -194,7 +194,7 @@ const DataTable = <TData,>({
       {/* Toolbar: search + filters (left) | create action (right) */}
       {hasToolbar && (
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4">
-          <div className="flex flex-1 flex-wrap items-center gap-2">
+          <div className="flex flex-1 flex-wrap items-center gap-2 justify-between">
             {/* search field */}
             {toolbar?.search && (
               <>
@@ -217,20 +217,22 @@ const DataTable = <TData,>({
               </>
             )}
 
-            {/* filter component */}
-            {toolbar?.filters}
+            <div>
+              {/* filter component */}
+              {toolbar?.filters}
 
-            {/* clear filters button */}
-            {toolbar?.onClearFilters && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={toolbar.onClearFilters}
-                className="gap-1"
-              >
-                <X className="w-4 h-4" /> Clear filters
-              </Button>
-            )}
+              {/* clear filters button */}
+              {toolbar?.onClearFilters && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={toolbar.onClearFilters}
+                  className="gap-1"
+                >
+                  <X className="w-4 h-4" /> Clear filters
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       )}

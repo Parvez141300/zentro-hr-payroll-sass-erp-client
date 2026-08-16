@@ -11,6 +11,8 @@ import React, { useState } from "react";
 import { employeeColumn } from "./ManageEmployeeColumn";
 import DeletePopUpDialog from "@/components/shared/tables/DeletePopUpDialog";
 import ViewEmployeeDialog from "./ViewEmployeeDialog";
+import EmploymentTypeFilter from "./filters/EmploymentTypeFilter";
+import EmployeeStatusFilter from "./filters/EmployeeStatusFilter";
 
 const ManageEmployeeTable = ({ queryString }: { queryString: string }) => {
   const {
@@ -66,6 +68,12 @@ const ManageEmployeeTable = ({ queryString }: { queryString: string }) => {
             onChange: handleSearchChange,
             placeholder: "Search employees...",
           },
+          filters: (
+            <div className="flex items-center gap-2">
+              <EmploymentTypeFilter />
+              <EmployeeStatusFilter />
+            </div>
+          ),
         }}
         pagination={
           paginationMeta
