@@ -13,6 +13,7 @@ import DeletePopUpDialog from "@/components/shared/tables/DeletePopUpDialog";
 import ViewEmployeeDialog from "./ViewEmployeeDialog";
 import EmploymentTypeFilter from "./filters/EmploymentTypeFilter";
 import EmployeeStatusFilter from "./filters/EmployeeStatusFilter";
+import EmployeeGenderFilter from "./filters/EmployeeGenderFilter";
 
 const ManageEmployeeTable = ({ queryString }: { queryString: string }) => {
   const {
@@ -72,6 +73,7 @@ const ManageEmployeeTable = ({ queryString }: { queryString: string }) => {
             <div className="flex items-center gap-2">
               <EmploymentTypeFilter />
               <EmployeeStatusFilter />
+              <EmployeeGenderFilter />
             </div>
           ),
         }}
