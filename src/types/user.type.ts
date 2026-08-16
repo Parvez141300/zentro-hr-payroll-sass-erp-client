@@ -102,3 +102,33 @@ export interface ICreateCompanyEmployeePayload {
   emergencyPhone?: string;
   emergencyRelation?: string;
 }
+
+export interface IUpdateCompanyEmployeePayload {
+  name?: string;
+  phone?: string;
+  photoUrl?: string;
+  dateOfBirth?: Date;
+  address?: string;
+  nidNumber?: string;
+  bloodGroup?: string;
+  
+  gender?: Gender;
+  employmentType?: EmploymentType;
+  status?: EmployeeStatus;
+
+  bankName?: string;
+  bankAccount?: string;
+  basicSalary?: number;
+  houseAllowance?: number;
+  medicalAllowance?: number;
+  transportAllowance?: number;
+
+  emergencyName?: string;
+  emergencyPhone?: string;
+  emergencyRelation?: string;
+
+  departmentId?: string;
+  designationId?: string;
+
+  joinDate?: Date;
+}

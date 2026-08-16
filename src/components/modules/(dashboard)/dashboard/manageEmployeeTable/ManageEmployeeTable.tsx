@@ -15,6 +15,7 @@ import EmploymentTypeFilter from "./filters/EmploymentTypeFilter";
 import EmployeeStatusFilter from "./filters/EmployeeStatusFilter";
 import EmployeeGenderFilter from "./filters/EmployeeGenderFilter";
 import EmployeeDepartmentFilter from "./filters/EmployeeDepartmentFilter";
+import EditEmployeeDialog from "./EditEmployeeDialog";
 
 const ManageEmployeeTable = ({ queryString }: { queryString: string }) => {
   const {
@@ -42,9 +43,17 @@ const ManageEmployeeTable = ({ queryString }: { queryString: string }) => {
   const [deletingEmployee, setDeletingEmployee] = useState<IEmployee | null>(
     null,
   );
+  const [editingEmployee, setEditingEmployee] = useState<IEmployee | null>(
+    null,
+  );
 
   const handleView = (employee: IEmployee) => {
     setViewingEmployee(employee); // শুধু state সেট করছি, dialog নিজে বাইরে render হবে
+  };
+
+  const handleEdit = (employee: IEmployee) => {
+    console.log("edit employee", employee);
+    setEditingEmployee(employee); // শুধু state সেট করছি, dialog নিজে বাইরে render হবে
   };
 
   const handleDelete = (employee: IEmployee) => {
@@ -94,6 +103,7 @@ const ManageEmployeeTable = ({ queryString }: { queryString: string }) => {
         actions={{
           onView: handleView,
           onDelete: handleDelete,
+          onEdit: handleEdit,
         }}
       />
 
@@ -103,6 +113,15 @@ const ManageEmployeeTable = ({ queryString }: { queryString: string }) => {
         open={!!viewingEmployee}
         onOpenChange={(open) => {
           if (!open) setViewingEmployee(null);
+        }}
+      />
+
+      {/* Edit employee dialog */}
+      <EditEmployeeDialog
+        open={!!editingEmployee}
+        employeeData={editingEmployee}
+        onOpenChange={(open: boolean) => {
+          if (!open) setEditingEmployee(null);
         }}
       />
 
