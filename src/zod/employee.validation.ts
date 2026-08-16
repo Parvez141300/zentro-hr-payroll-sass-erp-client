@@ -1,4 +1,4 @@
-import { EmploymentType, Gender } from "@/types/enums.type";
+import { EmployeeStatus, EmploymentType, Gender } from "@/types/enums.type";
 import z from "zod";
 
 // Zod Schema for Employee
@@ -21,6 +21,7 @@ export const createEmployeeSchema = z.object({
         EmploymentType.INTERN,
         EmploymentType.CONTRACT,
     ] as EmploymentType[]),
+    status: z.enum([EmployeeStatus.ACTIVE, EmployeeStatus.INACTIVE, EmployeeStatus.TERMINATED, EmployeeStatus.ON_LEAVE] as EmployeeStatus[]),
     joinDate: z.string().optional(),
     basicSalary: z.string().min(1, "Basic salary is required"),
     houseAllowance: z.string().optional(),

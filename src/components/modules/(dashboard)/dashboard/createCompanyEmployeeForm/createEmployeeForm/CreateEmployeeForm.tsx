@@ -30,14 +30,13 @@ import {
   Heart,
   Users,
 } from "lucide-react";
-import { Gender, EmploymentType } from "@/types/enums.type";
+import { Gender, EmploymentType, EmployeeStatus } from "@/types/enums.type";
 import { ICreateCompanyEmployeePayload } from "@/types/user.type";
 import { createCompanyEmployee } from "@/actions/user.action";
-import { CreateEmployeeFormValues, createEmployeeSchema } from "@/zod/employee.validation";
-
-
-
-
+import {
+  CreateEmployeeFormValues,
+  createEmployeeSchema,
+} from "@/zod/employee.validation";
 
 const CreateEmployeeForm = () => {
   const queryClient = useQueryClient();
@@ -100,6 +99,7 @@ const CreateEmployeeForm = () => {
       nidNumber: "",
       bloodGroup: "",
       employmentType: "FULL_TIME" as EmploymentType,
+      status: "ACTIVE" as EmployeeStatus,
       joinDate: "",
       basicSalary: "",
       houseAllowance: "",
@@ -186,6 +186,14 @@ const CreateEmployeeForm = () => {
     { value: "CONTRACT", label: "Contract" },
     { value: "INTERN", label: "Intern" },
     { value: "FREELANCE", label: "Freelance" },
+  ];
+
+  // Employee status options
+  const employeeStatusOptions = [
+    { value: "ACTIVE", label: "Active" },
+    { value: "INACTIVE", label: "Inactive" },
+    { value: "TERMINATED", label: "Terminated" },
+    { value: "ON_LEAVE", label: "On Leave" },
   ];
 
   // Blood group options
@@ -368,9 +376,7 @@ const CreateEmployeeForm = () => {
               </form.Field>
 
               {/* gender field */}
-              <form.Field
-                name="gender"
-              >
+              <form.Field name="gender">
                 {(field) => (
                   <AppSelectField
                     field={field}
@@ -485,15 +491,25 @@ const CreateEmployeeForm = () => {
               </form.Field>
 
               {/* employmentType field */}
-              <form.Field
-                name="employmentType"
-              >
+              <form.Field name="employmentType">
                 {(field) => (
                   <AppSelectField
                     field={field}
                     label="Employment Type *"
                     placeholder="Select employment type"
                     options={employmentTypeOptions}
+                  />
+                )}
+              </form.Field>
+
+              {/* status field */}
+              <form.Field name="status">
+                {(field) => (
+                  <AppSelectField
+                    field={field}
+                    label="Status *"
+                    placeholder="Select status"
+                    options={employeeStatusOptions}
                   />
                 )}
               </form.Field>
