@@ -61,3 +61,17 @@ export interface ICreateCompanyAccountantPayload {
   bankName?: string;
   bankAccount?: string;
 }
+
+export interface ICreateCompanyDepartmentHeadPayload {
+  departmentId: string;
+  designationId: string;
+  name: string;
+  email: string;
+  password: string;
+  phone?: string;
+  photoUrl?: string;
+  joinDate?: Date;
+  officeLocation?: string;
+  linkedinUrl?: string;
+  bio?: string;
+}

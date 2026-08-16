@@ -1,9 +1,8 @@
-import React from 'react'
+import CreateCompanyDepartmentHeadForm from "@/components/modules/(dashboard)/dashboard/createCompanyDepartmentHeadForm/CreateCompanyDepartmentHeadForm";
+import React from "react";
 
 const CreateDepartmentHead = () => {
-  return (
-    <div>CreateDepartmentHead</div>
-  )
-}
+  return <CreateCompanyDepartmentHeadForm />;
+};
 
-export default CreateDepartmentHead
+export default CreateDepartmentHead;
