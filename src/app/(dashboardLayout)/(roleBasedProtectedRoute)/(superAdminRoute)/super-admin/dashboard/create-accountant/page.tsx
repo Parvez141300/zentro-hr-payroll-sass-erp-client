@@ -1,9 +1,8 @@
-import React from 'react'
+import CreateCompanyAccountantForm from "@/components/modules/(dashboard)/dashboard/createCompanyAccountantForm/CreateCompanyAccountantForm";
+import React from "react";
 
 const CreateAccountant = () => {
-  return (
-    <div>CreateAccountant</div>
-  )
-}
+  return <CreateCompanyAccountantForm />;
+};
 
-export default CreateAccountant
+export default CreateAccountant;

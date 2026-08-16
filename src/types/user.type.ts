@@ -28,23 +28,36 @@ export interface IUser {
 
 
 export interface ICreateHRManagerPayload {
-    // User fields
-    email: string;
-    password: string;
+  // User fields
+  email: string;
+  password: string;
 
-    // Profile fields
-    name: string;
-    phone?: string;
-    photoUrl?: string;
+  // Profile fields
+  name: string;
+  phone?: string;
+  photoUrl?: string;
 
-    // Job fields
-    joinDate?: Date;
-    hrLicenseNumber?: string;
-    officePhone?: string;
-    bio?: string;
+  // Job fields
+  joinDate?: Date;
+  hrLicenseNumber?: string;
+  officePhone?: string;
+  bio?: string;
 
-    // 🆕 Scope & Department
-    scope: HrScope;  // "COMPANY_WIDE" or "DEPARTMENT_SPECIFIC"
-    departmentId?: string;  // Required if scope is "DEPARTMENT_SPECIFIC"
-    designationId?: string;
+  // 🆕 Scope & Department
+  scope: HrScope;  // "COMPANY_WIDE" or "DEPARTMENT_SPECIFIC"
+  departmentId?: string;  // Required if scope is "DEPARTMENT_SPECIFIC"
+  designationId?: string;
+}
+
+export interface ICreateCompanyAccountantPayload {
+  name: string;
+  email: string;
+  password: string;
+  phone?: string;
+  photoUrl?: string;
+  joinDate?: Date;
+  caLicenseNumber?: string;
+  taxIdNumber?: string;
+  bankName?: string;
+  bankAccount?: string;
 }

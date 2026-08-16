@@ -19,9 +19,11 @@ import {
   HashIcon,
   CheckCircleIcon,
   XCircleIcon,
+  MailIcon,
 } from "lucide-react";
 import { format } from "date-fns";
 import { IAccountant } from "@/types/accountant.type";
+import { useState } from "react";
 
 interface IViewAccountantDialogProps {
   accountantData: IAccountant | null;
@@ -34,7 +36,11 @@ const ViewAccountantDialog = ({
   open,
   onOpenChange,
 }: IViewAccountantDialogProps) => {
+  const [imageError, setImageError] = useState(false);
+
   if (!accountantData) return null;
+
+  console.log("accountant data", accountantData);
 
   // Get initials for avatar fallback
   const getInitials = (name: string) => {
@@ -52,9 +58,20 @@ const ViewAccountantDialog = ({
     return format(new Date(date), "PPP");
   };
 
+  // Get image URL with error handling
+  const getImageUrl = () => {
+    if (imageError) return undefined;
+    return accountantData.photoUrl || accountantData.user?.image || undefined;
+  };
+
+  // Get user status badge variant
+  const getStatusBadgeVariant = (isActive: boolean) => {
+    return isActive ? "default" : "secondary";
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-138">
+      <DialogContent className="sm:max-w-138 max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Accountant Details</DialogTitle>
         </DialogHeader>
@@ -64,8 +81,9 @@ const ViewAccountantDialog = ({
           <div className="flex items-start gap-4 mb-6">
             <Avatar className="h-20 w-20">
               <AvatarImage
-                src={accountantData.photoUrl || undefined}
+                src={getImageUrl()}
                 alt={accountantData.name}
+                onError={() => setImageError(true)}
               />
               <AvatarFallback className="text-lg">
                 {getInitials(accountantData.name)}
@@ -78,6 +96,21 @@ const ViewAccountantDialog = ({
                   <Badge variant="outline" className="text-xs">
                     {accountantData.employeeCode}
                   </Badge>
+                )}
+                {accountantData.user && (
+                  <>
+                    <Badge variant="outline" className="text-xs">
+                      {accountantData.user.role}
+                    </Badge>
+                    <Badge
+                      variant={getStatusBadgeVariant(
+                        accountantData.user.isActive,
+                      )}
+                      className="text-xs"
+                    >
+                      {accountantData.user.isActive ? "Active" : "Inactive"}
+                    </Badge>
+                  </>
                 )}
                 <Badge
                   variant={
@@ -95,6 +128,19 @@ const ViewAccountantDialog = ({
 
           {/* Details Grid */}
           <div className="grid grid-cols-2 gap-4">
+            {/* Email */}
+            {accountantData.user && (
+              <div className="space-y-1 col-span-2">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <MailIcon className="h-4 w-4" />
+                  <span>Email</span>
+                </div>
+                <p className="text-sm font-medium break-all">
+                  {accountantData.user.email}
+                </p>
+              </div>
+            )}
+
             {/* CA License Number */}
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -181,6 +227,26 @@ const ViewAccountantDialog = ({
                 )}
               </p>
             </div>
+
+            {/* Email Verified */}
+            {accountantData.user && (
+              <div className="space-y-1 col-span-2">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <MailIcon className="h-4 w-4" />
+                  <span>Email Verified</span>
+                </div>
+                <Badge
+                  variant={
+                    accountantData.user.emailVerified ? "default" : "secondary"
+                  }
+                  className="text-xs"
+                >
+                  {accountantData.user.emailVerified
+                    ? "Verified"
+                    : "Not Verified"}
+                </Badge>
+              </div>
+            )}
 
             {/* Created At */}
             <div className="space-y-1 col-span-2">

@@ -13,9 +13,9 @@ export const accountantColumns: ColumnDef<IAccountant, any>[] = [
   }),
   columnHelper.accessor("employeeCode", {
     header: "Employee Code",
-    cell: ({row}) => {
-        const employeeCode = row.original.employeeCode;
-        return <span>{employeeCode || "N/A"}</span>;
+    cell: ({ row }) => {
+      const employeeCode = row.original.employeeCode;
+      return <span>{employeeCode || "N/A"}</span>;
     },
   }),
   columnHelper.accessor("photoUrl", {
@@ -36,16 +36,22 @@ export const accountantColumns: ColumnDef<IAccountant, any>[] = [
       );
     },
   }),
-  columnHelper.display({
-    id: "name",
+  columnHelper.accessor("name", {
     header: "Accountant Name",
     cell: (info) => info.getValue(),
   }),
+  columnHelper.accessor("user.email", {
+    header: "Email",
+    cell: ({ row }) => {
+      const email = row.original!.user!.email;
+      return <span>{email || "N/A"}</span>;
+    },
+  }),
   columnHelper.accessor("phone", {
     header: "Phone",
-    cell: ({row}) => {
-        const phone = row.original.phone;
-        return <span>{phone || "N/A"}</span>;
-    }
+    cell: ({ row }) => {
+      const phone = row.original.phone;
+      return <span>{phone || "N/A"}</span>;
+    },
   }),
 ];
