@@ -14,6 +14,7 @@ import ViewEmployeeDialog from "./ViewEmployeeDialog";
 import EmploymentTypeFilter from "./filters/EmploymentTypeFilter";
 import EmployeeStatusFilter from "./filters/EmployeeStatusFilter";
 import EmployeeGenderFilter from "./filters/EmployeeGenderFilter";
+import EmployeeDepartmentFilter from "./filters/EmployeeDepartmentFilter";
 
 const ManageEmployeeTable = ({ queryString }: { queryString: string }) => {
   const {
@@ -70,11 +71,12 @@ const ManageEmployeeTable = ({ queryString }: { queryString: string }) => {
             placeholder: "Search employees...",
           },
           filters: (
-            <div className="flex items-center gap-2">
+            <>
               <EmploymentTypeFilter />
               <EmployeeStatusFilter />
               <EmployeeGenderFilter />
-            </div>
+              <EmployeeDepartmentFilter />
+            </>
           ),
         }}
         pagination={

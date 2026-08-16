@@ -217,7 +217,7 @@ const DataTable = <TData,>({
               </>
             )}
 
-            <div>
+            <div className="flex items-center gap-2 flex-wrap">
               {/* filter component */}
               {toolbar?.filters}
 
