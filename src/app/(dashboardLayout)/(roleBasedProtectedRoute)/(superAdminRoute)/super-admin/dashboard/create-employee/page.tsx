@@ -1,9 +1,8 @@
-import React from 'react'
+import CreateCompanyEmployeeForm from "@/components/modules/(dashboard)/dashboard/createCompanyEmployeeForm/CreateCompanyEmployeeForm";
+import React from "react";
 
 const CreateEmployee = () => {
-  return (
-    <div>CreateEmployee</div>
-  )
-}
+  return <CreateCompanyEmployeeForm />;
+};
 
-export default CreateEmployee
+export default CreateEmployee;

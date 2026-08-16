@@ -1,7 +1,7 @@
 import { IAccountant } from "./accountant.type";
 import { IDepartmentHead } from "./departmentHead.type";
 import { IEmployee } from "./employee.type";
-import { HrScope, UserRole } from "./enums.type";
+import { EmploymentType, Gender, HrScope, UserRole } from "./enums.type";
 import { IHrManager } from "./hrManager.type";
 import { IPlatformSuperAdmin } from "./platformSuperAdmin.type";
 import { ISuperAdmin } from "./superAdmin.type";
@@ -74,4 +74,30 @@ export interface ICreateCompanyDepartmentHeadPayload {
   officeLocation?: string;
   linkedinUrl?: string;
   bio?: string;
+}
+
+export interface ICreateCompanyEmployeePayload {
+  departmentId: string;
+  designationId: string;
+  name: string;
+  email: string;
+  password: string;
+  phone?: string;
+  photoUrl?: string;
+  dateOfBirth?: Date;
+  gender: Gender;
+  address?: string;
+  nidNumber?: string;
+  bloodGroup?: string;
+  employmentType: EmploymentType;
+  joinDate?: Date;
+  basicSalary: number;
+  houseAllowance?: number;
+  medicalAllowance?: number;
+  transportAllowance?: number;
+  bankName?: string;
+  bankAccount?: string;
+  emergencyName?: string;
+  emergencyPhone?: string;
+  emergencyRelation?: string;
 }
