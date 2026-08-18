@@ -139,6 +139,11 @@ const superAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
                 href: "/super-admin/dashboard/manage-leave",
                 icon: "Users",
             },
+            {
+                title: "Manage Leave Type",
+                href: "/super-admin/dashboard/manage-leave-type",
+                icon: "Users",
+            },
         ],
     },
     {
