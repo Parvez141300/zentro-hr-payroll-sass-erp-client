@@ -13,6 +13,7 @@ import { IAttendance } from "@/types/attendance.type";
 import ViewAttendanceDialog from "./ViewAttendanceDialog";
 import DeletePopUpDialog from "@/components/shared/tables/DeletePopUpDialog";
 import EmployeeAttendanceDepartmentFilter from "./filters/EmployeeAttendanceDepartmentFilter";
+import EmployeeAttendanceStatusFilter from "./filters/EmployeeAttendanceStatus";
 
 const ManageAttendanceTable = ({ queryString }: { queryString: string }) => {
   const {
@@ -68,11 +69,12 @@ const ManageAttendanceTable = ({ queryString }: { queryString: string }) => {
           search: {
             value: searchValue,
             onChange: handleSearchChange,
-            placeholder: "Search attendances...",
+            placeholder: "Search by employee data...",
           },
           filters: (
             <>
               <EmployeeAttendanceDepartmentFilter />
+              <EmployeeAttendanceStatusFilter />
             </>
           ),
         }}
