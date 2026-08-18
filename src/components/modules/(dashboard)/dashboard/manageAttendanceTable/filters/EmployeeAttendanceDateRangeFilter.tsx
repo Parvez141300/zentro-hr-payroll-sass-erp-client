@@ -70,7 +70,7 @@ export function EmployeeAttendanceDateRangeFilter() {
   };
 
   return (
-    <Field className="mx-auto w-60">
+    <Field className="w-60">
       <Popover>
         <PopoverTrigger
           render={

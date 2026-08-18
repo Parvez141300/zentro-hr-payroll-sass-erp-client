@@ -27,6 +27,7 @@ const ManageEmployeeTable = ({ queryString }: { queryString: string }) => {
     handleLimitChange,
     searchValue,
     handleSearchChange,
+    clearFilterKeys,
   } = useTableQueryParams();
 
   const { data: employeeResponse, isLoading } = useQuery({
@@ -87,6 +88,13 @@ const ManageEmployeeTable = ({ queryString }: { queryString: string }) => {
               <EmployeeDepartmentFilter />
             </>
           ),
+          onClearFilters: () =>
+            clearFilterKeys([
+              "status",
+              "departmentId",
+              "gender",
+              "employeeType",
+            ]),
         }}
         pagination={
           paginationMeta
