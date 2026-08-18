@@ -54,7 +54,7 @@ const EmployeeAttendanceStatusFilter = () => {
     <div className="max-w-50">
       <Select
         value={selectedStatus}
-        onValueChange={(value) => handleStatusChange(value as string)}
+        onValueChange={(value: string) => handleStatusChange(value as string)}
       >
         <SelectTrigger className="w-full">
           <SelectValue placeholder="All Status" />
