@@ -1,6 +1,9 @@
 "use client";
 
-import { getCompanyAttendance } from "@/actions/attendance.action";
+import {
+  deleteEmployeeAttendance,
+  getCompanyAttendance,
+} from "@/actions/attendance.action";
 import DataTable from "@/components/shared/tables/DataTable";
 import { useTableQueryParams } from "@/hooks/useTableQueryParams";
 import { useQuery } from "@tanstack/react-query";
@@ -8,6 +11,7 @@ import React, { useState } from "react";
 import { attendanceColumn } from "./ManageAttendanceColumn";
 import { IAttendance } from "@/types/attendance.type";
 import ViewAttendanceDialog from "./ViewAttendanceDialog";
+import DeletePopUpDialog from "@/components/shared/tables/DeletePopUpDialog";
 
 const ManageAttendanceTable = ({ queryString }: { queryString: string }) => {
   const {
@@ -32,6 +36,8 @@ const ManageAttendanceTable = ({ queryString }: { queryString: string }) => {
 
   const [viewingAttendance, setViewingAttendance] =
     useState<IAttendance | null>(null);
+  const [deletingAttendance, setDeletingAttendance] =
+    useState<IAttendance | null>(null);
 
   const handleView = (attendance: IAttendance) => {
     console.log("view attendance", attendance);
@@ -39,6 +45,7 @@ const ManageAttendanceTable = ({ queryString }: { queryString: string }) => {
   };
   const handleDelete = (attendance: IAttendance) => {
     console.log("delete attendance", attendance);
+    setDeletingAttendance(attendance);
   };
 
   const handleEdit = (attendance: IAttendance) => {
@@ -89,6 +96,22 @@ const ManageAttendanceTable = ({ queryString }: { queryString: string }) => {
         onOpenChange={(open) => {
           if (!open) setViewingAttendance(null);
         }}
+      />
+
+      {/* delete dialog */}
+      <DeletePopUpDialog
+        open={!!deletingAttendance}
+        onOpenChange={(open) => {
+          if (!open) setDeletingAttendance(null);
+        }}
+        title="Delete Employee Attendance"
+        itemName={`${deletingAttendance?.employee?.name} Attendance`}
+        deleteAction={() =>
+          deleteEmployeeAttendance(deletingAttendance?.id as string)
+        }
+        queryKey={["companyAttendances"]}
+        successMessage="Employee Attendance deleted successfully"
+        errorMessage="Failed to delete employee Attendance"
       />
     </>
   );

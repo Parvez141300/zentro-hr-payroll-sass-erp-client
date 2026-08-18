@@ -8,6 +8,13 @@ const getCompanyAttendance = async (queryString?: string) => {
     return result;
 }
 
+const deleteEmployeeAttendance = async (attendanceId: string) => {
+    const result = await httpServer.delete(`/api/v1/attendances/${attendanceId}`);
+
+    return result;
+}
+
 export const attendanceService = {
-    getCompanyAttendance
+    getCompanyAttendance,
+    deleteEmployeeAttendance,
 }
