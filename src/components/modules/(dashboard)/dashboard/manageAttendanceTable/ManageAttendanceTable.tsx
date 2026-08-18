@@ -26,6 +26,7 @@ const ManageAttendanceTable = ({ queryString }: { queryString: string }) => {
     handleLimitChange,
     searchValue,
     handleSearchChange,
+    clearFilterKeys,
   } = useTableQueryParams();
 
   const { data: attendanceResponse, isLoading } = useQuery({
@@ -79,6 +80,8 @@ const ManageAttendanceTable = ({ queryString }: { queryString: string }) => {
               <EmployeeAttendanceDateRangeFilter />
             </>
           ),
+          onClearFilters: () =>
+            clearFilterKeys(["status", "departmentId", "startDate", "endDate"]),
         }}
         pagination={
           paginationMeta
