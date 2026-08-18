@@ -1,0 +1,97 @@
+"use client";
+
+import { getCompanyAttendance } from "@/actions/attendance.action";
+import DataTable from "@/components/shared/tables/DataTable";
+import { useTableQueryParams } from "@/hooks/useTableQueryParams";
+import { useQuery } from "@tanstack/react-query";
+import React, { useState } from "react";
+import { attendanceColumn } from "./ManageAttendanceColumn";
+import { IAttendance } from "@/types/attendance.type";
+import ViewAttendanceDialog from "./ViewAttendanceDialog";
+
+const ManageAttendanceTable = ({ queryString }: { queryString: string }) => {
+  const {
+    sortingState,
+    handleSortingChange,
+    page,
+    limit,
+    handlePageChange,
+    handleLimitChange,
+    searchValue,
+    handleSearchChange,
+  } = useTableQueryParams();
+
+  const { data: attendanceResponse, isLoading } = useQuery({
+    queryKey: ["companyAttendances", queryString],
+    queryFn: () => getCompanyAttendance(queryString),
+  });
+
+  const attendanceData = attendanceResponse?.data;
+  const attendances = attendanceData?.data;
+  const paginationMeta = attendanceData?.pagination;
+
+  const [viewingAttendance, setViewingAttendance] =
+    useState<IAttendance | null>(null);
+
+  const handleView = (attendance: IAttendance) => {
+    console.log("view attendance", attendance);
+    setViewingAttendance(attendance);
+  };
+  const handleDelete = (attendance: IAttendance) => {
+    console.log("delete attendance", attendance);
+  };
+
+  const handleEdit = (attendance: IAttendance) => {
+    console.log("edit attendance", attendance);
+  };
+
+  return (
+    <>
+      {/* attendance table */}
+      <DataTable
+        title="Attendances"
+        description="Manage your attendances"
+        data={attendances || []}
+        columns={attendanceColumn}
+        isLoading={isLoading}
+        emptyMessage="No Attendances found!"
+        sorting={{ state: sortingState, onSortingChange: handleSortingChange }}
+        toolbar={{
+          search: {
+            value: searchValue,
+            onChange: handleSearchChange,
+            placeholder: "Search accountant...",
+          },
+        }}
+        pagination={
+          paginationMeta
+            ? {
+                page,
+                limit,
+                total: paginationMeta.total,
+                totalPages: paginationMeta.totalPages,
+                onPageChange: handlePageChange,
+                onLimitChange: handleLimitChange,
+              }
+            : undefined
+        }
+        actions={{
+          onView: handleView,
+          onEdit: handleEdit,
+          onDelete: handleDelete,
+        }}
+      />
+
+      {/* view dialog */}
+      <ViewAttendanceDialog
+        attendanceData={viewingAttendance}
+        open={!!viewingAttendance}
+        onOpenChange={(open) => {
+          if (!open) setViewingAttendance(null);
+        }}
+      />
+    </>
+  );
+};
+
+export default ManageAttendanceTable;
