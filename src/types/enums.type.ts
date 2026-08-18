@@ -37,20 +37,12 @@ export enum AttendanceStatus {
   HALF_DAY = "HALF_DAY",
 }
 
-export enum LeaveType {
-  ANNUAL = "ANNUAL",
-  SICK = "SICK",
-  CASUAL = "CASUAL",
-  MATERNITY = "MATERNITY",
-  PATERNITY = "PATERNITY",
-  UNPAID = "UNPAID",
-}
-
 export enum LeaveStatus {
   PENDING = "PENDING",
   APPROVED = "APPROVED",
   REJECTED = "REJECTED",
   CANCELLED = "CANCELLED",
+  APPROVED_BY_HEAD = "APPROVED_BY_HEAD",
 }
 
 export enum PayrollStatus {
