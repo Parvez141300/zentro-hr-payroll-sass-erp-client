@@ -10,7 +10,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
@@ -19,39 +18,54 @@ import { Plus } from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "sonner";
 import { createCompanyLeaveType } from "@/actions/leaveType.action";
+import { useForm } from "@tanstack/react-form";
+import { z } from "zod";
+import {
+  CreateLeaveTypeFormValues,
+  createLeaveTypeSchema,
+} from "@/zod/leaveType.validation";
+import AppField from "@/components/shared/form/AppField";
 
 const CreateLeaveTypeDialog = () => {
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [daysAllowed, setDaysAllowed] = useState("");
-  const [isPaid, setIsPaid] = useState(true);
-  const [isActive, setIsActive] = useState(true);
   const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async () =>
+    mutationFn: async (data: CreateLeaveTypeFormValues) =>
       await createCompanyLeaveType({
-        name,
-        description: description || null,
-        daysAllowed: parseInt(daysAllowed),
-        isPaid,
-        isActive,
+        name: data.name,
+        description: data.description || null,
+        daysAllowed: parseInt(data.daysAllowed),
+        isPaid: data.isPaid,
+        isActive: data.isActive,
       }),
     onSuccess: () => {
       toast.success("Leave Type created successfully");
       queryClient.invalidateQueries({ queryKey: ["companyLeaveTypes"] });
       setOpen(false);
-      setName("");
-      setDescription("");
-      setDaysAllowed("");
-      setIsPaid(true);
-      setIsActive(true);
+      form.reset();
     },
     onError: (err) => {
       toast.error(
         (err instanceof Error && err?.message) || "Failed to create leave type",
       );
+    },
+  });
+
+  // TanStack Form
+  const form = useForm({
+    defaultValues: {
+      name: "",
+      description: "",
+      daysAllowed: "",
+      isPaid: true,
+      isActive: true,
+    } as CreateLeaveTypeFormValues,
+    validators: {
+      onChange: createLeaveTypeSchema,
+    },
+    onSubmit: ({ value }) => {
+      mutate(value);
     },
   });
 
@@ -69,73 +83,130 @@ const CreateLeaveTypeDialog = () => {
           <DialogTitle>Create Leave Type</DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-4 py-2">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            form.handleSubmit();
+          }}
+          className="space-y-4 py-2"
+        >
           {/* Name Field */}
-          <div className="space-y-1.5">
-            <Label htmlFor="name">Name *</Label>
-            <Input
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Annual Leave"
-            />
-          </div>
+          <form.Field
+            name="name"
+            validators={{
+              onChange: z.string().min(1, "Name is required"),
+            }}
+          >
+            {(field) => (
+              <AppField
+                field={field}
+                label="Name *"
+                type="text"
+                placeholder="Name"
+              />
+            )}
+          </form.Field>
 
           {/* Description Field */}
-          <div className="space-y-1.5">
-            <Label htmlFor="description">Description</Label>
-            <Textarea
-              id="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Short description..."
-            />
-          </div>
+          <form.Field
+            name="description"
+            validators={{
+              onChange: z.string().optional(),
+            }}
+          >
+            {(field) => (
+              <div className="space-y-1.5">
+                <Label htmlFor="description">Description</Label>
+                <Textarea
+                  id="description"
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  placeholder="Short description..."
+                />
+                {field.state.meta.isTouched && !field.state.meta.isValid && (
+                  <p className="text-sm text-red-500">
+                    {field.state.meta.errors.join(", ")}
+                  </p>
+                )}
+              </div>
+            )}
+          </form.Field>
 
           {/* Days Allowed Field */}
-          <div className="space-y-1.5">
-            <Label htmlFor="daysAllowed">Days Allowed *</Label>
-            <Input
-              id="daysAllowed"
-              type="number"
-              value={daysAllowed}
-              onChange={(e) => setDaysAllowed(e.target.value)}
-              placeholder="e.g. 20"
-              min="1"
-            />
-          </div>
+          <form.Field
+            name="daysAllowed"
+            validators={{
+              onChange: z.string().min(1, "Days allowed is required"),
+            }}
+          >
+            {(field) => (
+              <AppField
+                field={field}
+                label="Days Allowed *"
+                type="number"
+                placeholder="Days Allowed"
+              />
+            )}
+          </form.Field>
 
           {/* Is Paid Switch */}
-          <div className="flex items-center justify-between">
-            <Label htmlFor="isPaid">Is Paid</Label>
-            <Switch id="isPaid" checked={isPaid} onCheckedChange={setIsPaid} />
-          </div>
+          <form.Field name="isPaid">
+            {(field) => (
+              <div className="flex items-center justify-between">
+                <Label htmlFor="isPaid">Is Paid</Label>
+                <Switch
+                  id="isPaid"
+                  checked={field.state.value}
+                  onCheckedChange={(checked) => field.handleChange(checked)}
+                />
+              </div>
+            )}
+          </form.Field>
 
           {/* Is Active Switch */}
-          <div className="flex items-center justify-between">
-            <Label htmlFor="isActive">Is Active</Label>
-            <Switch
-              id="isActive"
-              checked={isActive}
-              onCheckedChange={setIsActive}
-            />
-          </div>
-        </div>
+          <form.Field name="isActive">
+            {(field) => (
+              <div className="flex items-center justify-between">
+                <Label htmlFor="isActive">Is Active</Label>
+                <Switch
+                  id="isActive"
+                  checked={field.state.value}
+                  onCheckedChange={(checked) => field.handleChange(checked)}
+                />
+              </div>
+            )}
+          </form.Field>
 
-        <DialogFooter>
-          <DialogClose
-            render={
-              <Button
-                onClick={() => mutate()}
-                disabled={isPending || !name.trim() || !daysAllowed.trim()}
-              >
-                {isPending ? "Creating..." : "Create"}
-              </Button>
-            }
-          >
-            <Button variant="outline">Cancel</Button>
-          </DialogClose>
-        </DialogFooter>
+          <DialogFooter>
+            <DialogClose
+              render={
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    form.reset();
+                  }}
+                >
+                  Cancel
+                </Button>
+              }
+            ></DialogClose>
+            <form.Subscribe
+              selector={(state) => [state.canSubmit, state.isSubmitting]}
+            >
+              {([canSubmit, isSubmitting]) => (
+                <Button
+                  type="submit"
+                  disabled={!canSubmit || isSubmitting || isPending}
+                >
+                  {isPending ? "Creating..." : "Create"}
+                </Button>
+              )}
+            </form.Subscribe>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );
