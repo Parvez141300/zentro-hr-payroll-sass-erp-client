@@ -237,14 +237,13 @@ const DataTable = <TData,>({
         </div>
       )}
 
-      {isLoading && (
-        <div className="absolute inset-0 flex justify-center items-center z-10 bg-background/50 backdrop-blur-sm">
-          <LoadingCircle />
-        </div>
-      )}
-
       {/* Table */}
-      <div className="overflow-hidden rounded-md border">
+      <div className="relative overflow-hidden rounded-md border">
+        {isLoading && (
+          <div className="absolute inset-0 flex justify-center items-center z-10 bg-background/50 backdrop-blur-sm">
+            <LoadingCircle />
+          </div>
+        )}
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

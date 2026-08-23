@@ -14,3 +14,11 @@ export interface ILeaveType {
   company?: ICompany;
   leaves?: ILeave[];
 }
+
+export interface ICreateCompanyLeaveType {
+  name: string;
+  description: string | null;
+  daysAllowed: number;
+  isPaid: boolean;
+  isActive: boolean;
+}
