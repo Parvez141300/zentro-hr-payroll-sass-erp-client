@@ -43,13 +43,11 @@ const EditLeaveTypeDialog = ({
       if (!leaveTypeData) throw new Error("No leave type selected");
 
       return await updateCompanyLeaveType(leaveTypeData.id, {
-        name: data.name || leaveTypeData.name,
-        description: data.description || leaveTypeData.description,
-        daysAllowed: data.daysAllowed
-          ? parseInt(data.daysAllowed)
-          : leaveTypeData.daysAllowed,
-        isPaid: data.isPaid || leaveTypeData.isPaid,
-        isActive: data.isActive || leaveTypeData.isActive,
+        name: data.name || null,
+        description: data.description || null,
+        daysAllowed: data.daysAllowed ? parseInt(data.daysAllowed) : null,
+        isPaid: data.isPaid ?? null,
+        isActive: data.isActive ?? null,
       });
     },
     onSuccess: () => {
@@ -178,9 +176,16 @@ const EditLeaveTypeDialog = ({
                 <Label htmlFor="isPaid">Is Paid</Label>
                 <Switch
                   id="isPaid"
-                  checked={field.state.value}
-                  onCheckedChange={(checked) => field.handleChange(checked)}
+                  checked={field.state.value === true}
+                  onCheckedChange={(checked: boolean) => {
+                    field.handleChange(checked);
+                  }}
                 />
+                {field.state.meta.isTouched && !field.state.meta.isValid && (
+                  <p className="text-sm text-red-500">
+                    {field.state.meta.errors.join(", ")}
+                  </p>
+                )}
               </div>
             )}
           </form.Field>
@@ -192,9 +197,16 @@ const EditLeaveTypeDialog = ({
                 <Label htmlFor="isActive">Is Active</Label>
                 <Switch
                   id="isActive"
-                  checked={field.state.value}
-                  onCheckedChange={(checked) => field.handleChange(checked)}
+                  checked={field.state.value === true}
+                  onCheckedChange={(checked: boolean) => {
+                    field.handleChange(checked);
+                  }}
                 />
+                {field.state.meta.isTouched && !field.state.meta.isValid && (
+                  <p className="text-sm text-red-500">
+                    {field.state.meta.errors.join(", ")}
+                  </p>
+                )}
               </div>
             )}
           </form.Field>
