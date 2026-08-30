@@ -2,7 +2,7 @@
 
 import { IApiRequestOptions } from "@/lib/http/types";
 import { leaveTypeService } from "@/services/leaveType.service";
-import { ICreateCompanyLeaveType } from "@/types/leaveType.type";
+import { ICreateCompanyLeaveType, IUpdateLeaveType } from "@/types/leaveType.type";
 
 export const getCompanyLeaveTypes = async (queryString?: string) => {
     const result = await leaveTypeService.getCompanyLeaveTypes(queryString);
@@ -20,4 +20,10 @@ export const deleteCompanyLeaveType = async (leaveTypeId: string) => {
     const result = await leaveTypeService.deleteCompanyLeaveType(leaveTypeId);
 
     return result
+};
+
+export const updateCompanyLeaveType = async (leaveTypeId: string, payload: IUpdateLeaveType, options?: IApiRequestOptions) => {
+    const result = await leaveTypeService.updateCompanyLeaveType(leaveTypeId, payload, options);
+
+    return result;
 };

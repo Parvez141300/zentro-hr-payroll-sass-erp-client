@@ -22,3 +22,11 @@ export interface ICreateCompanyLeaveType {
   isPaid: boolean;
   isActive: boolean;
 }
+
+export interface IUpdateLeaveType {
+  name: string | null;
+  description: string | null;
+  daysAllowed: number | null;
+  isPaid: boolean | null;
+  isActive: boolean | null;
+}
