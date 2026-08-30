@@ -103,7 +103,7 @@ const CreateLeaveTypeDialog = () => {
                 field={field}
                 label="Name *"
                 type="text"
-                placeholder="Name"
+                placeholder="Enter leave type name"
               />
             )}
           </form.Field>
@@ -146,7 +146,7 @@ const CreateLeaveTypeDialog = () => {
                 field={field}
                 label="Days Allowed *"
                 type="number"
-                placeholder="Days Allowed"
+                placeholder="Enter number of days"
               />
             )}
           </form.Field>
@@ -158,8 +158,10 @@ const CreateLeaveTypeDialog = () => {
                 <Label htmlFor="isPaid">Is Paid</Label>
                 <Switch
                   id="isPaid"
-                  checked={field.state.value}
-                  onCheckedChange={(checked) => field.handleChange(checked)}
+                  checked={field.state.value === true}
+                  onCheckedChange={(checked: boolean) => {
+                    field.handleChange(checked);
+                  }}
                 />
               </div>
             )}
@@ -172,8 +174,10 @@ const CreateLeaveTypeDialog = () => {
                 <Label htmlFor="isActive">Is Active</Label>
                 <Switch
                   id="isActive"
-                  checked={field.state.value}
-                  onCheckedChange={(checked) => field.handleChange(checked)}
+                  checked={field.state.value === true}
+                  onCheckedChange={(checked: boolean) => {
+                    field.handleChange(checked);
+                  }}
                 />
               </div>
             )}
