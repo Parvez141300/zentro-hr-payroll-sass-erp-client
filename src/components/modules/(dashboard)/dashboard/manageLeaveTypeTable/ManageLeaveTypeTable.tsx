@@ -12,6 +12,7 @@ import { ILeaveType } from "@/types/leaveType.type";
 import DeletePopUpDialog from "@/components/shared/tables/DeletePopUpDialog";
 import { leaveTypeColumn } from "./ManageLeaveTypeColumn";
 import CreateLeaveTypeDialog from "./CreateLeaveTypeDialog";
+import ViewLeaveTypeDialog from "./ViewLeaveTypeDialog";
 
 const ManageLeaveTypeTable = ({ queryString }: { queryString: string }) => {
   const {
@@ -105,13 +106,13 @@ const ManageLeaveTypeTable = ({ queryString }: { queryString: string }) => {
       />
 
       {/* View leave type dialog */}
-      {/* <ViewLeaveTypeDialog
+      <ViewLeaveTypeDialog
         leaveTypeData={viewingLeaveType}
         open={!!viewingLeaveType}
         onOpenChange={(open) => {
           if (!open) setViewingLeaveType(null);
         }}
-      /> */}
+      />
 
       {/* Delete leave type dialog */}
       <DeletePopUpDialog
