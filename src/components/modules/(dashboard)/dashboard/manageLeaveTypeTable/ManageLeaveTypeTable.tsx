@@ -13,6 +13,7 @@ import DeletePopUpDialog from "@/components/shared/tables/DeletePopUpDialog";
 import { leaveTypeColumn } from "./ManageLeaveTypeColumn";
 import CreateLeaveTypeDialog from "./CreateLeaveTypeDialog";
 import ViewLeaveTypeDialog from "./ViewLeaveTypeDialog";
+import EditLeaveTypeDialog from "./EditLeaveTypeDialog";
 
 const ManageLeaveTypeTable = ({ queryString }: { queryString: string }) => {
   const {
@@ -131,13 +132,13 @@ const ManageLeaveTypeTable = ({ queryString }: { queryString: string }) => {
       />
 
       {/* Edit leave type dialog - to be implemented */}
-      {/* <EditLeaveTypeDialog
+      <EditLeaveTypeDialog
         leaveTypeData={editingLeaveType}
         open={!!editingLeaveType}
         onOpenChange={(open) => {
           if (!open) setEditingLeaveType(null);
         }}
-      /> */}
+      />
     </>
   );
 };
