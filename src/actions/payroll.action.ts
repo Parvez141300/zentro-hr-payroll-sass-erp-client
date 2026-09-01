@@ -6,3 +6,9 @@ export const getCompanyPayroll = async (queryString?: string) => {
 
     return response;
 };
+
+export const deleteCompanyPayroll = async (payrollId: string) => {
+    const response = await payrollService.deleteCompanyPayroll(payrollId);
+
+    return response;
+};

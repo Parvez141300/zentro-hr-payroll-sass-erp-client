@@ -8,6 +8,13 @@ const getCompanyPayroll = async (queryString?: string) => {
     return response;
 };
 
+const deleteCompanyPayroll = async (payrollId: string) => {
+    const response = await httpServer.delete(`/api/v1/payrolls/${payrollId}`);
+
+    return response;
+};
+
 export const payrollService = {
     getCompanyPayroll,
+    deleteCompanyPayroll,
 };

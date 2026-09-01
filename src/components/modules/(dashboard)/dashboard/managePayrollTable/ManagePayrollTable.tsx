@@ -1,11 +1,15 @@
 "use client";
-import { getCompanyPayroll } from "@/actions/payroll.action";
+import {
+  deleteCompanyPayroll,
+  getCompanyPayroll,
+} from "@/actions/payroll.action";
 import DataTable from "@/components/shared/tables/DataTable";
 import { useTableQueryParams } from "@/hooks/useTableQueryParams";
 import { IPayroll } from "@/types/payroll.type";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { payrollColumn } from "./ManagePayrollColumn";
+import DeletePopUpDialog from "@/components/shared/tables/DeletePopUpDialog";
 
 const ManagePayrollTable = ({ queryString }: { queryString?: string }) => {
   const {
@@ -93,6 +97,20 @@ const ManagePayrollTable = ({ queryString }: { queryString?: string }) => {
           onEdit: handleEdit,
           onDelete: handleDelete,
         }}
+      />
+
+      {/* Delete payroll dialog */}
+      <DeletePopUpDialog
+        open={!!deletingPayroll}
+        onOpenChange={(open) => {
+          if (!open) setDeletingPayroll(null);
+        }}
+        title="Delete Payroll Record"
+        itemName={`${deletingPayroll?.employee?.name}'s Payroll (${deletingPayroll?.month}/${deletingPayroll?.year})`}
+        deleteAction={() => deleteCompanyPayroll(deletingPayroll?.id as string)}
+        queryKey={["companyPayrolls"]}
+        successMessage="Payroll record deleted successfully"
+        errorMessage="Failed to delete payroll record"
       />
     </>
   );
