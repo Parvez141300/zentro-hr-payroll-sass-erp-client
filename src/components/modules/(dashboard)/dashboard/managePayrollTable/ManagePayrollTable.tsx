@@ -13,6 +13,7 @@ import DeletePopUpDialog from "@/components/shared/tables/DeletePopUpDialog";
 import PayrollStatusFilter from "./filters/PayrollStatusFilter";
 import PayrollMonthFilter from "./filters/PayrollMonthFilter";
 import PayrollYearFilter from "./filters/PayrollYearFilter";
+import GeneratePayrollDialog from "./GeneratePayrollDialog";
 
 const ManagePayrollTable = ({ queryString }: { queryString?: string }) => {
   const {
@@ -74,6 +75,7 @@ const ManagePayrollTable = ({ queryString }: { queryString?: string }) => {
             onChange: handleSearchChange,
             placeholder: "Search payroll by employee...",
           },
+          actions: <GeneratePayrollDialog />,
           filters: (
             <>
               <PayrollStatusFilter />

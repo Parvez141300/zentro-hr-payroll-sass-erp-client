@@ -21,3 +21,8 @@ export interface IPayroll {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface IGeneratePayroll {
+    month: number;
+    year: number;
+}
