@@ -11,6 +11,7 @@ import React, { useState } from "react";
 import { payrollColumn } from "./ManagePayrollColumn";
 import DeletePopUpDialog from "@/components/shared/tables/DeletePopUpDialog";
 import PayrollStatusFilter from "./filters/PayrollStatusFilter";
+import PayrollMonthFilter from "./filters/PayrollMonthFilter";
 
 const ManagePayrollTable = ({ queryString }: { queryString?: string }) => {
   const {
@@ -75,7 +76,7 @@ const ManagePayrollTable = ({ queryString }: { queryString?: string }) => {
           filters: (
             <>
               <PayrollStatusFilter />
-              {/* <PayrollMonthFilter /> */}
+              <PayrollMonthFilter />
               {/* <PayrollYearFilter /> */}
             </>
           ),
