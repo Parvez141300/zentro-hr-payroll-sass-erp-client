@@ -154,11 +154,6 @@ const superAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
                 href: "/super-admin/dashboard/manage-payroll",
                 icon: "Users",
             },
-            {
-                title: "Generate Payroll",
-                href: "/super-admin/dashboard/generate-payroll",
-                icon: "HandCoins",
-            }
         ],
     },
     {
@@ -330,11 +325,6 @@ const accountantSidebarNavItems: IDashboardSidebarNavSection[] = [
                 href: "/accountant/dashboard/manage-payroll",
                 icon: "Users",
             },
-            {
-                title: "Generate Payroll",
-                href: "/accountant/dashboard/generate-payroll",
-                icon: "HandCoins",
-            }
         ],
     },
     {
