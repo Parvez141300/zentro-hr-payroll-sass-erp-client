@@ -10,6 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { payrollColumn } from "./ManagePayrollColumn";
 import DeletePopUpDialog from "@/components/shared/tables/DeletePopUpDialog";
+import PayrollStatusFilter from "./filters/PayrollStatusFilter";
 
 const ManagePayrollTable = ({ queryString }: { queryString?: string }) => {
   const {
@@ -73,9 +74,9 @@ const ManagePayrollTable = ({ queryString }: { queryString?: string }) => {
           },
           filters: (
             <>
-              {/* <PayrollStatusFilter />
-              <PayrollMonthFilter />
-              <PayrollYearFilter /> */}
+              <PayrollStatusFilter />
+              {/* <PayrollMonthFilter /> */}
+              {/* <PayrollYearFilter /> */}
             </>
           ),
           onClearFilters: () => clearFilterKeys(["status", "month", "year"]),
