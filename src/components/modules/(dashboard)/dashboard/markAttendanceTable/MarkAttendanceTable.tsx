@@ -6,6 +6,10 @@ import { useTableQueryParams } from "@/hooks/useTableQueryParams";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { markEmployeeAttendanceColumn } from "./MarkAttendanceColumn";
+import EmploymentTypeFilter from "./filters/EmploymentTypeFilter";
+import EmployeeStatusFilter from "./filters/EmployeeStatusFilter";
+import EmployeeGenderFilter from "./filters/EmployeeGenderFilter";
+import EmployeeDepartmentFilter from "./filters/EmployeeDepartmentFilter";
 
 const MarkAttendanceTable = ({ queryString }: { queryString: string }) => {
   const {
@@ -49,10 +53,10 @@ const MarkAttendanceTable = ({ queryString }: { queryString: string }) => {
           },
           filters: (
             <>
-              {/* <EmploymentTypeFilter />
+              <EmploymentTypeFilter />
               <EmployeeStatusFilter />
               <EmployeeGenderFilter />
-              <EmployeeDepartmentFilter /> */}
+              <EmployeeDepartmentFilter />
             </>
           ),
           onClearFilters: () =>

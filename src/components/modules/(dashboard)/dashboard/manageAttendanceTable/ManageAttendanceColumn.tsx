@@ -36,7 +36,7 @@ export const attendanceColumn: ColumnDef<IAttendance, any>[] = [
     cell: (info) => info.getValue(),
   }),
   columnHelper.accessor("date", {
-    header: "Date",
+    header: "Marked Date",
     cell: (info) =>
       DateConversion({
         date: info.row.original.date,
