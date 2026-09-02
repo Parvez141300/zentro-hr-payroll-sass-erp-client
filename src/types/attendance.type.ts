@@ -21,3 +21,12 @@ export interface IAttendance {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface IMarkAttendance {
+    employeeId: string;
+    date: Date;
+    status: AttendanceStatus;
+    checkIn?: Date;
+    checkOut?: Date;
+    note?: string;
+}
