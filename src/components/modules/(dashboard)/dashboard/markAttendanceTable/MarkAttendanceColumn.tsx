@@ -46,4 +46,9 @@ export const markEmployeeAttendanceColumn: ColumnDef<IEmployee, any>[] = [
       return <span>{phone || "N/A"}</span>;
     },
   }),
+  columnHelper.display({
+    id: "mark attendance",
+    header: "Mark Attendance",
+    cell: (info) => info.row.index + 1,
+  }),
 ];
