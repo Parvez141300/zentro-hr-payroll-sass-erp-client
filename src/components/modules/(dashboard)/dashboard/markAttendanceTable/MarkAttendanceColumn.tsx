@@ -2,6 +2,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { IEmployee } from "@/types/employee.type";
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
+import MarkAttendanceDialog from "./MarkAttendanceDialog";
+import { Badge } from "@/components/ui/badge";
 
 const columnHelper = createColumnHelper<IEmployee>();
 
@@ -46,9 +48,24 @@ export const markEmployeeAttendanceColumn: ColumnDef<IEmployee, any>[] = [
       return <span>{phone || "N/A"}</span>;
     },
   }),
+  columnHelper.accessor("user.employee.attendances.status", {
+    header: "Status",
+    cell: ({ row }) => {
+      const status = row.original?.user?.employee?.attendances!.status;
+      return (
+        <span>
+          {status ? (
+            <Badge>{status}</Badge>
+          ) : (
+            <Badge variant="destructive">N/A</Badge>
+          )}
+        </span>
+      );
+    },
+  }),
   columnHelper.display({
     id: "mark attendance",
     header: "Mark Attendance",
-    cell: (info) => info.row.index + 1,
+    cell: (info) => <MarkAttendanceDialog employeeId={info.row.original.id} />,
   }),
 ];

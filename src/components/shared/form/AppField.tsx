@@ -21,7 +21,8 @@ type AppFieldProps = {
     | "textarea"
     | "file"
     | "date"
-    | "url";
+    | "url"
+    | "time";
   placeholder?: string;
   className?: string;
   disabled?: boolean;
