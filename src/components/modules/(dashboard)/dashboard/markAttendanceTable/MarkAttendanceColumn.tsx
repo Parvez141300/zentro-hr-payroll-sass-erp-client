@@ -5,7 +5,7 @@ import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 
 const columnHelper = createColumnHelper<IEmployee>();
 
-export const employeeColumn: ColumnDef<IEmployee, any>[] = [
+export const markEmployeeAttendanceColumn: ColumnDef<IEmployee, any>[] = [
   columnHelper.display({
     id: "serial",
     header: "SL",
