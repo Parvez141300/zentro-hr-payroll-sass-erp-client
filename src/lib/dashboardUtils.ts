@@ -125,8 +125,8 @@ const superAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
                 icon: "UserRoundCheck",
             },
             {
-                title: "Create Attendance",
-                href: "/super-admin/dashboard/create-attendance",
+                title: "Mark Attendance",
+                href: "/super-admin/dashboard/mark-attendance",
                 icon: "Plus",
             },
         ],
@@ -258,8 +258,8 @@ const hrManagerSidebarNavItems: IDashboardSidebarNavSection[] = [
                 icon: "UserRoundCheck",
             },
             {
-                title: "Create Attendance",
-                href: "/hr-manager/dashboard/create-attendance",
+                title: "Mark Attendance",
+                href: "/hr-manager/dashboard/mark-attendance",
                 icon: "Plus",
             },
         ],
@@ -374,8 +374,8 @@ const departmentHeadSidebarNavItems: IDashboardSidebarNavSection[] = [
                 icon: "UserRoundCheck",
             },
             {
-                title: "Create Attendance",
-                href: "/department-head/dashboard/create-attendance",
+                title: "Mark Attendance",
+                href: "/department-head/dashboard/mark-attendance",
                 icon: "Plus",
             },
         ],
