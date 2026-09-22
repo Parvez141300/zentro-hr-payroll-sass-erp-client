@@ -31,6 +31,7 @@ import {
   MarkAttendanceFormValues,
   markAttendanceSchema,
 } from "@/zod/attendance.validation";
+import { format, parse } from "date-fns";
 
 interface MarkAttendanceDialogProps {
   employeeId: string;
@@ -79,7 +80,21 @@ const MarkAttendanceDialog = ({ employeeId }: MarkAttendanceDialogProps) => {
       onChange: markAttendanceSchema,
     },
     onSubmit: ({ value }) => {
-      mutate(value);
+      const dateStr = format(new Date(value.date), "yyyy-MM-dd");
+
+      const checkIn = value.checkIn
+        ? parse(`${dateStr} ${value.checkIn}`, "yyyy-MM-dd HH:mm", new Date())
+        : undefined;
+
+      const checkOut = value.checkOut
+        ? parse(`${dateStr} ${value.checkOut}`, "yyyy-MM-dd HH:mm", new Date())
+        : undefined;
+
+      mutate({
+        ...value,
+        checkIn: checkIn?.toISOString(),
+        checkOut: checkOut?.toISOString(),
+      });
     },
   });
 
@@ -114,9 +129,7 @@ const MarkAttendanceDialog = ({ employeeId }: MarkAttendanceDialogProps) => {
           className="space-y-4 py-2"
         >
           {/* Date Field */}
-          <form.Field
-            name="date"
-          >
+          <form.Field name="date">
             {(field) => (
               <AppField
                 field={field}
@@ -129,9 +142,7 @@ const MarkAttendanceDialog = ({ employeeId }: MarkAttendanceDialogProps) => {
           </form.Field>
 
           {/* Status Field */}
-          <form.Field
-            name="status"
-          >
+          <form.Field name="status">
             {(field) => (
               <div className="space-y-1.5">
                 <Label htmlFor="status">Status *</Label>
@@ -162,9 +173,7 @@ const MarkAttendanceDialog = ({ employeeId }: MarkAttendanceDialogProps) => {
           </form.Field>
 
           {/* Check In Field */}
-          <form.Field
-            name="checkIn"
-          >
+          <form.Field name="checkIn">
             {(field) => (
               <AppField
                 field={field}
@@ -177,9 +186,7 @@ const MarkAttendanceDialog = ({ employeeId }: MarkAttendanceDialogProps) => {
           </form.Field>
 
           {/* Check Out Field */}
-          <form.Field
-            name="checkOut"
-          >
+          <form.Field name="checkOut">
             {(field) => (
               <AppField
                 field={field}
@@ -192,9 +199,7 @@ const MarkAttendanceDialog = ({ employeeId }: MarkAttendanceDialogProps) => {
           </form.Field>
 
           {/* Note Field */}
-          <form.Field
-            name="note"
-          >
+          <form.Field name="note">
             {(field) => (
               <div className="space-y-1.5">
                 <Label htmlFor="note">Note</Label>

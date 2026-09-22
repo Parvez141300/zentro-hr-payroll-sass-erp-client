@@ -51,11 +51,12 @@ export const markEmployeeAttendanceColumn: ColumnDef<IEmployee, any>[] = [
   columnHelper.accessor("user.employee.attendances.status", {
     header: "Status",
     cell: ({ row }) => {
-      const status = row.original?.user?.employee?.attendances!.status;
+      const status = row.original?.user?.employee?.attendances;
+      console.log('status of attendance', status);
       return (
         <span>
           {status ? (
-            <Badge>{status}</Badge>
+            <Badge></Badge>
           ) : (
             <Badge variant="destructive">N/A</Badge>
           )}
