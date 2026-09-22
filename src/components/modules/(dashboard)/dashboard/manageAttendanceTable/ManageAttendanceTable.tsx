@@ -40,6 +40,8 @@ const ManageAttendanceTable = ({ queryString }: { queryString: string }) => {
 
   const [viewingAttendance, setViewingAttendance] =
     useState<IAttendance | null>(null);
+  const [editingAttendance, setEditingAttendance] =
+    useState<IAttendance | null>(null);
   const [deletingAttendance, setDeletingAttendance] =
     useState<IAttendance | null>(null);
 
@@ -54,6 +56,7 @@ const ManageAttendanceTable = ({ queryString }: { queryString: string }) => {
 
   const handleEdit = (attendance: IAttendance) => {
     console.log("edit attendance", attendance);
+    setEditingAttendance(attendance);
   };
 
   return (
