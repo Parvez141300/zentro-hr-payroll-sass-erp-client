@@ -4,6 +4,7 @@ import { IEmployee } from "@/types/employee.type";
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import MarkAttendanceDialog from "./MarkAttendanceDialog";
 import { Badge } from "@/components/ui/badge";
+import { AttendanceStatus } from "@/types/enums.type";
 
 const columnHelper = createColumnHelper<IEmployee>();
 
@@ -51,16 +52,45 @@ export const markEmployeeAttendanceColumn: ColumnDef<IEmployee, any>[] = [
   columnHelper.accessor("user.employee.attendances.status", {
     header: "Status",
     cell: ({ row }) => {
-      const status = row.original?.user?.employee?.attendances;
-      console.log('status of attendance', status);
+      const attendances = row.original?.user?.employee?.attendances ?? [];
+
+      // Today's date at local midnight (compare by yyyy-mm-dd)
+      const todayStr = new Date().toISOString().slice(0, 10);
+
+      const todayAttendance = attendances.find(
+        (a) => new Date(a.date).toISOString().slice(0, 10) === todayStr,
+      );
+
+      if (!todayAttendance) {
+        return <Badge variant="destructive">N/A</Badge>;
+      }
+
+      const formatStatus = (status: AttendanceStatus) =>
+        status
+          .toLowerCase()
+          .split("_")
+          .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+          .join(" "); // "PRESENT" -> "Present", "HALF_DAY" -> "Half Day"
+
+      const statusVariant = (status: AttendanceStatus) => {
+        switch (status) {
+          case AttendanceStatus.PRESENT:
+            return "default";
+          case AttendanceStatus.LATE:
+            return "secondary";
+          case AttendanceStatus.HALF_DAY:
+            return "outline";
+          case AttendanceStatus.ABSENT:
+            return "destructive";
+          default:
+            return "outline";
+        }
+      };
+
       return (
-        <span>
-          {status ? (
-            <Badge></Badge>
-          ) : (
-            <Badge variant="destructive">N/A</Badge>
-          )}
-        </span>
+        <Badge variant={statusVariant(todayAttendance.status)}>
+          {formatStatus(todayAttendance.status)}
+        </Badge>
       );
     },
   }),
