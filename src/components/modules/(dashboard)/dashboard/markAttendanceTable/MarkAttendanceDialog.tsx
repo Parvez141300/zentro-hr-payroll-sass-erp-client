@@ -90,6 +90,11 @@ const MarkAttendanceDialog = ({ employeeId }: MarkAttendanceDialogProps) => {
         ? parse(`${dateStr} ${value.checkOut}`, "yyyy-MM-dd HH:mm", new Date())
         : undefined;
 
+      if (!dateStr || !checkIn) {
+        toast.error("Please select a date and check-in time.");
+        return;
+      }
+
       mutate({
         ...value,
         checkIn: checkIn?.toISOString(),
