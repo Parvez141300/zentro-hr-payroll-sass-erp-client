@@ -15,6 +15,7 @@ import DeletePopUpDialog from "@/components/shared/tables/DeletePopUpDialog";
 import EmployeeAttendanceDepartmentFilter from "./filters/EmployeeAttendanceDepartmentFilter";
 import EmployeeAttendanceStatusFilter from "./filters/EmployeeAttendanceStatus";
 import EmployeeAttendanceDateRangeFilter from "./filters/EmployeeAttendanceDateRangeFilter";
+import EditAttendanceDialog from "./EditAttendanceDialog";
 
 const ManageAttendanceTable = ({ queryString }: { queryString: string }) => {
   const {
@@ -111,6 +112,15 @@ const ManageAttendanceTable = ({ queryString }: { queryString: string }) => {
         open={!!viewingAttendance}
         onOpenChange={(open) => {
           if (!open) setViewingAttendance(null);
+        }}
+      />
+
+      {/* edit dialog */}
+      <EditAttendanceDialog
+        attendanceData={editingAttendance}
+        open={!!editingAttendance}
+        onOpenChange={(open) => {
+          if (!open) setEditingAttendance(null);
         }}
       />
 

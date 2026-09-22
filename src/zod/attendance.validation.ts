@@ -11,4 +11,12 @@ export const markAttendanceSchema = z.object({
     note: z.string().optional(),
 });
 
+export const updateAttendanceSchema = z.object({
+    status: z.enum([AttendanceStatus.PRESENT, AttendanceStatus.ABSENT, AttendanceStatus.LATE, AttendanceStatus.HALF_DAY] as const),
+    checkIn: z.string().optional(),
+    checkOut: z.string().optional(),
+    note: z.string().optional(),
+});
+
 export type MarkAttendanceFormValues = z.infer<typeof markAttendanceSchema>;
+export type UpdateAttendanceFormValues = z.infer<typeof updateAttendanceSchema>;

@@ -15,7 +15,7 @@ export const markEmployeeAttendance = async (payload: IMarkAttendance) => {
     return result;
 }
 
-export const upateEmployeeAttendance = async (attendanceId: string, payload: IUpdateAttendance) => {
+export const updateEmployeeAttendance = async (attendanceId: string, payload: IUpdateAttendance) => {
     const result = await attendanceService.upateEmployeeAttendance(attendanceId, payload);
 
     return result;
