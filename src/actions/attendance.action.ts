@@ -1,7 +1,7 @@
 "use server";
 
 import { attendanceService } from "@/services/attendance.service";
-import { IMarkAttendance } from "@/types/attendance.type";
+import { IMarkAttendance, IUpdateAttendance } from "@/types/attendance.type";
 
 export const getCompanyAttendance = async (queryString?: string) => {
     const result = await attendanceService.getCompanyAttendance(queryString);
@@ -11,6 +11,12 @@ export const getCompanyAttendance = async (queryString?: string) => {
 
 export const markEmployeeAttendance = async (payload: IMarkAttendance) => {
     const result = await attendanceService.markEmployeeAttendance(payload);
+
+    return result;
+}
+
+export const upateEmployeeAttendance = async (attendanceId: string, payload: IUpdateAttendance) => {
+    const result = await attendanceService.upateEmployeeAttendance(attendanceId, payload);
 
     return result;
 }
