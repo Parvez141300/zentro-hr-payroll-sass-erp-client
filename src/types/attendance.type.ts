@@ -30,3 +30,10 @@ export interface IMarkAttendance {
     checkOut?: Date;
     note?: string;
 }
+
+export interface IUpdateAttendance {
+    status?: AttendanceStatus;
+    checkIn?: Date;
+    checkOut?: Date;
+    note?: string;
+}
