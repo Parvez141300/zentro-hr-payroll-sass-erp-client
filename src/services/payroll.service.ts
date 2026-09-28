@@ -8,8 +8,8 @@ const getCompanyPayroll = async (queryString?: string) => {
     return response;
 };
 
-const generateCompanyPayroll = async (payload: IGeneratePayroll) => {
-    const response = await httpServer.post("/api/v1/payrolls", payload);
+const generateCompanyPayrollForAllEmployees = async (payload: IGeneratePayroll) => {
+    const response = await httpServer.post("/api/v1/payrolls/all-employees", payload);
 
     return response;
 };
@@ -23,5 +23,5 @@ const deleteCompanyPayroll = async (payrollId: string) => {
 export const payrollService = {
     getCompanyPayroll,
     deleteCompanyPayroll,
-    generateCompanyPayroll,
+    generateCompanyPayrollForAllEmployees,
 };

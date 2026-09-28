@@ -22,8 +22,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "sonner";
-import { generateCompanyPayroll } from "@/actions/payroll.action";
 import { IGeneratePayroll } from "@/types/payroll.type";
+import { generateCompanyPayrollForAllEmployees } from "@/actions/payroll.action";
 
 const GeneratePayrollDialog = () => {
   const [open, setOpen] = useState(false);
@@ -38,7 +38,7 @@ const GeneratePayrollDialog = () => {
         year: parseInt(year),
       };
       console.log(month, year, "of payroll");
-      return await generateCompanyPayroll(payload);
+      return await generateCompanyPayrollForAllEmployees(payload);
     },
     onSuccess: () => {
       toast.success("Payroll generated successfully");

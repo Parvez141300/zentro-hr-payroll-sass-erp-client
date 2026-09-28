@@ -8,8 +8,8 @@ export const getCompanyPayroll = async (queryString?: string) => {
     return response;
 };
 
-export const generateCompanyPayroll = async (payload: IGeneratePayroll) => {
-    const response = await payrollService.generateCompanyPayroll(payload);
+export const generateCompanyPayrollForAllEmployees = async (payload: IGeneratePayroll) => {
+    const response = await payrollService.generateCompanyPayrollForAllEmployees(payload);
 
     return response;
 };
