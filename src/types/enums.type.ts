@@ -75,4 +75,11 @@ export enum SubscriptionStatus {
   PAST_DUE = "PAST_DUE",
 }
 
+// 🆕 Salary Type
+export enum SalaryType {
+  MONTHLY = "MONTHLY",
+  DAILY = "DAILY",
+  HOURLY = "HOURLY",
+}
+
 // ============ end Enums ============
