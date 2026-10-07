@@ -1,3 +1,4 @@
+// src/components/modules/(dashboard)/dashboard/employee/CreateEmployeeForm.tsx
 "use client";
 
 import React, { useState, useMemo } from "react";
@@ -29,8 +30,14 @@ import {
   CreditCard,
   Heart,
   Users,
+  Calendar,
 } from "lucide-react";
-import { Gender, EmploymentType, EmployeeStatus } from "@/types/enums.type";
+import {
+  Gender,
+  EmploymentType,
+  EmployeeStatus,
+  SalaryType,
+} from "@/types/enums.type";
 import { ICreateCompanyEmployeePayload } from "@/types/user.type";
 import { createCompanyEmployee } from "@/actions/user.action";
 import {
@@ -66,9 +73,6 @@ const CreateEmployeeForm = () => {
           avatarFile.file instanceof File ? avatarFile.file : "",
         );
       }
-      console.log("create employee payload", [...formData.entries()]);
-      console.log("create employee data", data);
-      console.log("avatar image", avatarFile);
       return await createCompanyEmployee(formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
@@ -102,6 +106,9 @@ const CreateEmployeeForm = () => {
       employmentType: "FULL_TIME" as EmploymentType,
       status: "ACTIVE" as EmployeeStatus,
       joinDate: "",
+      // ✅ Salary fields
+      salaryType: "MONTHLY" as SalaryType,
+      workingDaysPerMonth: "22",
       basicSalary: "",
       houseAllowance: "",
       medicalAllowance: "",
@@ -122,6 +129,9 @@ const CreateEmployeeForm = () => {
           ? new Date(value.dateOfBirth)
           : undefined,
         joinDate: value.joinDate ? new Date(value.joinDate) : undefined,
+        // ✅ Salary type and working days
+        salaryType: value.salaryType as SalaryType,
+        workingDaysPerMonth: parseInt(value.workingDaysPerMonth, 10),
         basicSalary: parseFloat(value.basicSalary),
         houseAllowance: value.houseAllowance
           ? parseFloat(value.houseAllowance)
@@ -173,6 +183,13 @@ const CreateEmployeeForm = () => {
     }));
   }, [filteredDesignations]);
 
+  // ✅ Salary Type options
+  const salaryTypeOptions = [
+    { value: SalaryType.MONTHLY, label: "Monthly" },
+    { value: SalaryType.DAILY, label: "Daily" },
+    { value: SalaryType.HOURLY, label: "Hourly" },
+  ];
+
   // Gender options
   const genderOptions = [
     { value: "MALE", label: "Male" },
@@ -221,7 +238,6 @@ const CreateEmployeeForm = () => {
   // Handle department change
   const handleDepartmentChange = (value: string) => {
     setSelectedDepartmentId(value);
-    // Reset designation when department changes
     form.setFieldValue("designationId", "");
   };
 
@@ -275,7 +291,6 @@ const CreateEmployeeForm = () => {
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* name field */}
               <form.Field
                 name="name"
                 validators={{
@@ -293,7 +308,6 @@ const CreateEmployeeForm = () => {
                 )}
               </form.Field>
 
-              {/* email field */}
               <form.Field
                 name="email"
                 validators={{
@@ -311,7 +325,6 @@ const CreateEmployeeForm = () => {
                 )}
               </form.Field>
 
-              {/* password field */}
               <form.Field
                 name="password"
                 validators={{
@@ -340,7 +353,6 @@ const CreateEmployeeForm = () => {
                 )}
               </form.Field>
 
-              {/* phone field */}
               <form.Field
                 name="phone"
                 validators={{
@@ -358,7 +370,6 @@ const CreateEmployeeForm = () => {
                 )}
               </form.Field>
 
-              {/* dateOfBirth field */}
               <form.Field
                 name="dateOfBirth"
                 validators={{
@@ -376,7 +387,6 @@ const CreateEmployeeForm = () => {
                 )}
               </form.Field>
 
-              {/* gender field */}
               <form.Field name="gender">
                 {(field) => (
                   <AppSelectField
@@ -388,7 +398,6 @@ const CreateEmployeeForm = () => {
                 )}
               </form.Field>
 
-              {/* address field */}
               <form.Field
                 name="address"
                 validators={{
@@ -406,7 +415,6 @@ const CreateEmployeeForm = () => {
                 )}
               </form.Field>
 
-              {/* nidNumber field */}
               <form.Field
                 name="nidNumber"
                 validators={{
@@ -424,7 +432,6 @@ const CreateEmployeeForm = () => {
                 )}
               </form.Field>
 
-              {/* bloodGroup field */}
               <form.Field
                 name="bloodGroup"
                 validators={{
@@ -450,7 +457,6 @@ const CreateEmployeeForm = () => {
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Department Selection */}
               <form.Field
                 name="departmentId"
                 validators={{
@@ -472,7 +478,6 @@ const CreateEmployeeForm = () => {
                 )}
               </form.Field>
 
-              {/* Designation Selection */}
               <form.Field
                 name="designationId"
                 validators={{
@@ -491,7 +496,6 @@ const CreateEmployeeForm = () => {
                 )}
               </form.Field>
 
-              {/* employmentType field */}
               <form.Field name="employmentType">
                 {(field) => (
                   <AppSelectField
@@ -503,7 +507,6 @@ const CreateEmployeeForm = () => {
                 )}
               </form.Field>
 
-              {/* status field */}
               <form.Field name="status">
                 {(field) => (
                   <AppSelectField
@@ -515,7 +518,6 @@ const CreateEmployeeForm = () => {
                 )}
               </form.Field>
 
-              {/* joinDate field */}
               <form.Field
                 name="joinDate"
                 validators={{
@@ -542,6 +544,45 @@ const CreateEmployeeForm = () => {
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* ✅ Salary Type */}
+              <form.Field name="salaryType">
+                {(field) => (
+                  <AppSelectField
+                    field={field}
+                    label="Salary Type *"
+                    placeholder="Select salary type"
+                    options={salaryTypeOptions}
+                  />
+                )}
+              </form.Field>
+
+              {/* ✅ Working Days Per Month */}
+              <form.Field
+                name="workingDaysPerMonth"
+                validators={{
+                  onChange: z
+                    .string()
+                    .min(1, "Working days is required")
+                    .refine(
+                      (val) => {
+                        const num = Number(val);
+                        return !isNaN(num) && num >= 1 && num <= 31;
+                      },
+                      { message: "Working days must be between 1 and 31" },
+                    ),
+                }}
+              >
+                {(field) => (
+                  <AppField
+                    field={field}
+                    label="Working Days Per Month *"
+                    type="number"
+                    placeholder="e.g., 22"
+                    prepend={<Calendar />}
+                  />
+                )}
+              </form.Field>
+
               {/* basicSalary field */}
               <form.Field
                 name="basicSalary"
@@ -623,7 +664,6 @@ const CreateEmployeeForm = () => {
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* bankName field */}
               <form.Field
                 name="bankName"
                 validators={{
@@ -641,7 +681,6 @@ const CreateEmployeeForm = () => {
                 )}
               </form.Field>
 
-              {/* bankAccount field */}
               <form.Field
                 name="bankAccount"
                 validators={{
@@ -668,7 +707,6 @@ const CreateEmployeeForm = () => {
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* emergencyName field */}
               <form.Field
                 name="emergencyName"
                 validators={{
@@ -686,7 +724,6 @@ const CreateEmployeeForm = () => {
                 )}
               </form.Field>
 
-              {/* emergencyPhone field */}
               <form.Field
                 name="emergencyPhone"
                 validators={{
@@ -704,7 +741,6 @@ const CreateEmployeeForm = () => {
                 )}
               </form.Field>
 
-              {/* emergencyRelation field */}
               <form.Field
                 name="emergencyRelation"
                 validators={{
