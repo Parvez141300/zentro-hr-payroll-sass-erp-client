@@ -16,6 +16,7 @@ import EmployeeStatusFilter from "./filters/EmployeeStatusFilter";
 import EmployeeGenderFilter from "./filters/EmployeeGenderFilter";
 import EmployeeDepartmentFilter from "./filters/EmployeeDepartmentFilter";
 import EditEmployeeDialog from "./EditEmployeeDialog";
+import EmployeeSalaryTypeFilter from "./filters/EmployeeSalaryTypeFilter";
 
 const ManageEmployeeTable = ({ queryString }: { queryString: string }) => {
   const {
@@ -82,6 +83,7 @@ const ManageEmployeeTable = ({ queryString }: { queryString: string }) => {
           },
           filters: (
             <>
+              <EmployeeSalaryTypeFilter />
               <EmploymentTypeFilter />
               <EmployeeStatusFilter />
               <EmployeeGenderFilter />
@@ -90,6 +92,7 @@ const ManageEmployeeTable = ({ queryString }: { queryString: string }) => {
           ),
           onClearFilters: () =>
             clearFilterKeys([
+              "salaryType",
               "status",
               "departmentId",
               "gender",
