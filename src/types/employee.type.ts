@@ -10,6 +10,8 @@ import { IUser } from "./user.type";
 // ============ Employee ============
 export interface IEmployee {
   id: string;
+
+  // ✅ Personal Information
   name: string;
   phone: string | null;
   photoUrl: string | null;
@@ -22,15 +24,24 @@ export interface IEmployee {
   joinDate: string | null;
   employmentType: EmploymentType;
   status: EmployeeStatus;
+
+  // ✅ Salary Information
   basicSalary: number;
   houseAllowance: number;
   medicalAllowance: number;
   transportAllowance: number;
+  salaryType: string;
+  workingDaysPerMonth: number;
+
+  // ✅ Bank Information
   bankName: string | null;
   bankAccount: string | null;
+
+  // ✅ Emergency Contact
   emergencyName: string | null;
   emergencyPhone: string | null;
   emergencyRelation: string | null;
+
   createdAt: string;
   updatedAt: string;
   userId: string;
