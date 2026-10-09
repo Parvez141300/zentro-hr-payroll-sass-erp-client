@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import { useForm } from "@tanstack/react-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -33,6 +33,7 @@ import {
   CreditCard,
   Heart,
   Users,
+  Calendar,
 } from "lucide-react";
 import { IUpdateCompanyEmployeePayload } from "@/types/user.type";
 import { IEmployee } from "@/types/employee.type";
@@ -40,7 +41,12 @@ import {
   UpdateEmployeeFormValues,
   updateEmployeeSchema,
 } from "@/zod/employee.validation";
-import { Gender } from "@/types/enums.type";
+import {
+  Gender,
+  EmploymentType,
+  EmployeeStatus,
+  SalaryType,
+} from "@/types/enums.type";
 
 interface EditEmployeeDialogProps {
   employeeData: IEmployee | null;
@@ -58,6 +64,9 @@ const EditEmployeeDialog = ({
     employeeData?.departmentId || "",
   );
   const [avatarFile, setAvatarFile] = useState<FileWithPreview | null>(null);
+
+  // ✅ Ref to track when dialog transitions to open, to avoid resetting on every field change
+  const prevOpenRef = useRef<boolean>(false);
 
   // Fetch departments with their nested designations
   const { data: departmentsData, isLoading: isDepartmentsLoading } = useQuery({
@@ -83,9 +92,6 @@ const EditEmployeeDialog = ({
           avatarFile.file instanceof File ? avatarFile.file : "",
         );
       }
-      console.log("update employee payload", [...formData.entries()]);
-      console.log("update employee data", data);
-      console.log("avatar image", avatarFile);
       return await updateCompanyEmployee(employeeData.userId, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
@@ -93,8 +99,8 @@ const EditEmployeeDialog = ({
     onSuccess: () => {
       toast.success("Employee updated successfully");
       queryClient.invalidateQueries({ queryKey: ["companyEmployees"] });
-      onOpenChange(false);
       setAvatarFile(null);
+      onOpenChange(false);
     },
     onError: (error: Error) => {
       toast.error(error.message || "Failed to update Employee");
@@ -110,13 +116,17 @@ const EditEmployeeDialog = ({
       phone: employeeData?.phone || "",
       photoUrl: employeeData?.photoUrl || "",
       dateOfBirth: employeeData?.dateOfBirth || "",
-      gender: employeeData?.gender || "MALE",
+      gender: employeeData?.gender || Gender.MALE,
       address: employeeData?.address || "",
       nidNumber: employeeData?.nidNumber || "",
       bloodGroup: employeeData?.bloodGroup || "",
-      employmentType: employeeData?.employmentType || "FULL_TIME",
-      status: employeeData?.status || "ACTIVE",
+      employmentType: employeeData?.employmentType || EmploymentType.FULL_TIME,
+      status: employeeData?.status || EmployeeStatus.ACTIVE,
       joinDate: employeeData?.joinDate || "",
+      // ✅ Salary fields
+      salaryType: (employeeData?.salaryType as SalaryType) || SalaryType.MONTHLY,
+      workingDaysPerMonth:
+        employeeData?.workingDaysPerMonth?.toString() || "22",
       basicSalary: employeeData?.basicSalary?.toString() || "",
       houseAllowance: employeeData?.houseAllowance?.toString() || "",
       medicalAllowance: employeeData?.medicalAllowance?.toString() || "",
@@ -139,6 +149,9 @@ const EditEmployeeDialog = ({
           ? new Date(value.dateOfBirth)
           : undefined,
         joinDate: value.joinDate ? new Date(value.joinDate) : undefined,
+        // ✅ Salary type and working days
+        salaryType: value.salaryType as SalaryType,
+        workingDaysPerMonth: parseInt(value.workingDaysPerMonth, 10),
         basicSalary: parseFloat(value.basicSalary),
         houseAllowance: value.houseAllowance
           ? parseFloat(value.houseAllowance)
@@ -154,15 +167,16 @@ const EditEmployeeDialog = ({
     },
   });
 
-  // Reset form when employee data changes (dialog opens with new data)
+  // ✅ Reset form ONLY when dialog transitions from closed → open
   useEffect(() => {
-    if (employeeData && open) {
+    const justOpened = open && !prevOpenRef.current;
+    prevOpenRef.current = open;
+
+    if (justOpened && employeeData) {
       form.reset({
         departmentId: employeeData.departmentId || "",
         designationId: employeeData.designationId || "",
         name: employeeData.name || "",
-        // email: employeeData.user?.email || "",
-        // password: "",
         phone: employeeData.phone || "",
         photoUrl: employeeData.photoUrl || "",
         dateOfBirth: employeeData.dateOfBirth || "",
@@ -170,9 +184,13 @@ const EditEmployeeDialog = ({
         address: employeeData.address || "",
         nidNumber: employeeData.nidNumber || "",
         bloodGroup: employeeData.bloodGroup || "",
-        employmentType: employeeData.employmentType || "FULL_TIME",
-        status: employeeData.status || "ACTIVE",
+        employmentType: employeeData.employmentType || EmploymentType.FULL_TIME,
+        status: employeeData.status || EmployeeStatus.ACTIVE,
         joinDate: employeeData.joinDate || "",
+        // ✅ Salary fields
+        salaryType: (employeeData.salaryType as SalaryType) || SalaryType.MONTHLY,
+        workingDaysPerMonth:
+          employeeData.workingDaysPerMonth?.toString() || "22",
         basicSalary: employeeData.basicSalary?.toString() || "",
         houseAllowance: employeeData.houseAllowance?.toString() || "",
         medicalAllowance: employeeData.medicalAllowance?.toString() || "",
@@ -183,8 +201,12 @@ const EditEmployeeDialog = ({
         emergencyPhone: employeeData.emergencyPhone || "",
         emergencyRelation: employeeData.emergencyRelation || "",
       });
+
+      setSelectedDepartmentId(employeeData.departmentId || "");
+      setAvatarFile(null);
     }
-  }, [employeeData, open, form]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, employeeData]);
 
   // Wrap departments in useMemo to prevent unnecessary re-renders
   const departments = useMemo(() => {
@@ -222,6 +244,13 @@ const EditEmployeeDialog = ({
     }));
   }, [filteredDesignations]);
 
+  // ✅ Salary Type options
+  const salaryTypeOptions = [
+    { value: SalaryType.MONTHLY, label: "Monthly" },
+    { value: SalaryType.DAILY, label: "Daily" },
+    { value: SalaryType.HOURLY, label: "Hourly" },
+  ];
+
   // Gender options
   const genderOptions = [
     { value: "MALE", label: "Male" },
@@ -235,6 +264,7 @@ const EditEmployeeDialog = ({
     { value: "PART_TIME", label: "Part Time" },
     { value: "CONTRACT", label: "Contract" },
     { value: "INTERN", label: "Intern" },
+    { value: "FREELANCE", label: "Freelance" },
   ];
 
   // Employee status options
@@ -549,6 +579,45 @@ const EditEmployeeDialog = ({
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* ✅ Salary Type */}
+              <form.Field name="salaryType">
+                {(field) => (
+                  <AppSelectField
+                    field={field}
+                    label="Salary Type *"
+                    placeholder="Select salary type"
+                    options={salaryTypeOptions}
+                  />
+                )}
+              </form.Field>
+
+              {/* ✅ Working Days Per Month */}
+              <form.Field
+                name="workingDaysPerMonth"
+                validators={{
+                  onChange: z
+                    .string()
+                    .min(1, "Working days is required")
+                    .refine(
+                      (val) => {
+                        const num = Number(val);
+                        return !isNaN(num) && num >= 1 && num <= 31;
+                      },
+                      { message: "Working days must be between 1 and 31" },
+                    ),
+                }}
+              >
+                {(field) => (
+                  <AppField
+                    field={field}
+                    label="Working Days Per Month *"
+                    type="number"
+                    placeholder="e.g., 22"
+                    prepend={<Calendar />}
+                  />
+                )}
+              </form.Field>
+
               {/* basicSalary field */}
               <form.Field
                 name="basicSalary"
@@ -751,7 +820,9 @@ const EditEmployeeDialog = ({
                     disabled={isPending}
                     onClick={() => {
                       form.reset();
-                      setSelectedDepartmentId(employeeData.departmentId || "");
+                      setSelectedDepartmentId(
+                        employeeData.departmentId || "",
+                      );
                       setAvatarFile(null);
                     }}
                   >

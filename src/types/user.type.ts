@@ -120,6 +120,9 @@ export interface IUpdateCompanyEmployeePayload {
 
   bankName?: string;
   bankAccount?: string;
+
+  salaryType?: SalaryType;
+  workingDaysPerMonth?: number;
   basicSalary?: number;
   houseAllowance?: number;
   medicalAllowance?: number;
