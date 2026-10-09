@@ -66,4 +66,12 @@ export const employeeColumn: ColumnDef<IEmployee, any>[] = [
       );
     },
   }),
+  columnHelper.display({
+    id: "payroll",
+    header: "Payroll",
+    cell: (info) => {
+      const employeeCode = info.row.original.employeeCode;
+      return <span>{employeeCode || "N/A"}</span>;
+    },
+  }),
 ];
