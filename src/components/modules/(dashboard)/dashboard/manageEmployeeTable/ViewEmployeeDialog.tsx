@@ -27,11 +27,17 @@ import {
   DropletIcon,
   ShieldIcon,
   FileTextIcon,
+  ClockIcon,
+  CalendarDaysIcon,
 } from "lucide-react";
 import { format } from "date-fns";
 import { useState } from "react";
 import { IEmployee } from "@/types/employee.type";
-import { EmployeeStatus, EmploymentType, Gender } from "@/types/enums.type";
+import {
+  EmployeeStatus,
+  EmploymentType,
+  Gender,
+} from "@/types/enums.type";
 
 interface IViewEmployeeDialogProps {
   employeeData: IEmployee | null;
@@ -95,6 +101,16 @@ const ViewEmployeeDialog = ({
     return typeMap[type] || type;
   };
 
+  // ✅ Get salary type label
+  const getSalaryTypeLabel = (type: string) => {
+    const typeMap: Record<string, string> = {
+      MONTHLY: "Monthly",
+      DAILY: "Daily",
+      HOURLY: "Hourly",
+    };
+    return typeMap[type] || type;
+  };
+
   // Get status badge variant
   const getStatusBadgeVariant = (status: EmployeeStatus) => {
     const variantMap: Record<
@@ -127,6 +143,19 @@ const ViewEmployeeDialog = ({
       PART_TIME: "secondary",
       CONTRACT: "outline",
       INTERN: "outline",
+    };
+    return variantMap[type] || "secondary";
+  };
+
+  // ✅ Get salary type badge variant
+  const getSalaryTypeVariant = (type: string) => {
+    const variantMap: Record<
+      string,
+      "default" | "secondary" | "outline" | "destructive"
+    > = {
+      MONTHLY: "default",
+      DAILY: "secondary",
+      HOURLY: "outline",
     };
     return variantMap[type] || "secondary";
   };
@@ -359,6 +388,31 @@ const ViewEmployeeDialog = ({
               Salary Information
             </h4>
             <div className="grid grid-cols-2 gap-4">
+              {/* ✅ Salary Type */}
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <ClockIcon className="h-4 w-4" />
+                  <span>Salary Type</span>
+                </div>
+                <Badge
+                  variant={getSalaryTypeVariant(employeeData.salaryType)}
+                  className="text-xs"
+                >
+                  {getSalaryTypeLabel(employeeData.salaryType)}
+                </Badge>
+              </div>
+
+              {/* ✅ Working Days Per Month */}
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <CalendarDaysIcon className="h-4 w-4" />
+                  <span>Working Days Per Month</span>
+                </div>
+                <p className="text-sm font-medium">
+                  {employeeData.workingDaysPerMonth || 22} days
+                </p>
+              </div>
+
               <div className="space-y-1">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <DollarSignIcon className="h-4 w-4" />
