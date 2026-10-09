@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { IEmployee } from "@/types/employee.type";
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 
@@ -44,6 +45,25 @@ export const employeeColumn: ColumnDef<IEmployee, any>[] = [
     cell: ({ row }) => {
       const phone = row.original.phone;
       return <span>{phone || "N/A"}</span>;
+    },
+  }),
+  columnHelper.accessor("salaryType", {
+    header: "Salary Type",
+    cell: ({ row }) => {
+      const salaryType = row.original.salaryType;
+      return (
+        <Badge
+          variant={
+            salaryType === "MONTHLY"
+              ? "default"
+              : salaryType === "DAILY"
+                ? "secondary"
+                : "outline"
+          }
+        >
+          {salaryType || "N/A"}
+        </Badge>
+      );
     },
   }),
 ];
