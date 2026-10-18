@@ -14,6 +14,12 @@ export const generateCompanyPayrollForAllEmployees = async (payload: IGenerateEm
     return response;
 };
 
+export const generateEmployeePayroll = async (payload: IGenerateEmployeePayroll) => {
+    const response = await payrollService.generateEmployeePayroll(payload);
+
+    return response;
+};
+
 export const deleteCompanyPayroll = async (payrollId: string) => {
     const response = await payrollService.deleteCompanyPayroll(payrollId);
 
