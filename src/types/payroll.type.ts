@@ -22,7 +22,10 @@ export interface IPayroll {
   updatedAt: Date;
 }
 
-export interface IGeneratePayroll {
+export interface IGenerateEmployeePayroll {
+    employeeId: string;
     month: number;
     year: number;
+    periodStart: Date;
+    periodEnd: Date;
 }

@@ -1,6 +1,6 @@
 "use server";
 import { payrollService } from "@/services/payroll.service";
-import { IGeneratePayroll } from "@/types/payroll.type";
+import { IGenerateEmployeePayroll } from "@/types/payroll.type";
 
 export const getCompanyPayroll = async (queryString?: string) => {
     const response = await payrollService.getCompanyPayroll(queryString);
@@ -8,7 +8,7 @@ export const getCompanyPayroll = async (queryString?: string) => {
     return response;
 };
 
-export const generateCompanyPayrollForAllEmployees = async (payload: IGeneratePayroll) => {
+export const generateCompanyPayrollForAllEmployees = async (payload: IGenerateEmployeePayroll) => {
     const response = await payrollService.generateCompanyPayrollForAllEmployees(payload);
 
     return response;

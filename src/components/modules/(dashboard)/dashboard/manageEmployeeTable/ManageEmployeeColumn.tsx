@@ -3,6 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { IEmployee } from "@/types/employee.type";
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
+import GenerateEmployeePayrollDialog from "./GenerateEmployeePayrollDialog";
 
 const columnHelper = createColumnHelper<IEmployee>();
 
@@ -70,8 +71,8 @@ export const employeeColumn: ColumnDef<IEmployee, any>[] = [
     id: "payroll",
     header: "Payroll",
     cell: (info) => {
-      const employeeCode = info.row.original.employeeCode;
-      return <span>{employeeCode || "N/A"}</span>;
+      const employeeId = info.row.original.id;
+      return <GenerateEmployeePayrollDialog employeeId={employeeId} />;
     },
   }),
 ];

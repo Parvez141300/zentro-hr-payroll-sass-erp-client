@@ -1,6 +1,6 @@
 import { httpServer } from "@/lib/http/httpServer";
 import { IPaginatedData } from "@/types/pagination.type";
-import { IGeneratePayroll, IPayroll } from "@/types/payroll.type";
+import {  IGenerateEmployeePayroll, IPayroll } from "@/types/payroll.type";
 
 const getCompanyPayroll = async (queryString?: string) => {
     const response = await httpServer.get<IPaginatedData<IPayroll[]>>(`/api/v1/payrolls?${queryString}`);
@@ -8,8 +8,14 @@ const getCompanyPayroll = async (queryString?: string) => {
     return response;
 };
 
-const generateCompanyPayrollForAllEmployees = async (payload: IGeneratePayroll) => {
+const generateCompanyPayrollForAllEmployees = async (payload: IGenerateEmployeePayroll) => {
     const response = await httpServer.post("/api/v1/payrolls/all-employees", payload);
+
+    return response;
+};
+
+const generateEmployeePayroll = async (payload: IGenerateEmployeePayroll) => {
+    const response = await httpServer.post("/api/v1/payrolls", payload);
 
     return response;
 };
@@ -24,4 +30,5 @@ export const payrollService = {
     getCompanyPayroll,
     deleteCompanyPayroll,
     generateCompanyPayrollForAllEmployees,
+    generateEmployeePayroll,
 };

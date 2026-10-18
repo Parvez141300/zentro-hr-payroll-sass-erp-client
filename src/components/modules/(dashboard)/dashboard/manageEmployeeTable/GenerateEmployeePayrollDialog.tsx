@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
 
-const GenerateEmployeePayrollDialog = () => {
+const GenerateEmployeePayrollDialog = ({employeeId} : {employeeId: string}) => {
+  
   return <div>GenerateEmployeePayrollDialog</div>;
 };
 
