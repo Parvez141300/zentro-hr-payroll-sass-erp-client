@@ -1,24 +1,48 @@
 import { IEmployee } from "./employee.type";
-import { PayrollStatus } from "./enums.type";
+import { PayrollStatus, SalaryType } from "./enums.type";
 
 export interface IPayroll {
   id: string;
-  employeeId: string;
-  employee?: IEmployee;
-  month: string;
-  year: number;
-  salaryType: number;
+
+  // Date Range
+  periodStart: Date;
+  periodEnd: Date;
+  month: number | null;
+  year: number | null;
+
+  // Salary Details
+  salaryType: SalaryType;
+  workingDaysPerMonth: number;
   basicSalary: number;
   houseAllowance: number;
   medicalAllowance: number;
   transportAllowance: number;
+  overtimePay: number;
+
+  // Daily/Hourly Tracking
+  totalDays: number;
+  totalHours: number;
+
+  // Calculations
   grossSalary: number;
-  tax: number;
-  insurance: number;
+  taxDeduction: number;
+  pfDeduction: number;
   otherDeductions: number;
+  totalDeductions: number;
   netSalary: number;
-  paymentDate: Date;
+
+  // Status & Meta
   status: PayrollStatus;
+  paidAt: Date | null;
+  generatedById: string | null;
+  approvedById: string | null;
+
+  // Relations
+  employeeId: string;
+  companyId: string;
+
+  employee: IEmployee;
+
   createdAt: Date;
   updatedAt: Date;
 }
