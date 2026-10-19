@@ -30,23 +30,6 @@ export const payrollColumn: ColumnDef<IPayroll, any>[] = [
     },
   }),
 
-  columnHelper.accessor("month", {
-    header: "Month",
-    cell: (info) => {
-      const month = info.getValue();
-      return month
-        ? new Date(2000, parseInt(month) - 1, 1).toLocaleString("default", {
-            month: "long",
-          })
-        : "N/A";
-    },
-  }),
-
-  columnHelper.accessor("year", {
-    header: "Year",
-    cell: (info) => info.getValue(),
-  }),
-
   columnHelper.accessor("netSalary", {
     header: "Net Salary",
     cell: (info) => {
@@ -83,6 +66,33 @@ export const payrollColumn: ColumnDef<IPayroll, any>[] = [
       return (
         <Badge variant={variantMap[status] || "secondary"} className="text-xs">
           {labelMap[status] || status}
+        </Badge>
+      );
+    },
+  }),
+
+  columnHelper.accessor("salaryType", {
+    header: "Salary Type",
+    cell: (info) => {
+      const salaryType = info.getValue();
+      const variantMap: Record<
+        string,
+        "default" | "secondary" | "destructive" | "outline"
+      > = {
+        MONTHLY: "default",
+        DAILY: "secondary",
+        HOURLY: "outline",
+      };
+
+      const labelMap: Record<string, string> = {
+        MONTHLY: "Monthly",
+        DAILY: "Daily",
+        HOURLY: "Hourly",
+      };
+
+      return (
+        <Badge variant={variantMap[salaryType] || "secondary"} className="text-xs">
+          {labelMap[salaryType] || salaryType}
         </Badge>
       );
     },

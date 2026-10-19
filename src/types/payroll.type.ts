@@ -7,6 +7,7 @@ export interface IPayroll {
   employee?: IEmployee;
   month: string;
   year: number;
+  salaryType: number;
   basicSalary: number;
   houseAllowance: number;
   medicalAllowance: number;
