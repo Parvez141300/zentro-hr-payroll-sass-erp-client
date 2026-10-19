@@ -16,6 +16,7 @@ import PayrollYearFilter from "./filters/PayrollYearFilter";
 import GeneratePayrollDialog from "./GeneratePayrollDialog";
 import PayrollDateFilter from "./filters/PayrollDateFilter";
 import PayrollTypeFilter from "./filters/PayrollTypeFilter";
+import ViewPayrollDialog from "./ViewPayrollDialog";
 
 const ManagePayrollTable = ({ queryString }: { queryString?: string }) => {
   const {
@@ -114,6 +115,15 @@ const ManagePayrollTable = ({ queryString }: { queryString?: string }) => {
           onEdit: handleEdit,
           onDelete: handleDelete,
         }}
+      />
+
+      {/* View payroll Dialog */}
+      <ViewPayrollDialog
+        open={!!viewingPayroll}
+        onOpenChange={(open) => {
+          if (!open) setViewingPayroll(null);
+        }}
+        payrollData={viewingPayroll}
       />
 
       {/* Delete payroll dialog */}

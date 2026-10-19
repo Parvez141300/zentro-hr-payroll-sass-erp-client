@@ -1,3 +1,4 @@
+import { ICompany } from "./company.type";
 import { IEmployee } from "./employee.type";
 import { PayrollStatus, SalaryType } from "./enums.type";
 
@@ -42,6 +43,7 @@ export interface IPayroll {
   companyId: string;
 
   employee: IEmployee;
+  company: ICompany;
 
   createdAt: Date;
   updatedAt: Date;
