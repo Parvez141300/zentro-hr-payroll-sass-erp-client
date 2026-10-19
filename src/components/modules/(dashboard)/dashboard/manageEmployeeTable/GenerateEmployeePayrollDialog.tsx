@@ -78,6 +78,7 @@ const GenerateEmployeePayrollDialog = ({
         }
       }
       mutate(value);
+      console.log('payroll data of employee', value);
     },
   });
 

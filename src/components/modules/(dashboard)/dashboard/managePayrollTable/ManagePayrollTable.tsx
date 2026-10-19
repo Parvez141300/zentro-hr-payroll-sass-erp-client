@@ -81,8 +81,8 @@ const ManagePayrollTable = ({ queryString }: { queryString?: string }) => {
             <>
               <PayrollStatusFilter />
               <PayrollMonthFilter />
-              <PayrollDateFilter />
               <PayrollYearFilter />
+              <PayrollDateFilter />
             </>
           ),
           onClearFilters: () =>
