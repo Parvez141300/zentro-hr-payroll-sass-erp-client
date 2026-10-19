@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { IEmployee } from "@/types/employee.type";
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import GenerateEmployeePayrollDialog from "./GenerateEmployeePayrollDialog";
+import { SalaryType } from "@/types/enums.type";
 
 const columnHelper = createColumnHelper<IEmployee>();
 
@@ -72,7 +73,13 @@ export const employeeColumn: ColumnDef<IEmployee, any>[] = [
     header: "Payroll",
     cell: (info) => {
       const employeeId = info.row.original.id;
-      return <GenerateEmployeePayrollDialog employeeId={employeeId} />;
+      const salaryType = info.row.original.salaryType;
+      return (
+        <GenerateEmployeePayrollDialog
+          employeeId={employeeId}
+          salaryType={salaryType as SalaryType}
+        />
+      );
     },
   }),
 ];
