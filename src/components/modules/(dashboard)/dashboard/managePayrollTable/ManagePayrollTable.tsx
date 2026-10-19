@@ -15,6 +15,7 @@ import PayrollMonthFilter from "./filters/PayrollMonthFilter";
 import PayrollYearFilter from "./filters/PayrollYearFilter";
 import GeneratePayrollDialog from "./GeneratePayrollDialog";
 import PayrollDateFilter from "./filters/PayrollDateFilter";
+import PayrollTypeFilter from "./filters/PayrollTypeFilter";
 
 const ManagePayrollTable = ({ queryString }: { queryString?: string }) => {
   const {
@@ -80,6 +81,7 @@ const ManagePayrollTable = ({ queryString }: { queryString?: string }) => {
           filters: (
             <>
               <PayrollStatusFilter />
+              <PayrollTypeFilter />
               <PayrollMonthFilter />
               <PayrollYearFilter />
               <PayrollDateFilter />
@@ -92,6 +94,7 @@ const ManagePayrollTable = ({ queryString }: { queryString?: string }) => {
               "year",
               "startDate",
               "endDate",
+              "salaryType",
             ]),
         }}
         pagination={
