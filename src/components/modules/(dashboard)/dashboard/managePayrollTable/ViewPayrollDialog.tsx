@@ -152,6 +152,10 @@ const ViewPayrollDialog = ({
                 <p className="text-sm text-gray-600">
                   Status: {getStatusLabel(payrollData.status)}
                 </p>
+                <p className="text-sm text-gray-600">
+                  Paid At:{" "}
+                  {payrollData.paidAt ? formatDate(payrollData.paidAt) : "N/A"}
+                </p>
               </div>
             </div>
 
