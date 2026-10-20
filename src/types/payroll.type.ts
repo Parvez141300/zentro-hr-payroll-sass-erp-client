@@ -50,9 +50,16 @@ export interface IPayroll {
 }
 
 export interface IGenerateEmployeePayroll {
-    employeeId: string;
-    month?: string;
-    year?: string;
-    periodStart?: Date | string;
-    periodEnd?: Date | string;
+  employeeId: string;
+  month?: string;
+  year?: string;
+  periodStart?: Date | string;
+  periodEnd?: Date | string;
+}
+
+export interface IUpdateEmployeePayroll {
+  month?: string;
+  year?: string;
+  periodStart?: Date | string;
+  periodEnd?: Date | string;
 }

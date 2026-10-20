@@ -1,6 +1,6 @@
 "use server";
 import { payrollService } from "@/services/payroll.service";
-import { IGenerateEmployeePayroll } from "@/types/payroll.type";
+import { IGenerateEmployeePayroll, IUpdateEmployeePayroll } from "@/types/payroll.type";
 
 export const getCompanyPayroll = async (queryString?: string) => {
     const response = await payrollService.getCompanyPayroll(queryString);
@@ -25,3 +25,9 @@ export const deleteCompanyPayroll = async (payrollId: string) => {
 
     return response;
 };
+
+export const updateEmployeePayroll = async (payrollId: string, payload: IUpdateEmployeePayroll) => {
+    const response = await payrollService.updateEmployeePayroll(payrollId, payload);
+
+    return response;
+}
