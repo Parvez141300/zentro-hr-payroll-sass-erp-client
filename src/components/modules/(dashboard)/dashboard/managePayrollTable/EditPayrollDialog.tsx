@@ -37,9 +37,9 @@ import { Field, FieldLabel } from "@/components/ui/field";
 // ✅ Import your reusable component
 import AppSelectField from "@/components/shared/form/AppSelectField";
 
-import { updatePayroll } from "@/actions/payroll.action";
+import { updateEmployeePayroll } from "@/actions/payroll.action";
 import { updatePayrollSchema } from "@/zod/payroll.validation";
-import { IPayroll } from "@/types/payroll.type";
+import { IPayroll, IUpdateEmployeePayroll } from "@/types/payroll.type";
 import { PayrollStatus } from "@/types/enums.type";
 
 interface EditPayrollDialogProps {
@@ -95,19 +95,22 @@ const EditPayrollDialog = ({
 
   // Mutation
   const { mutate, isPending } = useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: IUpdateEmployeePayroll) => {
       if (!payrollData) throw new Error("No payroll selected");
+      if (!data.periodStart || !data.periodEnd) {
+        throw new Error("Payroll period dates are required");
+      }
 
       const payload = {
-        month: data.month ? Number(data.month) : null,
-        year: data.year ? Number(data.year) : null,
-        periodStart: data.periodStart.toISOString(),
-        periodEnd: data.periodEnd.toISOString(),
+        month: data.month || undefined,
+        year: data.year || undefined,
+        periodStart: new Date(data.periodStart).toISOString(),
+        periodEnd: new Date(data.periodEnd).toISOString(),
         status: data.status,
-        paidAt: data.paidAt ? data.paidAt.toISOString() : null,
+        paidAt: data.paidAt,
       };
 
-      return await updatePayroll(payrollData.id, payload);
+      return await updateEmployeePayroll(payrollData.id, payload);
     },
     onSuccess: () => {
       toast.success("Payroll updated successfully!");
@@ -124,7 +127,6 @@ const EditPayrollDialog = ({
   // Options
   const statusOptions = [
     { value: PayrollStatus.DRAFT, label: "Draft" },
-    { value: PayrollStatus.GENERATED, label: "Generated" },
     { value: PayrollStatus.APPROVED, label: "Approved" },
     { value: PayrollStatus.PAID, label: "Paid" },
     { value: PayrollStatus.CANCELLED, label: "Cancelled" },
