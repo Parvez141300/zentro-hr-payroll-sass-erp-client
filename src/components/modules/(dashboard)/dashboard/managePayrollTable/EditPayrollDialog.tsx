@@ -34,13 +34,12 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import { Field, FieldLabel } from "@/components/ui/field";
 
-// ✅ Import your reusable component
 import AppSelectField from "@/components/shared/form/AppSelectField";
 
 import { updateEmployeePayroll } from "@/actions/payroll.action";
 import { updatePayrollSchema } from "@/zod/payroll.validation";
 import { IPayroll, IUpdateEmployeePayroll } from "@/types/payroll.type";
-import { PayrollStatus } from "@/types/enums.type";
+import { PayrollStatus, SalaryType } from "@/types/enums.type";
 
 interface EditPayrollDialogProps {
   payrollData: IPayroll | null;
@@ -55,26 +54,50 @@ const EditPayrollDialog = ({
 }: EditPayrollDialogProps) => {
   const queryClient = useQueryClient();
 
+  const employeeSalaryType =
+    payrollData?.employee?.salaryType || SalaryType.MONTHLY;
+
   // TanStack Form setup
   const form = useForm({
     defaultValues: {
+      // ✅ These perfectly match `z.string().nullable()`
       month: payrollData?.month?.toString() || null,
       year: payrollData?.year?.toString() || null,
+
+      // ✅ These perfectly match `z.date().nullable()`
       periodStart: payrollData?.periodStart
         ? new Date(payrollData.periodStart)
-        : new Date(),
+        : null,
       periodEnd: payrollData?.periodEnd
         ? new Date(payrollData.periodEnd)
-        : new Date(),
+        : null,
+
       status: payrollData?.status || PayrollStatus.DRAFT,
+
+      // ✅ This perfectly matches `z.date().nullable()`
       paidAt: payrollData?.paidAt ? new Date(payrollData.paidAt) : null,
     },
     validators: {
+      // ✅ Removed .required() here. Let the schema handle optional/required logic.
       onChange: updatePayrollSchema,
     },
     onSubmit: ({ value }) => {
       if (!payrollData) return;
-      mutate(value);
+
+      const payload: IUpdateEmployeePayroll = {
+        status: value.status,
+        paidAt: value.paidAt ? value.paidAt.toISOString() : undefined,
+      };
+
+      if (employeeSalaryType === SalaryType.MONTHLY) {
+        payload.month = value.month || undefined;
+        payload.year = value.year || undefined;
+      } else if (value.periodStart && value.periodEnd) {
+        payload.periodStart = value.periodStart.toISOString();
+        payload.periodEnd = value.periodEnd.toISOString();
+      }
+
+      mutate(payload);
     },
   });
 
@@ -95,21 +118,8 @@ const EditPayrollDialog = ({
 
   // Mutation
   const { mutate, isPending } = useMutation({
-    mutationFn: async (data: IUpdateEmployeePayroll) => {
+    mutationFn: async (payload: IUpdateEmployeePayroll) => {
       if (!payrollData) throw new Error("No payroll selected");
-      if (!data.periodStart || !data.periodEnd) {
-        throw new Error("Payroll period dates are required");
-      }
-
-      const payload = {
-        month: data.month || undefined,
-        year: data.year || undefined,
-        periodStart: new Date(data.periodStart).toISOString(),
-        periodEnd: new Date(data.periodEnd).toISOString(),
-        status: data.status,
-        paidAt: data.paidAt,
-      };
-
       return await updateEmployeePayroll(payrollData.id, payload);
     },
     onSuccess: () => {
@@ -124,7 +134,6 @@ const EditPayrollDialog = ({
 
   if (!payrollData) return null;
 
-  // Options
   const statusOptions = [
     { value: PayrollStatus.DRAFT, label: "Draft" },
     { value: PayrollStatus.APPROVED, label: "Approved" },
@@ -138,7 +147,7 @@ const EditPayrollDialog = ({
         <DialogHeader>
           <DialogTitle>Edit Payroll</DialogTitle>
           <DialogDescription>
-            Update the payroll period, status, and payment details.
+            Update the payroll status or adjust the period details.
           </DialogDescription>
         </DialogHeader>
 
@@ -150,8 +159,22 @@ const EditPayrollDialog = ({
           }}
           className="space-y-4 py-4"
         >
-          {/* 1. Status Field (Using AppSelectField) */}
-          <form.Field name="status">
+          {/* 1. Status Field */}
+          <form.Field
+            name="status"
+            listeners={{
+              onChange: ({ value }) => {
+                // ✅ If user selects PAID, automatically set paidAt to today
+                if (value === PayrollStatus.PAID && !form.state.values.paidAt) {
+                  form.setFieldValue("paidAt", new Date());
+                }
+                // ✅ If user changes away from PAID, clear the paidAt date
+                if (value !== PayrollStatus.PAID) {
+                  form.setFieldValue("paidAt", null);
+                }
+              },
+            }}
+          >
             {(field) => (
               <AppSelectField
                 field={field}
@@ -162,130 +185,137 @@ const EditPayrollDialog = ({
             )}
           </form.Field>
 
-          {/* 2. Period Date Range */}
-          <form.Field name="periodStart">
-            {(startField) => (
-              <form.Field name="periodEnd">
-                {(endField) => {
-                  const dateRange: DateRange | undefined = {
-                    from: startField.state.value,
-                    to: endField.state.value,
-                  };
+          {/* 2. Dynamic Fields based on Salary Type */}
 
-                  const handleRangeSelect = (range: DateRange | undefined) => {
-                    startField.handleChange(range?.from || new Date());
-                    endField.handleChange(range?.to || new Date());
-                  };
-
-                  return (
-                    <Field className="w-full">
-                      <FieldLabel htmlFor="date-picker-range">
-                        Payroll Period (Date Range) *
-                      </FieldLabel>
-                      <Popover>
-                        <PopoverTrigger
-                          render={
-                            <Button
-                              variant="outline"
-                              id="date-picker-range"
-                              className="w-full justify-start px-2.5 font-normal"
-                            >
-                              <CalendarIcon data-icon="inline-start" />
-                              {dateRange?.from ? (
-                                dateRange.to ? (
-                                  <>
-                                    {format(dateRange.from, "LLL dd, y")} -{" "}
-                                    {format(dateRange.to, "LLL dd, y")}
-                                  </>
-                                ) : (
-                                  format(dateRange.from, "LLL dd, y")
-                                )
-                              ) : (
-                                <span>Pick a date range</span>
-                              )}
-                            </Button>
-                          }
-                        />
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="range"
-                            defaultMonth={dateRange?.from}
-                            selected={dateRange}
-                            onSelect={handleRangeSelect}
-                            numberOfMonths={2}
-                          />
-                        </PopoverContent>
-                      </Popover>
-                    </Field>
-                  );
-                }}
+          {employeeSalaryType === SalaryType.MONTHLY && (
+            <div className="grid grid-cols-2 gap-4">
+              <form.Field name="month">
+                {(field) => (
+                  <div className="space-y-2">
+                    <Label>Month</Label>
+                    <Select
+                      value={field.state.value || undefined}
+                      onValueChange={(val) => field.handleChange(val)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select month" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {Array.from({ length: 12 }, (_, i) => {
+                          const val = (i + 1).toString();
+                          const label = new Date(0, i).toLocaleString("en-US", {
+                            month: "long",
+                          });
+                          return (
+                            <SelectItem key={val} value={val}>
+                              {label}
+                            </SelectItem>
+                          );
+                        })}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
               </form.Field>
-            )}
-          </form.Field>
 
-          {/* 3. Month & Year (Legacy/Backward compatibility) */}
-          <div className="grid grid-cols-2 gap-4">
-            <form.Field name="month">
-              {(field) => (
-                <div className="space-y-2">
-                  <Label>Month</Label>
-                  <Select
-                    value={field.state.value || undefined}
-                    onValueChange={(val) => field.handleChange(val)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select month" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Array.from({ length: 12 }, (_, i) => {
-                        const val = (i + 1).toString();
-                        const label = new Date(0, i).toLocaleString("en-US", {
-                          month: "long",
-                        });
-                        return (
-                          <SelectItem key={val} value={val}>
-                            {label}
-                          </SelectItem>
-                        );
-                      })}
-                    </SelectContent>
-                  </Select>
-                </div>
+              <form.Field name="year">
+                {(field) => (
+                  <div className="space-y-2">
+                    <Label>Year</Label>
+                    <Select
+                      value={field.state.value || undefined}
+                      onValueChange={(val) => field.handleChange(val)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select year" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {Array.from({ length: 5 }, (_, i) => {
+                          const val = (
+                            new Date().getFullYear() -
+                            2 +
+                            i
+                          ).toString();
+                          return (
+                            <SelectItem key={val} value={val}>
+                              {val}
+                            </SelectItem>
+                          );
+                        })}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+              </form.Field>
+            </div>
+          )}
+
+          {(employeeSalaryType === SalaryType.DAILY ||
+            employeeSalaryType === SalaryType.HOURLY) && (
+            <form.Field name="periodStart">
+              {(startField) => (
+                <form.Field name="periodEnd">
+                  {(endField) => {
+                    const dateRange: DateRange | undefined = {
+                      from: startField.state.value || undefined,
+                      to: endField.state.value || undefined,
+                    };
+
+                    const handleRangeSelect = (
+                      range: DateRange | undefined,
+                    ) => {
+                      startField.handleChange(range?.from || new Date());
+                      endField.handleChange(range?.to || new Date());
+                    };
+
+                    return (
+                      <Field className="w-full">
+                        <FieldLabel htmlFor="date-picker-range">
+                          Payroll Period (Date Range)
+                        </FieldLabel>
+                        <Popover>
+                          <PopoverTrigger
+                            render={
+                              <Button
+                                variant="outline"
+                                id="date-picker-range"
+                                className="w-full justify-start px-2.5 font-normal"
+                              >
+                                <CalendarIcon data-icon="inline-start" />
+                                {dateRange?.from ? (
+                                  dateRange.to ? (
+                                    <>
+                                      {format(dateRange.from, "LLL dd, y")} -{" "}
+                                      {format(dateRange.to, "LLL dd, y")}
+                                    </>
+                                  ) : (
+                                    format(dateRange.from, "LLL dd, y")
+                                  )
+                                ) : (
+                                  <span>Pick a date range</span>
+                                )}
+                              </Button>
+                            }
+                          />
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="range"
+                              defaultMonth={dateRange?.from}
+                              selected={dateRange}
+                              onSelect={handleRangeSelect}
+                              numberOfMonths={2}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      </Field>
+                    );
+                  }}
+                </form.Field>
               )}
             </form.Field>
+          )}
 
-            <form.Field name="year">
-              {(field) => (
-                <div className="space-y-2">
-                  <Label>Year</Label>
-                  <Select
-                    value={field.state.value || undefined}
-                    onValueChange={(val) => field.handleChange(val)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select year" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Array.from({ length: 5 }, (_, i) => {
-                        const val = (
-                          new Date().getFullYear() -
-                          2 +
-                          i
-                        ).toString();
-                        return (
-                          <SelectItem key={val} value={val}>
-                            {val}
-                          </SelectItem>
-                        );
-                      })}
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
-            </form.Field>
-          </div>
-
-          {/* 4. Paid At Date (Only if Status is PAID) */}
+          {/* 3. Paid At Date (Only if Status is PAID) */}
           {form.state.values.status === PayrollStatus.PAID && (
             <form.Field name="paidAt">
               {(field) => (
@@ -316,6 +346,13 @@ const EditPayrollDialog = ({
                       />
                     </PopoverContent>
                   </Popover>
+                  {/* Show error if validation fails */}
+                  {field.state.meta.isTouched &&
+                    field.state.meta.errors.length > 0 && (
+                      <p className="text-sm text-red-500 mt-1">
+                        {field.state.meta.errors.join(", ")}
+                      </p>
+                    )}
                 </Field>
               )}
             </form.Field>

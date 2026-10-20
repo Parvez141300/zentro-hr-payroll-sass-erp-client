@@ -60,8 +60,8 @@ export interface IGenerateEmployeePayroll {
 export interface IUpdateEmployeePayroll {
   month?: string | null;    // ✅ Added | null
   year?: string | null;     // ✅ Added | null
-  periodStart?: Date | string;     
-  periodEnd?: Date | string;       
+  periodStart?: Date | string | null;
+  periodEnd?: Date | string | null;
   status?: PayrollStatus;
   paidAt?: Date | string | null;   // ✅ Added | null
 }
