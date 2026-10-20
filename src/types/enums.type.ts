@@ -47,7 +47,6 @@ export enum LeaveStatus {
 
 export enum PayrollStatus {
   DRAFT = "DRAFT",
-  GENERATED = "GENERATED",
   APPROVED = "APPROVED",
   PAID = "PAID",
   CANCELLED = "CANCELLED",
