@@ -18,19 +18,15 @@ export const generatePayrollSchema = z.object({
 export type GeneratePayrollFormValues = z.infer<typeof generatePayrollSchema>;
 
 export const updatePayrollSchema = z.object({
-  // Month and Year are strings in the form, but can be empty/null
-  month: z.string().nullable(),
-  year: z.string().nullable(),
+  // Month and Year are optional
+  month: z.string().nullable().optional(),
+  year: z.string().nullable().optional(),
 
-  // Date Range is required for all payrolls
-  periodStart: z.date({
-    error: "Start date is required",
-  }),
-  periodEnd: z.date({
-    error: "End date is required",
-  }),
+  // Dates are optional to allow updating JUST the status
+  periodStart: z.date().optional(),
+  periodEnd: z.date().optional(),
 
-  // Status must be one of the PayrollStatus enums
+  // Status is required
   status: z.enum([
     PayrollStatus.APPROVED,
     PayrollStatus.PAID,
@@ -38,28 +34,28 @@ export const updatePayrollSchema = z.object({
     PayrollStatus.DRAFT,
   ]),
 
-  // PaidAt is only required if the status is PAID
-  paidAt: z.date().nullable(),
+  // PaidAt is optional
+  paidAt: z.date().nullable().optional(),
 })
-  .refine((data) => {
-    // Custom validation: End date cannot be before Start date
-    if (data.periodStart && data.periodEnd) {
-      return data.periodEnd >= data.periodStart;
-    }
-    return true;
-  }, {
-    message: "End date cannot be before the start date",
-    path: ["periodEnd"], // Attaches the error to the periodEnd field
-  })
-  .refine((data) => {
-    // Custom validation: If status is PAID, paidAt must be set
-    if (data.status === PayrollStatus.PAID) {
-      return data.paidAt !== null && data.paidAt !== undefined;
-    }
-    return true;
-  }, {
-    message: "Payment date is required when status is PAID",
-    path: ["paidAt"], // Attaches the error to the paidAt field
-  });
+.refine((data) => {
+  // If both dates are provided, ensure End is not before Start
+  if (data.periodStart && data.periodEnd) {
+    return data.periodEnd >= data.periodStart;
+  }
+  return true;
+}, {
+  message: "End date cannot be before the start date",
+  path: ["periodEnd"],
+})
+.refine((data) => {
+  // If status is PAID, paidAt is required
+  if (data.status === PayrollStatus.PAID) {
+    return !!data.paidAt;
+  }
+  return true;
+}, {
+  message: "Payment date is required when status is PAID",
+  path: ["paidAt"],
+});
 
 export type UpdatePayrollFormValues = z.infer<typeof updatePayrollSchema>;
