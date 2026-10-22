@@ -1,5 +1,6 @@
 import SuperAdminAttendanceStats from "@/components/modules/(dashboard)/dashboard/statistics/SuperAdminAttendanceStats";
 import SuperAdminLeaveStats from "@/components/modules/(dashboard)/dashboard/statistics/SuperAdminLeaveStats";
+import SuperAdminPayrollStats from "@/components/modules/(dashboard)/dashboard/statistics/SuperAdminPayrollStats";
 import { statsService } from "@/services/stats.service";
 import {
   dehydrate,
@@ -29,8 +30,9 @@ const SuperAdminDashboard = async ({
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <SuperAdminAttendanceStats queryString={queryString} />
-      <div className="mt-10">
+      <div className="mt-10 space-y-10">
         <SuperAdminLeaveStats />
+        <SuperAdminPayrollStats />
       </div>
     </HydrationBoundary>
   );
