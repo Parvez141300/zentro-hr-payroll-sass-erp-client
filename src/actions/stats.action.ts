@@ -1,3 +1,5 @@
+"use server";
+
 import { statsService } from "@/services/stats.service"
 
 export const getAttendanceStats = async (queryString?: string) => {

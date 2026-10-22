@@ -1,5 +1,10 @@
+import SuperAdminAttendanceStats from "@/components/modules/(dashboard)/dashboard/statistics/SuperAdminAttendanceStats";
 import { statsService } from "@/services/stats.service";
-import { QueryClient } from "@tanstack/react-query";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 import React from "react";
 
 const SuperAdminDashboard = async ({
@@ -7,20 +12,24 @@ const SuperAdminDashboard = async ({
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
-    const queryParamsObject = await searchParams;
-  
-    const queryString = Object.keys(queryParamsObject)
-      .map((key) => `${key}=${queryParamsObject[key]}`)
-      .join("&");
-  
-    const queryClient = new QueryClient();
-  
-    await queryClient.prefetchQuery({
-      queryKey: ["super-admin-attendance-stats", queryString],
-      queryFn: () => statsService.getAttendanceStats(queryString),
-    });
+  const queryParamsObject = await searchParams;
 
-  return <div>SuperAdminDashboard</div>;
+  const queryString = Object.keys(queryParamsObject)
+    .map((key) => `${key}=${queryParamsObject[key]}`)
+    .join("&");
+
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ["super-admin-attendance-stats", queryString],
+    queryFn: () => statsService.getAttendanceStats(queryString),
+  });
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <SuperAdminAttendanceStats queryString={queryString} />
+    </HydrationBoundary>
+  );
 };
 
 export default SuperAdminDashboard;
