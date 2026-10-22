@@ -1,7 +1,7 @@
 import { httpServer } from "@/lib/http/httpServer"
 
-const getAttendanceStats = async (month?: number, year?: number) => {
-    const result = await httpServer.get(`/statistics?month=${month}&year=${year}`);
+const getAttendanceStats = async (queryString?: string) => {
+    const result = await httpServer.get(`/statistics?${queryString}`);
 
     return result;
 }

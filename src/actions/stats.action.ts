@@ -1,7 +1,7 @@
 import { statsService } from "@/services/stats.service"
 
-export const getAttendanceStats = async (month?: number, year?: number) => {
-    const result = await statsService.getAttendanceStats(month, year);
+export const getAttendanceStats = async (queryString?: string) => {
+    const result = await statsService.getAttendanceStats(queryString);
 
     return result;
 }
