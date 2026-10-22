@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useRouter, useSearchParams, usePathname } from "next/navigation"; // ✅ Import Next.js navigation hooks
 import { format } from "date-fns";
 import { Users, CheckCircle2, XCircle, TrendingUp } from "lucide-react";
 import {
@@ -97,15 +98,19 @@ const SuperAdminAttendanceStats = ({
 }: {
   queryString: string;
 }) => {
-  const currentYear = new Date().getFullYear();
-  const [selectedMonth, setSelectedMonth] = useState<string>("");
-  const [selectedYear, setSelectedYear] = useState<string>(
-    currentYear.toString(),
-  );
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams(); // ✅ Get current search params
 
-  // Department Pie Chart Active State
-  const [activeDeptName, setActiveDeptName] = useState<string>("");
+  // ✅ Read month and year directly from URL
+  const selectedMonth = searchParams.get("month") || "";
+  const selectedYear =
+    searchParams.get("year") || new Date().getFullYear().toString();
 
+  // Department Pie Chart Active State (Local State, not in URL)
+  const [activeDeptName, setActiveDeptName] = React.useState<string>("");
+
+  // Build the query string for the API
   const activeQuery = useMemo(() => {
     const params = new URLSearchParams(queryString);
     if (selectedMonth) params.set("month", selectedMonth);
@@ -120,8 +125,21 @@ const SuperAdminAttendanceStats = ({
 
   const stats = statsResponse?.data as StatsData | undefined;
 
-  // ✅ FIX 1: Remove useEffect and use useMemo directly
-  // If activeDeptName is empty, fallback to the first department in the list
+  // ✅ URL Update Handler
+  const handleFilterChange = (key: "month" | "year", value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (value) {
+      params.set(key, value);
+    } else {
+      params.delete(key);
+    }
+
+    // Push the new URL (this triggers a re-render and re-fetch)
+    router.push(`${pathname}?${params.toString()}`);
+  };
+
+  // Fallback logic for Department
   const currentDeptName = useMemo(() => {
     if (activeDeptName) return activeDeptName;
     if (stats && stats.departmentWise.length > 0) {
@@ -130,7 +148,6 @@ const SuperAdminAttendanceStats = ({
     return "";
   }, [activeDeptName, stats]);
 
-  // Get the active department data for the Pie Chart
   const activeDeptData = useMemo(() => {
     if (!stats) return null;
     return (
@@ -140,7 +157,6 @@ const SuperAdminAttendanceStats = ({
     );
   }, [stats, currentDeptName]);
 
-  // Pie Data for Department
   const deptPieData = useMemo(() => {
     if (!activeDeptData) return [];
     return [
@@ -167,7 +183,6 @@ const SuperAdminAttendanceStats = ({
     ].filter((item) => item.value > 0);
   }, [activeDeptData]);
 
-  // Pie Shape Renderer
   const activeIndex = useMemo(() => {
     return deptPieData.findIndex((item) => item.name === "present");
   }, [deptPieData]);
@@ -206,6 +221,7 @@ const SuperAdminAttendanceStats = ({
     { value: "12", label: "December" },
   ];
 
+  const currentYear = new Date().getFullYear();
   const yearOptions = Array.from({ length: 5 }, (_, i) => {
     const y = (currentYear - 2 + i).toString();
     return { value: y, label: y };
@@ -231,10 +247,10 @@ const SuperAdminAttendanceStats = ({
           </p>
         </div>
         <div className="flex items-center gap-2">
-          {/* ✅ FIX 2: Handle null in onValueChange */}
+          {/* ✅ Month Filter (Updates URL) */}
           <Select
             value={selectedMonth}
-            onValueChange={(val) => setSelectedMonth(val || "")}
+            onValueChange={(val) => handleFilterChange("month", val || "")}
           >
             <SelectTrigger className="w-35">
               <SelectValue placeholder="All Months" />
@@ -249,10 +265,11 @@ const SuperAdminAttendanceStats = ({
             </SelectContent>
           </Select>
 
+          {/* ✅ Year Filter (Updates URL) */}
           <Select
             value={selectedYear}
             onValueChange={(val) =>
-              setSelectedYear(val || currentYear.toString())
+              handleFilterChange("year", val || currentYear.toString())
             }
           >
             <SelectTrigger className="w-25">
@@ -347,7 +364,7 @@ const SuperAdminAttendanceStats = ({
           </CardContent>
         </Card>
 
-        {/* ✅ DEPARTMENT WISE PIE CHART */}
+        {/* DEPARTMENT WISE PIE CHART */}
         <Card className="lg:col-span-3 flex flex-col" data-chart="pie-dept">
           <ChartStyle id="pie-dept" config={deptChartConfig} />
           <CardHeader className="flex-row items-start space-y-0 pb-0">
