@@ -13,3 +13,9 @@ export const getLeaveStats = async () => {
 
     return result;
 }
+
+export const getPayrollStats = async (queryString?: string) => {
+    const result = await statsService.getPayrollStats(queryString);
+
+    return result;
+}
