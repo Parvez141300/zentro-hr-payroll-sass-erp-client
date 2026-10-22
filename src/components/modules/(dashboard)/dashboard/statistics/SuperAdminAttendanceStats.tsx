@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useRouter, useSearchParams, usePathname } from "next/navigation"; // ✅ Import Next.js navigation hooks
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { format } from "date-fns";
 import { Users, CheckCircle2, XCircle, TrendingUp } from "lucide-react";
 import {
@@ -41,7 +41,7 @@ import { getAttendanceStats } from "@/actions/stats.action";
 import { Skeleton } from "@/components/ui/skeleton";
 
 // ============================================
-// TYPES & CONFIG
+// TYPES
 // ============================================
 interface MonthlyBreakdown {
   month: number;
@@ -75,15 +75,17 @@ interface StatsData {
   monthlyBreakdown: MonthlyBreakdown[];
 }
 
-// Bar Chart Config
+// ============================================
+// CHART CONFIG
+// ============================================
 const barChartConfig = {
   present: { label: "Present", color: "var(--chart-1)" },
   late: { label: "Late", color: "var(--chart-2)" },
   halfDay: { label: "Half Day", color: "var(--chart-3)" },
 } satisfies ChartConfig;
 
-// Department Selector Config
-const deptChartConfig = {
+// Department Pie Config (for the internal statuses)
+const deptStatusConfig = {
   present: { label: "Present", color: "var(--chart-1)" },
   absent: { label: "Absent", color: "var(--chart-5)" },
   late: { label: "Late", color: "var(--chart-2)" },
@@ -100,17 +102,25 @@ const SuperAdminAttendanceStats = ({
 }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams(); // ✅ Get current search params
+  const searchParams = useSearchParams();
 
-  // ✅ Read month and year directly from URL
+  // URL State
   const selectedMonth = searchParams.get("month") || "";
-  const selectedYear =
-    searchParams.get("year") || new Date().getFullYear().toString();
+  const currentYear = new Date().getFullYear();
+  const selectedYear = searchParams.get("year") || currentYear.toString();
 
-  // Department Pie Chart Active State (Local State, not in URL)
-  const [activeDeptName, setActiveDeptName] = React.useState<string>("");
+  // Local state for selected department (Dropdown)
+  const [activeDeptName, setActiveDeptName] = useState<string>("");
 
-  // Build the query string for the API
+  // Update URL on filter change
+  const handleFilterChange = (key: "month" | "year", value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (value) params.set(key, value);
+    else params.delete(key);
+    router.push(`${pathname}?${params.toString()}`);
+  };
+
+  // Build API Query
   const activeQuery = useMemo(() => {
     const params = new URLSearchParams(queryString);
     if (selectedMonth) params.set("month", selectedMonth);
@@ -125,21 +135,7 @@ const SuperAdminAttendanceStats = ({
 
   const stats = statsResponse?.data as StatsData | undefined;
 
-  // ✅ URL Update Handler
-  const handleFilterChange = (key: "month" | "year", value: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-
-    if (value) {
-      params.set(key, value);
-    } else {
-      params.delete(key);
-    }
-
-    // Push the new URL (this triggers a re-render and re-fetch)
-    router.push(`${pathname}?${params.toString()}`);
-  };
-
-  // Fallback logic for Department
+  // Set default department if none selected
   const currentDeptName = useMemo(() => {
     if (activeDeptName) return activeDeptName;
     if (stats && stats.departmentWise.length > 0) {
@@ -148,6 +144,7 @@ const SuperAdminAttendanceStats = ({
     return "";
   }, [activeDeptName, stats]);
 
+  // Get active department data
   const activeDeptData = useMemo(() => {
     if (!stats) return null;
     return (
@@ -157,6 +154,7 @@ const SuperAdminAttendanceStats = ({
     );
   }, [stats, currentDeptName]);
 
+  // Build Pie Data for the selected department
   const deptPieData = useMemo(() => {
     if (!activeDeptData) return [];
     return [
@@ -180,16 +178,16 @@ const SuperAdminAttendanceStats = ({
         value: activeDeptData.halfDay || 0,
         fill: "var(--color-halfDay)",
       },
-    ].filter((item) => item.value > 0);
+    ].filter((item) => item.value > 0); // Only show slices with data > 0
   }, [activeDeptData]);
 
-  const activeIndex = useMemo(() => {
-    return deptPieData.findIndex((item) => item.name === "present");
-  }, [deptPieData]);
+  // Track active slice for the pop-out effect
+  const [activePieIndex, setActivePieIndex] = useState(0);
 
+  // Render Pie Shape
   const renderPieShape = React.useCallback(
     ({ index, outerRadius = 0, ...props }: PieSectorShapeProps) => {
-      if (index === activeIndex) {
+      if (index === activePieIndex) {
         return (
           <g>
             <Sector {...props} outerRadius={outerRadius + 10} />
@@ -203,7 +201,7 @@ const SuperAdminAttendanceStats = ({
       }
       return <Sector {...props} outerRadius={outerRadius} />;
     },
-    [activeIndex],
+    [activePieIndex],
   );
 
   const monthOptions = [
@@ -221,7 +219,6 @@ const SuperAdminAttendanceStats = ({
     { value: "12", label: "December" },
   ];
 
-  const currentYear = new Date().getFullYear();
   const yearOptions = Array.from({ length: 5 }, (_, i) => {
     const y = (currentYear - 2 + i).toString();
     return { value: y, label: y };
@@ -247,7 +244,6 @@ const SuperAdminAttendanceStats = ({
           </p>
         </div>
         <div className="flex items-center gap-2">
-          {/* ✅ Month Filter (Updates URL) */}
           <Select
             value={selectedMonth}
             onValueChange={(val) => handleFilterChange("month", val || "")}
@@ -265,7 +261,6 @@ const SuperAdminAttendanceStats = ({
             </SelectContent>
           </Select>
 
-          {/* ✅ Year Filter (Updates URL) */}
           <Select
             value={selectedYear}
             onValueChange={(val) =>
@@ -364,16 +359,18 @@ const SuperAdminAttendanceStats = ({
           </CardContent>
         </Card>
 
-        {/* DEPARTMENT WISE PIE CHART */}
+        {/* ✅ DEPARTMENT WISE PIE CHART WITH DROPDOWN */}
         <Card className="lg:col-span-3 flex flex-col" data-chart="pie-dept">
-          <ChartStyle id="pie-dept" config={deptChartConfig} />
+          <ChartStyle id="pie-dept" config={deptStatusConfig} />
           <CardHeader className="flex-row items-start space-y-0 pb-0">
             <div className="grid gap-1">
               <CardTitle>Department Breakdown</CardTitle>
               <CardDescription>
-                Attendance distribution by department
+                Attendance distribution by status
               </CardDescription>
             </div>
+
+            {/* Department Selector Dropdown */}
             <Select
               value={currentDeptName}
               onValueChange={(val) => setActiveDeptName(val || "")}
@@ -404,7 +401,7 @@ const SuperAdminAttendanceStats = ({
             {deptPieData.length > 0 ? (
               <ChartContainer
                 id="pie-dept"
-                config={deptChartConfig}
+                config={deptStatusConfig}
                 className="mx-auto aspect-square max-h-75"
               >
                 <PieChart>
@@ -419,12 +416,13 @@ const SuperAdminAttendanceStats = ({
                     innerRadius={60}
                     strokeWidth={5}
                     shape={renderPieShape}
+                    onMouseEnter={(_, index) => setActivePieIndex(index)}
                   >
                     <Label
                       content={({ viewBox }) => {
                         if (viewBox && "cx" in viewBox && "cy" in viewBox) {
                           const activeItem =
-                            deptPieData[activeIndex] || deptPieData[0];
+                            deptPieData[activePieIndex] || deptPieData[0];
                           return (
                             <text
                               x={viewBox.cx}
