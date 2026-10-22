@@ -7,3 +7,9 @@ export const getAttendanceStats = async (queryString?: string) => {
 
     return result;
 }
+
+export const getLeaveStats = async () => {
+    const result = await statsService.getLeaveStats();
+
+    return result;
+}
