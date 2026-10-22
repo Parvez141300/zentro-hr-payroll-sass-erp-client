@@ -6,6 +6,14 @@ const getAttendanceStats = async (queryString?: string) => {
     return result;
 }
 
+const getLeaveStats = async () => {
+    const result = await httpServer.get(`/api/v1/statistics/leave/stats`);
+
+    return result;
+}
+
+
 export const statsService = {
     getAttendanceStats,
+    getLeaveStats,
 }
