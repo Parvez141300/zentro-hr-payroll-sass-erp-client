@@ -1,6 +1,10 @@
+import { QueryClient } from '@tanstack/react-query'
 import React from 'react'
 
-const SuperAdminDashboard = () => {
+const SuperAdminDashboard = async() => {
+    const queryClient = new QueryClient()
+
+    
   return (
     <div>SuperAdminDashboard</div>
   )
