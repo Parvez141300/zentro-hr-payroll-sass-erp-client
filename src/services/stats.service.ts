@@ -1,5 +1,6 @@
 import { httpServer } from "@/lib/http/httpServer"
 
+
 const getAttendanceStats = async (queryString?: string) => {
     const result = await httpServer.get(`/api/v1/statistics/attendance/stats?${queryString}`);
 
@@ -12,8 +13,15 @@ const getLeaveStats = async () => {
     return result;
 }
 
+const getPayrollStats = async (queryString?: string) => {
+    const result = await httpServer.get(`/api/v1/statistics/payroll/stats?${queryString}`);
+
+    return result;
+}
+
 
 export const statsService = {
     getAttendanceStats,
     getLeaveStats,
+    getPayrollStats,
 }
