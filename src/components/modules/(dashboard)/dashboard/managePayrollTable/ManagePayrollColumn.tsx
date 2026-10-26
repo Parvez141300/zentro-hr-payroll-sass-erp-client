@@ -98,7 +98,7 @@ export const payrollColumn: ColumnDef<IPayroll, any>[] = [
     },
   }),
 
-  columnHelper.accessor("paymentDate", {
+  columnHelper.accessor("paidAt", {
     header: "Payment Date",
     cell: (info) => {
       const date = info.getValue();
