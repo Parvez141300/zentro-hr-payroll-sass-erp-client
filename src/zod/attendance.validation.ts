@@ -5,14 +5,34 @@ import z from "zod";
 export const markAttendanceSchema = z.object({
     employeeId: z.string().min(1, "Employee ID is required"),
     date: z.string().min(1, "Date is required"),
-    status: z.enum([AttendanceStatus.PRESENT, AttendanceStatus.ABSENT, AttendanceStatus.LATE, AttendanceStatus.HALF_DAY] as const),
+    status: z.enum(
+        [
+            AttendanceStatus.PENDING,
+            AttendanceStatus.PRESENT,
+            AttendanceStatus.ABSENT,
+            AttendanceStatus.LATE,
+            AttendanceStatus.HALF_DAY,
+            AttendanceStatus.HOLIDAY,
+            AttendanceStatus.WEEKEND,
+        ] as const
+    ),
     checkIn: z.string().optional(),
     checkOut: z.string().optional(),
     note: z.string().optional(),
 });
 
 export const updateAttendanceSchema = z.object({
-    status: z.enum([AttendanceStatus.PRESENT, AttendanceStatus.ABSENT, AttendanceStatus.LATE, AttendanceStatus.HALF_DAY] as const),
+    status: z.enum(
+        [
+            AttendanceStatus.PENDING,
+            AttendanceStatus.PRESENT,
+            AttendanceStatus.ABSENT,
+            AttendanceStatus.LATE,
+            AttendanceStatus.HALF_DAY,
+            AttendanceStatus.HOLIDAY,
+            AttendanceStatus.WEEKEND,
+        ] as const
+    ),
     checkIn: z.string().optional(),
     checkOut: z.string().optional(),
     note: z.string().optional(),

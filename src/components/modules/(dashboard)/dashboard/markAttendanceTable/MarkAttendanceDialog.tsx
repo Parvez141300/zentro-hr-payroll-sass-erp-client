@@ -71,7 +71,7 @@ const MarkAttendanceDialog = ({ employeeId }: MarkAttendanceDialogProps) => {
     defaultValues: {
       employeeId: employeeId,
       date: new Date().toISOString(),
-      status: AttendanceStatus.PRESENT as AttendanceStatus,
+      status: AttendanceStatus.PENDING as AttendanceStatus,
       checkIn: "",
       checkOut: "",
       note: "",
@@ -105,10 +105,13 @@ const MarkAttendanceDialog = ({ employeeId }: MarkAttendanceDialogProps) => {
 
   // Status options
   const statusOptions = [
+    { value: AttendanceStatus.PENDING, label: "Pending" },
     { value: AttendanceStatus.PRESENT, label: "Present" },
     { value: AttendanceStatus.ABSENT, label: "Absent" },
     { value: AttendanceStatus.LATE, label: "Late" },
     { value: AttendanceStatus.HALF_DAY, label: "Half Day" },
+    { value: AttendanceStatus.HOLIDAY, label: "Holiday" },
+    { value: AttendanceStatus.WEEKEND, label: "Weekend" },
   ];
 
   return (
