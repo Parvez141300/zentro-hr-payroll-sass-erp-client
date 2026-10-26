@@ -283,7 +283,9 @@ const ViewAttendanceDialog = ({
                 <span>Approved By</span>
               </div>
               <p className="text-sm font-medium">
-                {attendanceData.approvedBy ? "Yes" : "Not Approved Yet"}
+                {attendanceData.approvedBy
+                  ? attendanceData.approvedBy || "Yes"
+                  : "Not Approved Yet"}
               </p>
             </div>
 
