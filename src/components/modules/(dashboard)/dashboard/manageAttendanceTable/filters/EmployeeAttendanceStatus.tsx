@@ -44,17 +44,20 @@ const EmployeeAttendanceStatusFilter = () => {
 
   // Attendance status options
   const attendanceStatusOptions = [
+    { value: AttendanceStatus.PENDING, label: "Pending" },
     { value: AttendanceStatus.PRESENT, label: "Present" },
     { value: AttendanceStatus.ABSENT, label: "Absent" },
     { value: AttendanceStatus.LATE, label: "Late" },
     { value: AttendanceStatus.HALF_DAY, label: "Half Day" },
+    { value: AttendanceStatus.HOLIDAY, label: "Haliday" },
+    { value: AttendanceStatus.WEEKEND, label: "Weekend" },
   ];
 
   return (
     <div className="max-w-50">
       <Select
         value={selectedStatus}
-        onValueChange={(value: string) => handleStatusChange(value as string)}
+        onValueChange={(value) => handleStatusChange(value ?? "")}
       >
         <SelectTrigger className="w-full">
           <SelectValue placeholder="All Status" />
