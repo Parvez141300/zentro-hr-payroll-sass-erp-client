@@ -24,6 +24,7 @@ import {
   AlertCircleIcon,
   TimerIcon,
   LucideClock,
+  LoaderCircle,
 } from "lucide-react";
 import { IAttendance } from "@/types/attendance.type";
 import { useState } from "react";
@@ -61,6 +62,7 @@ const ViewAttendanceDialog = ({
       string,
       "default" | "secondary" | "destructive" | "outline"
     > = {
+      PENDING: "secondary",
       PRESENT: "default",
       ABSENT: "destructive",
       LATE: "outline",
@@ -83,6 +85,8 @@ const ViewAttendanceDialog = ({
   // Get status icon
   const getStatusIcon = (status: string) => {
     switch (status) {
+      case AttendanceStatus.PENDING:
+        return <LoaderCircle className="h-4 w-4 text-blue-500" />;
       case AttendanceStatus.PRESENT:
         return <CheckCircleIcon className="h-4 w-4 text-green-500" />;
       case AttendanceStatus.ABSENT:
@@ -90,7 +94,7 @@ const ViewAttendanceDialog = ({
       case AttendanceStatus.LATE:
         return <AlertCircleIcon className="h-4 w-4 text-yellow-500" />;
       case AttendanceStatus.HALF_DAY:
-        return <TimerIcon className="h-4 w-4 text-green-500" />;
+        return <TimerIcon className="h-4 w-4 text-orange-500" />;
       default:
         return null;
     }
