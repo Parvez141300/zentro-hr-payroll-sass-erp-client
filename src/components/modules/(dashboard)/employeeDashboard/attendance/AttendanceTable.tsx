@@ -8,6 +8,7 @@ import React, { useState } from "react";
 import { employeeAttendanceColumn } from "./EmployeeAttendanceColumn";
 import EmployeeAttendanceDateRangeFilter from "../../dashboard/manageAttendanceTable/filters/EmployeeAttendanceDateRangeFilter";
 import EmployeeAttendanceStatusFilter from "../../dashboard/manageAttendanceTable/filters/EmployeeAttendanceStatus";
+import ViewAttendanceDialog from "../../dashboard/manageAttendanceTable/ViewAttendanceDialog";
 
 const AttendanceTable = ({ queryString }: { queryString: string }) => {
   const {
@@ -35,6 +36,11 @@ const AttendanceTable = ({ queryString }: { queryString: string }) => {
 
   const [viewingAttendance, setViewingAttendance] =
     useState<IAttendance | null>(null);
+
+  const handleView = (attendance: IAttendance) => {
+    console.log("view attendance", attendance);
+    setViewingAttendance(attendance);
+  };
 
   return (
     <>
@@ -75,7 +81,16 @@ const AttendanceTable = ({ queryString }: { queryString: string }) => {
             : undefined
         }
         actions={{
-          // onView: handleView,
+          onView: handleView,
+        }}
+      />
+
+      {/* view dialog */}
+      <ViewAttendanceDialog
+        attendanceData={viewingAttendance}
+        open={!!viewingAttendance}
+        onOpenChange={(open) => {
+          if (!open) setViewingAttendance(null);
         }}
       />
     </>
