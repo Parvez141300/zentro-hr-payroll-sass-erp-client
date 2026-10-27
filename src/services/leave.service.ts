@@ -14,6 +14,12 @@ const applyForEmplyeeLeave = async (payload: any) => {
         return result;
 }
 
+const updateForEmployeeLeave = async (leaveId:string, payload: any) => {
+    const result = await httpServer.patch(`/api/v1/leaves/${leaveId}`, payload);
+
+    return result;
+}
+
 const deleteEmployeeLeave = async (leaveId: string) => {
     const result = await httpServer.delete(`/api/v1/leaves/${leaveId}`);
 
@@ -24,4 +30,5 @@ export const leaveService = {
     getCompanyLeaves,
     deleteEmployeeLeave,
     applyForEmplyeeLeave,
+    updateForEmployeeLeave,
 }

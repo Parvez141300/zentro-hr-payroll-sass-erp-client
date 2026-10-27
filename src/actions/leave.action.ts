@@ -15,6 +15,12 @@ export const applyForEmployeeLeave = async (payload: any) => {
     return result;
 }
 
+export const updateForEmployeeLeave = async (leaveId: string, payload: any) => {
+    const result = await leaveService.updateForEmployeeLeave(leaveId, payload);
+
+    return result;
+}
+
 export const deleteEmployeeLeave = async (leaveId: string) => {
     const result = await leaveService.deleteEmployeeLeave(leaveId);
 
