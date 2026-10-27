@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useEffect, useRef } from "react";
 import {
   formatBytes,
   useFileUpload,
@@ -8,7 +9,6 @@ import {
 } from "@/hooks/use-file-upload";
 import { Alert, AlertDescription, AlertTitle } from "@/components/reui/alert";
 
-// ✅ Fixed import path
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { CircleAlertIcon, FileIcon, PlusIcon, XIcon } from "lucide-react";
@@ -22,12 +22,11 @@ interface FileUploadCompactProps {
   onFilesChange?: (files: FileWithPreview[]) => void;
 }
 
-// ✅ Exported as FileUpload so it matches your ApplyForLeave import
 export function FileUpload({
-  maxFiles = 3,
-  maxSize = 2 * 1024 * 1024, // 2MB
-  accept = "image/*",
-  multiple = true,
+  maxFiles = 1,
+  maxSize = 5 * 1024 * 1024,
+  accept = "image/*,application/pdf,.doc,.docx,.xls,.xlsx",
+  multiple = false,
   className,
   onFilesChange,
 }: FileUploadCompactProps) {
@@ -47,23 +46,33 @@ export function FileUpload({
     maxSize,
     accept,
     multiple,
-    onFilesChange,
   });
+
+  const onFilesChangeRef = useRef(onFilesChange);
+
+  useEffect(() => {
+    onFilesChangeRef.current = onFilesChange;
+  }, [onFilesChange]);
+
+  useEffect(() => {
+    onFilesChangeRef.current?.(files);
+  }, [files]); // ✅ Removed eslint-disable directive
 
   const isImage = (file: File | FileMetadata) => {
     const type = file instanceof File ? file.type : file.type;
     return type.startsWith("image/");
   };
 
+  const isUploadDisabled = files.length >= maxFiles;
+
   return (
     <div className={cn("w-full", className)}>
-      {/* Compact Upload Area */}
       <div
         className={cn(
           "border-border rounded-lg flex items-center gap-3 border border-dashed p-4 transition-colors",
           isDragging
             ? "border-primary bg-primary/5"
-            : "border-muted-foreground/25 hover:border-muted-foreground/50"
+            : "border-muted-foreground/25 hover:border-muted-foreground/50",
         )}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
@@ -72,22 +81,21 @@ export function FileUpload({
       >
         <input {...getInputProps()} className="sr-only" />
 
-        {/* Upload Button */}
         <Button
-          type="button" // ✅ Prevent form submission
+          type="button"
           onClick={openFileDialog}
           size="sm"
+          disabled={isUploadDisabled}
           className={cn(isDragging && "animate-bounce")}
         >
           <PlusIcon className="h-4 w-4" />
-          Add files
+          {isUploadDisabled ? "File added" : "Add file"}
         </Button>
 
-        {/* File Previews */}
         <div className="flex flex-1 items-center gap-2 overflow-x-auto">
           {files.length === 0 ? (
             <p className="text-muted-foreground text-sm">
-              Drop files here or click to browse (max {maxFiles} files)
+              Drop a PDF, Image, or Word file here
             </p>
           ) : (
             files.map((fileItem) => (
@@ -109,16 +117,16 @@ export function FileUpload({
                   </div>
                 )}
 
-                {/* Remove Button */}
                 <Button
-                  type="button" // ✅ Prevent form submission
+                  type="button"
                   onClick={(e) => {
                     e.stopPropagation();
                     removeFile(fileItem.id);
                   }}
                   variant="outline"
                   size="icon"
-                  className="absolute inset-e-2 -top-2 size-5 rounded-full opacity-0 shadow-md transition-opacity group-hover/item:opacity-100"
+                  // ✅ Changed -end-2 to -inset-e-2
+                  className="absolute -inset-e-2 -top-2 size-5 rounded-full opacity-0 shadow-md transition-opacity group-hover/item:opacity-100"
                 >
                   <XIcon className="size-3" />
                 </Button>
@@ -127,15 +135,13 @@ export function FileUpload({
           )}
         </div>
 
-        {/* File Count */}
-        {files.length > 0 && (
+        {maxFiles > 1 && files.length > 0 && (
           <div className="text-muted-foreground shrink-0 text-xs">
             {files.length}/{maxFiles}
           </div>
         )}
       </div>
 
-      {/* Error Messages */}
       {errors.length > 0 && (
         <Alert variant="destructive" className="mt-5">
           <CircleAlertIcon />

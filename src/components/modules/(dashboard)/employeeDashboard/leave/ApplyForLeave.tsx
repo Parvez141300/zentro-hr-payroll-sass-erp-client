@@ -35,7 +35,6 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import { Textarea } from "@/components/ui/textarea";
 
-// ✅ Import the compact FileUpload
 import { FileUpload } from "@/components/shared/uploadFile/FileUpload";
 import { FileWithPreview } from "@/hooks/use-file-upload";
 
@@ -44,14 +43,25 @@ import { ILeaveType } from "@/types/leaveType.type";
 import { applyLeaveSchema } from "@/zod/leave.validation";
 import { applyForEmployeeLeave } from "@/actions/leave.action";
 
+// ✅ Helper to extract error messages correctly
+const getErrorMessage = (errors: unknown[]): string => {
+  return errors
+    .map((err) => {
+      if (typeof err === "string") return err;
+      if (err && typeof err === "object" && "message" in err) {
+        return (err as { message: string }).message;
+      }
+      return "";
+    })
+    .filter(Boolean)
+    .join(", ");
+};
+
 const ApplyForLeaveDialog = () => {
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
-
-  // ✅ State to hold multiple uploaded files
   const [attachmentFiles, setAttachmentFiles] = useState<FileWithPreview[]>([]);
 
-  // Fetch Leave Types
   const { data: leaveTypesData, isLoading: isLeaveTypesLoading } = useQuery({
     queryKey: ["companyLeaveTypes"],
     queryFn: async () => await getCompanyLeaveTypes(),
@@ -68,7 +78,6 @@ const ApplyForLeaveDialog = () => {
     }));
   }, [leaveTypes]);
 
-  // TanStack Form Setup
   const form = useForm({
     defaultValues: {
       leaveTypeId: "",
@@ -80,10 +89,7 @@ const ApplyForLeaveDialog = () => {
       onChange: applyLeaveSchema,
     },
     onSubmit: ({ value }) => {
-      // Build FormData
       const formData = new FormData();
-
-      // Attach the JSON data string
       formData.append(
         "data",
         JSON.stringify({
@@ -94,18 +100,17 @@ const ApplyForLeaveDialog = () => {
         }),
       );
 
-      // ✅ Attach all uploaded files
-      attachmentFiles.forEach((fileWithPreview) => {
-        if (fileWithPreview.file instanceof File) {
-          formData.append("files", fileWithPreview.file);
-        }
-      });
-
+      // ✅ Append the single file
+      if (
+        attachmentFiles.length > 0 &&
+        attachmentFiles[0].file instanceof File
+      ) {
+        formData.append("file", attachmentFiles[0].file);
+      }
       mutate(formData);
     },
   });
 
-  // Mutation
   const { mutate, isPending } = useMutation({
     mutationFn: async (formData: FormData) => {
       return await applyForEmployeeLeave(formData);
@@ -115,14 +120,13 @@ const ApplyForLeaveDialog = () => {
       queryClient.invalidateQueries({ queryKey: ["myLeaves"] });
       setOpen(false);
       form.reset();
-      setAttachmentFiles([]); // ✅ Reset files
+      setAttachmentFiles([]);
     },
     onError: (error: Error) => {
       toast.error(error.message || "Failed to submit leave application");
     },
   });
 
-  // ✅ Reset form when closing the dialog
   const handleOpenChange = (isOpen: boolean) => {
     setOpen(isOpen);
     if (!isOpen) {
@@ -156,49 +160,58 @@ const ApplyForLeaveDialog = () => {
           }}
           className="space-y-4 py-2"
         >
-          {/* 1. Leave Type Select */}
+          {/* 1. Leave Type */}
           <form.Field name="leaveTypeId">
-            {(field) => (
-              <div className="space-y-1.5">
-                <Label htmlFor="leaveTypeId">Leave Type *</Label>
-                <Select
-                  value={field.state.value}
-                  onValueChange={(val) => field.handleChange(val || "")}
-                  disabled={isLeaveTypesLoading}
-                >
-                  <SelectTrigger>
-                    <SelectValue
-                      placeholder={
-                        isLeaveTypesLoading
-                          ? "Loading types..."
-                          : "Select leave type"
-                      }
-                    />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {leaveTypeOptions.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                    {leaveTypeOptions.length === 0 && !isLeaveTypesLoading && (
-                      <div className="px-2 py-1.5 text-sm text-muted-foreground">
-                        No leave types found
-                      </div>
+            {(field) => {
+              const selectedLabel = leaveTypeOptions.find(
+                (opt) => opt.value === field.state.value,
+              )?.label;
+
+              return (
+                <div className="space-y-1.5">
+                  <Label htmlFor="leaveTypeId">Leave Type *</Label>
+                  <Select
+                    value={field.state.value}
+                    onValueChange={(val) => field.handleChange(val || "")}
+                    disabled={isLeaveTypesLoading}
+                  >
+                    <SelectTrigger className={"w-full"}>
+                      <SelectValue
+                        placeholder={
+                          isLeaveTypesLoading
+                            ? "Loading types..."
+                            : "Select leave type"
+                        }
+                      >
+                        {selectedLabel}
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {leaveTypeOptions.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                      {leaveTypeOptions.length === 0 &&
+                        !isLeaveTypesLoading && (
+                          <div className="px-2 py-1.5 text-sm text-muted-foreground">
+                            No leave types found
+                          </div>
+                        )}
+                    </SelectContent>
+                  </Select>
+                  {field.state.meta.isTouched &&
+                    field.state.meta.errors.length > 0 && (
+                      <p className="text-sm text-destructive">
+                        {getErrorMessage(field.state.meta.errors)}
+                      </p>
                     )}
-                  </SelectContent>
-                </Select>
-                {field.state.meta.isTouched &&
-                  field.state.meta.errors.length > 0 && (
-                    <p className="text-sm text-destructive">
-                      {field.state.meta.errors.join(", ")}
-                    </p>
-                  )}
-              </div>
-            )}
+                </div>
+              );
+            }}
           </form.Field>
 
-          {/* 2. Date Range Picker */}
+          {/* 2. Date Range */}
           <form.Field name="startDate">
             {(startField) => (
               <form.Field name="endDate">
@@ -255,12 +268,12 @@ const ApplyForLeaveDialog = () => {
                       </Popover>
                       {startField.state.meta.errors.length > 0 && (
                         <p className="text-sm text-destructive">
-                          {startField.state.meta.errors.join(", ")}
+                          {getErrorMessage(startField.state.meta.errors)}
                         </p>
                       )}
                       {endField.state.meta.errors.length > 0 && (
                         <p className="text-sm text-destructive">
-                          {endField.state.meta.errors.join(", ")}
+                          {getErrorMessage(endField.state.meta.errors)}
                         </p>
                       )}
                     </div>
@@ -270,35 +283,38 @@ const ApplyForLeaveDialog = () => {
             )}
           </form.Field>
 
-          {/* 3. Reason Textarea */}
+          {/* 3. Reason */}
           <form.Field name="reason">
-            {(field) => (
-              <div className="space-y-1.5">
-                <Label htmlFor="reason">Reason *</Label>
-                <Textarea
-                  id="reason"
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  placeholder="Please provide a brief reason for your leave..."
-                  rows={3}
-                />
-                {field.state.meta.isTouched &&
-                  field.state.meta.errors.length > 0 && (
+            {(field) => {
+              const isInvalid =
+                field.state.meta.isTouched && !field.state.meta.isValid;
+              return (
+                <div className="space-y-1.5">
+                  <Label htmlFor="reason">Reason *</Label>
+                  <Textarea
+                    id="reason"
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    placeholder="Please provide a brief reason for your leave..."
+                    rows={3}
+                  />
+                  {isInvalid && (
                     <p className="text-sm text-destructive">
-                      {field.state.meta.errors.join(", ")}
+                      {getErrorMessage(field.state.meta.errors)}
                     </p>
                   )}
-              </div>
-            )}
+                </div>
+              );
+            }}
           </form.Field>
 
-          {/* 4. ✅ Compact File Upload */}
+          {/* 4. File Upload (Max 1) */}
           <div className="space-y-1.5">
-            <Label>Attachments (Optional)</Label>
+            <Label>Attachment (Optional)</Label>
             <div className="border rounded-lg p-4 bg-muted/20">
               <FileUpload
-                maxFiles={3}
+                maxFiles={1} // ✅ Maximum 1 file
                 maxSize={5 * 1024 * 1024} // 5MB
                 onFilesChange={(files) => setAttachmentFiles(files)}
               />
