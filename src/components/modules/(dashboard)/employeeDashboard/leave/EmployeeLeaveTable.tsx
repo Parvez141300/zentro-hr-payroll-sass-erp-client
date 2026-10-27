@@ -12,6 +12,7 @@ import LeaveTypeFilter from "../../dashboard/manageLeaveTable/filters/LeaveTypeF
 import LeaveDateRangeFilter from "../../dashboard/manageLeaveTable/filters/LeaveDateRangeFilter";
 import ViewLeaveDialog from "../../dashboard/manageLeaveTable/ViewLeaveDialog";
 import DeletePopUpDialog from "@/components/shared/tables/DeletePopUpDialog";
+import ApplyForLeave from "./ApplyForLeave";
 
 const EmployeeLeaveTable = ({ queryString }: { queryString: string }) => {
   const {
@@ -72,6 +73,11 @@ const EmployeeLeaveTable = ({ queryString }: { queryString: string }) => {
             onChange: handleSearchChange,
             placeholder: "Search by employee data...",
           },
+          actions: (
+            <>
+              <ApplyForLeave />
+            </>
+          ),
           filters: (
             <>
               {/* <LeaveDepartmentFilter /> */}
