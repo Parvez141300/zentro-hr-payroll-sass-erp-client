@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useEffect } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -34,11 +34,17 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import { Textarea } from "@/components/ui/textarea";
 
+import { FileUpload } from "@/components/shared/uploadFile/FileUpload";
+import { FileWithPreview } from "@/hooks/use-file-upload";
+
 import { getCompanyLeaveTypes } from "@/actions/leaveType.action";
 import { updateForEmployeeLeave } from "@/actions/leave.action";
 import { ILeaveType } from "@/types/leaveType.type";
 import { ILeave } from "@/types/leave.type";
-import { UpdateLeaveFormValues, updateLeaveSchema } from "@/zod/leave.validation";
+import {
+  updateLeaveSchema,
+  UpdateLeaveFormValues,
+} from "@/zod/leave.validation";
 
 const getErrorMessage = (errors: unknown[]): string => {
   return errors
@@ -65,6 +71,7 @@ const EditForLeaveDialog = ({
   onOpenChange,
 }: EditForLeaveDialogProps) => {
   const queryClient = useQueryClient();
+  const [attachmentFiles, setAttachmentFiles] = useState<FileWithPreview[]>([]);
 
   const { data: leaveTypesData, isLoading: isLeaveTypesLoading } = useQuery({
     queryKey: ["companyLeaveTypes"],
@@ -85,10 +92,8 @@ const EditForLeaveDialog = ({
   const form = useForm({
     defaultValues: {
       leaveTypeId: leaveData?.leaveTypeId || "",
-      startDate: leaveData?.startDate
-        ? new Date(leaveData.startDate)
-        : undefined,
-      endDate: leaveData?.endDate ? new Date(leaveData.endDate) : undefined,
+      startDate: leaveData?.startDate ? new Date(leaveData.startDate) : null,
+      endDate: leaveData?.endDate ? new Date(leaveData.endDate) : null,
       reason: leaveData?.reason || "",
     } as UpdateLeaveFormValues,
     validators: {
@@ -97,11 +102,11 @@ const EditForLeaveDialog = ({
     onSubmit: ({ value }) => {
       if (!leaveData) return;
 
-      // ✅ Only include fields that were actually changed
-      const payload: Record<string, unknown> = {};
+      const formData = new FormData();
+      const info: Record<string, unknown> = {};
 
       if (value.leaveTypeId && value.leaveTypeId !== leaveData.leaveTypeId) {
-        payload.leaveTypeId = value.leaveTypeId;
+        info.leaveTypeId = value.leaveTypeId;
       }
 
       if (
@@ -109,7 +114,7 @@ const EditForLeaveDialog = ({
         value.startDate.toISOString() !==
           new Date(leaveData.startDate).toISOString()
       ) {
-        payload.startDate = value.startDate.toISOString();
+        info.startDate = value.startDate.toISOString();
       }
 
       if (
@@ -117,23 +122,32 @@ const EditForLeaveDialog = ({
         value.endDate.toISOString() !==
           new Date(leaveData.endDate).toISOString()
       ) {
-        payload.endDate = value.endDate.toISOString();
+        info.endDate = value.endDate.toISOString();
       }
 
       if (value.reason && value.reason !== leaveData.reason) {
-        payload.reason = value.reason;
+        info.reason = value.reason;
       }
 
-      // ✅ Prevent empty submissions
-      if (Object.keys(payload).length === 0) {
+      if (Object.keys(info).length === 0 && attachmentFiles.length === 0) {
         toast.info("No changes were made.");
         return;
       }
 
-      mutate(payload);
+      formData.append("data", JSON.stringify({ info }));
+
+      if (
+        attachmentFiles.length > 0 &&
+        attachmentFiles[0].file instanceof File
+      ) {
+        formData.append("file", attachmentFiles[0].file);
+      }
+
+      mutate(formData);
     },
   });
 
+  // ✅ Only reset form on data change — no setState inside effect
   useEffect(() => {
     if (leaveData && open) {
       form.reset({
@@ -147,13 +161,14 @@ const EditForLeaveDialog = ({
   }, [leaveData, open]);
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async (payload: Record<string, unknown>) => {
+    mutationFn: async (formData: FormData) => {
       if (!leaveData) throw new Error("No leave selected");
-      return await updateForEmployeeLeave(leaveData.id, payload);
+      return await updateForEmployeeLeave(leaveData.id, formData);
     },
     onSuccess: () => {
       toast.success("Leave updated successfully!");
       queryClient.invalidateQueries({ queryKey: ["companyEmployeeLeaves"] });
+      setAttachmentFiles([]);
       onOpenChange(false);
     },
     onError: (error: Error) => {
@@ -161,10 +176,18 @@ const EditForLeaveDialog = ({
     },
   });
 
+  // ✅ Reset file state when dialog closes
+  const handleOpenChange = (isOpen: boolean) => {
+    if (!isOpen) {
+      setAttachmentFiles([]);
+    }
+    onOpenChange(isOpen);
+  };
+
   if (!leaveData) return null;
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Edit Leave</DialogTitle>
@@ -181,7 +204,7 @@ const EditForLeaveDialog = ({
           }}
           className="space-y-4 py-2"
         >
-          {/* 1. Leave Type (Optional) */}
+          {/* 1. Leave Type */}
           <form.Field name="leaveTypeId">
             {(field) => {
               const selectedLabel = leaveTypeOptions.find(
@@ -226,7 +249,7 @@ const EditForLeaveDialog = ({
             }}
           </form.Field>
 
-          {/* 2. Date Range (Optional) */}
+          {/* 2. Date Range */}
           <form.Field name="startDate">
             {(startField) => (
               <form.Field name="endDate">
@@ -237,8 +260,8 @@ const EditForLeaveDialog = ({
                   };
 
                   const handleRangeSelect = (range: DateRange | undefined) => {
-                    startField.handleChange(range?.from);
-                    endField.handleChange(range?.to);
+                    startField.handleChange(range?.from || null);
+                    endField.handleChange(range?.to || null);
                   };
 
                   return (
@@ -295,7 +318,7 @@ const EditForLeaveDialog = ({
             )}
           </form.Field>
 
-          {/* 3. Reason (Optional) */}
+          {/* 3. Reason */}
           <form.Field name="reason">
             {(field) => {
               const isInvalid =
@@ -321,20 +344,30 @@ const EditForLeaveDialog = ({
             }}
           </form.Field>
 
-          {/* 4. Existing Attachment */}
-          {leaveData.attachmentUrl && (
-            <div className="space-y-1.5">
-              <Label>Current Attachment</Label>
-              <a
-                href={leaveData.attachmentUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-primary underline hover:no-underline break-all"
-              >
-                {leaveData.attachmentUrl.split("/").pop() || "View attachment"}
-              </a>
+          {/* 4. File Upload */}
+          <div className="space-y-1.5">
+            <Label>Attachment (Optional)</Label>
+            {leaveData.attachmentUrl && (
+              <p className="text-xs text-muted-foreground">
+                Current:{" "}
+                <a
+                  href={leaveData.attachmentUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary underline"
+                >
+                  {leaveData.attachmentUrl.split("/").pop()}
+                </a>
+              </p>
+            )}
+            <div className="border rounded-lg p-4 bg-muted/20">
+              <FileUpload
+                maxFiles={1}
+                maxSize={5 * 1024 * 1024}
+                onFilesChange={(files) => setAttachmentFiles(files)}
+              />
             </div>
-          )}
+          </div>
 
           <DialogFooter className="pt-4">
             <DialogClose
@@ -343,7 +376,10 @@ const EditForLeaveDialog = ({
                   type="button"
                   variant="outline"
                   disabled={isPending}
-                  onClick={() => form.reset()}
+                  onClick={() => {
+                    form.reset();
+                    setAttachmentFiles([]);
+                  }}
                 >
                   Cancel
                 </Button>

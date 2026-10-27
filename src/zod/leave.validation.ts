@@ -16,18 +16,18 @@ export type ApplyLeaveFormValues = z.infer<typeof applyLeaveSchema>;
 // ✅ Schema for updating an existing leave
 export const updateLeaveSchema = z
   .object({
-    leaveTypeId: z.string().optional(),
-    startDate: z.date().optional(),
-    endDate: z.date().optional(),
+    // ✅ Required but nullable (matches form defaultValues)
+    leaveTypeId: z.string(),
+    startDate: z.date().nullable(),
+    endDate: z.date().nullable(),
     reason: z
       .string()
       .min(5, "Reason must be at least 5 characters")
-      .max(500, "Reason must be less than 500 characters")
-      .optional(),
+      .max(500, "Reason must be less than 500 characters"),
   })
   .refine(
     (data) => {
-      // Only validate date order if BOTH dates are provided
+      // Only validate if both dates are present
       if (data.startDate && data.endDate) {
         return data.endDate >= data.startDate;
       }

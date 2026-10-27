@@ -15,7 +15,7 @@ const applyForEmplyeeLeave = async (payload: any) => {
 }
 
 const updateForEmployeeLeave = async (leaveId:string, payload: any) => {
-    const result = await httpServer.patch(`/api/v1/leaves/${leaveId}`, payload);
+    const result = await httpServer.patch(`/api/v1/leaves/employee/${leaveId}`, payload);
 
     return result;
 }
