@@ -431,11 +431,6 @@ const employeeSidebarNavItems: IDashboardSidebarNavSection[] = [
                 href: "/dashboard/leave",
                 icon: "Users",
             },
-            {
-                title: "Apply Leave",
-                href: "/dashboard/apply-leave",
-                icon: "Plus",
-            },
         ],
     },
     {
