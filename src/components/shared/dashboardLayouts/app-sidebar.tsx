@@ -34,7 +34,13 @@ export function AppSidebar() {
         <NavMain items={sidebarNavItems} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={userInfo!.data} />
+        <NavUser
+          user={{
+            ...userInfo!.data,
+            isDeleted: false,
+            deletedAt: null,
+          }}
+        />
       </SidebarFooter>
     </Sidebar>
   );

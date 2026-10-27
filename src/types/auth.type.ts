@@ -70,19 +70,20 @@ export interface ISessionUser {
     email: string;
     role: UserRole;
     isActive: boolean;
-    isDeleted: boolean;
-    deletedAt: string | null;
     emailVerified: boolean;
     image: string | null;
-    createdAt: string;
-    updatedAt: string;
     companyId: string;
-    platformSuperAdmin: IPlatformSuperAdmin | null;
-    superAdmin: ISuperAdmin | null;
-    hrManager: IHrManager | null;
-    accountant: IAccountant | null;
-    departmentHead: IDepartmentHead | null;
-    employee: IEmployee | null;
+    platformSuperAdmin?: IPlatformSuperAdmin | null;
+    superAdmin?: ISuperAdmin | null;
+    hrManager?: IHrManager | null;
+    accountant?: IAccountant | null;
+    departmentHead?: IDepartmentHead | null;
+    employee?: IEmployee | null;
+    
+    createdAt: string | Date;
+    updatedAt: string | Date;
+    isDeleted: boolean;
+    deletedAt?: Date | string | null;
 }
 
 export interface IChangePassword {
