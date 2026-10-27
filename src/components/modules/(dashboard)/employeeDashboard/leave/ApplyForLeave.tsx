@@ -90,23 +90,28 @@ const ApplyForLeaveDialog = () => {
     },
     onSubmit: ({ value }) => {
       const formData = new FormData();
+
+      // ✅ Wrap the payload inside `info` to match backend middleware
       formData.append(
         "data",
         JSON.stringify({
-          leaveTypeId: value.leaveTypeId,
-          startDate: value.startDate.toISOString(),
-          endDate: value.endDate.toISOString(),
-          reason: value.reason,
+          info: {
+            leaveTypeId: value.leaveTypeId,
+            startDate: value.startDate.toISOString(),
+            endDate: value.endDate.toISOString(),
+            reason: value.reason,
+          },
         }),
       );
 
-      // ✅ Append the single file
+      // Attach the file if uploaded
       if (
         attachmentFiles.length > 0 &&
         attachmentFiles[0].file instanceof File
       ) {
         formData.append("file", attachmentFiles[0].file);
       }
+
       mutate(formData);
     },
   });
@@ -117,7 +122,7 @@ const ApplyForLeaveDialog = () => {
     },
     onSuccess: () => {
       toast.success("Leave application submitted successfully!");
-      queryClient.invalidateQueries({ queryKey: ["myLeaves"] });
+      queryClient.invalidateQueries({ queryKey: ["companyEmployeeLeaves"] });
       setOpen(false);
       form.reset();
       setAttachmentFiles([]);
@@ -314,7 +319,7 @@ const ApplyForLeaveDialog = () => {
             <Label>Attachment (Optional)</Label>
             <div className="border rounded-lg p-4 bg-muted/20">
               <FileUpload
-                maxFiles={1} // ✅ Maximum 1 file
+                maxFiles={1}
                 maxSize={5 * 1024 * 1024} // 5MB
                 onFilesChange={(files) => setAttachmentFiles(files)}
               />
