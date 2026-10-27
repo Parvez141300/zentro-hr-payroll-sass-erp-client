@@ -60,7 +60,7 @@ const LeaveTypeFilter = () => {
     <div className="max-w-50">
       <Select
         value={selectedType}
-        onValueChange={(value: string) => handleTypeChange(value as string)}
+        onValueChange={(value) => handleTypeChange(value as string)}
         disabled={isLeaveTypesLoading}
       >
         <SelectTrigger className="w-full">
