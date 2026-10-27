@@ -9,7 +9,7 @@ export const getCompanyLeaves = async (queryString?: string) => {
     return result
 }
 
-export const applyForEmplyeeLeave = async (payload: any) => {
+export const applyForEmployeeLeave = async (payload: any) => {
     const result = await leaveService.applyForEmplyeeLeave(payload);
 
     return result;

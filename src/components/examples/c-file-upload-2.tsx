@@ -14,6 +14,7 @@ import {
 import { cn } from "cn"
 import { Button } from "@/components/ui/button"
 import { UserIcon, XIcon, CircleAlertIcon } from "lucide-react"
+import Image from "next/image"
 
 interface AvatarUploadProps {
   maxSize?: number
@@ -79,7 +80,7 @@ export function Pattern({
           <input {...getInputProps()} className="sr-only" />
 
           {previewUrl ? (
-            <img
+            <Image
               src={previewUrl}
               alt="Avatar"
               className="h-full w-full object-cover"
@@ -97,7 +98,7 @@ export function Pattern({
             size="icon"
             variant="outline"
             onClick={handleRemove}
-            className="absolute end-0.5 top-0.5 z-10 size-6 rounded-full dark:bg-zinc-800 hover:dark:bg-zinc-700"
+            className="absolute inset-e-0.5 top-0.5 z-10 size-6 rounded-full dark:bg-zinc-800 hover:dark:bg-zinc-700"
             aria-label="Remove avatar"
           >
             <XIcon className="size-3.5" />
