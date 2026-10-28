@@ -385,7 +385,7 @@ const departmentHeadSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Leave",
-                href: "/department-head/dashboard/all-leave",
+                href: "/department-head/dashboard/manage-leave",
                 icon: "Users",
             },
         ],
