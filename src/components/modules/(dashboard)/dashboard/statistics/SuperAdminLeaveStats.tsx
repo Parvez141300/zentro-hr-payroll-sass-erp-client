@@ -103,7 +103,7 @@ const SuperAdminLeaveStats = () => {
   const [activeLeaveType, setActiveLeaveType] = useState<string>("");
 
   const { data: statsResponse, isLoading } = useQuery({
-    queryKey: ["super-admin-leave-stats"],
+    queryKey: ["super-admin-leave-stats", "leave-stats"],
     queryFn: async () => getLeaveStats(),
   });
 

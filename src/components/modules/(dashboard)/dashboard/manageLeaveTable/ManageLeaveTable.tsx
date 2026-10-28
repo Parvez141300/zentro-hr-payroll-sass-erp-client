@@ -13,6 +13,7 @@ import LeaveTypeFilter from "./filters/LeaveTypeFilter";
 import LeaveDateRangeFilter from "./filters/LeaveDateRangeFilter";
 import DeletePopUpDialog from "@/components/shared/tables/DeletePopUpDialog";
 import ViewLeaveDialog from "./ViewLeaveDialog";
+import EditLeaveDialog from "./EditLeaveDialog";
 
 const ManageLeaveTable = ({ queryString }: { queryString: string }) => {
   const {
@@ -37,6 +38,7 @@ const ManageLeaveTable = ({ queryString }: { queryString: string }) => {
   const paginationMeta = leaveData?.pagination;
 
   const [viewingLeave, setViewingLeave] = useState<ILeave | null>(null);
+  const [editingLeave, setEditingLeave] = useState<ILeave | null>(null);
   const [deletingLeave, setDeletingLeave] = useState<ILeave | null>(null);
 
   const handleView = (leave: ILeave) => {
@@ -52,9 +54,10 @@ const ManageLeaveTable = ({ queryString }: { queryString: string }) => {
   const handleEdit = (leave: ILeave) => {
     console.log("edit leave", leave);
     // Set editing state when implemented
+    setEditingLeave(leave);
   };
 
-  console.log('leave data', leaves);
+  console.log("leave data", leaves);
 
   return (
     <>
@@ -115,6 +118,14 @@ const ManageLeaveTable = ({ queryString }: { queryString: string }) => {
         open={!!viewingLeave}
         onOpenChange={(open) => {
           if (!open) setViewingLeave(null);
+        }}
+      />
+
+      <EditLeaveDialog
+        leaveData={editingLeave}
+        open={!!editingLeave}
+        onOpenChange={(open) => {
+          if (!open) setEditingLeave(null);
         }}
       />
 
