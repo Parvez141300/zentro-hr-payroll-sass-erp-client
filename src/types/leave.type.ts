@@ -19,7 +19,7 @@ export interface ILeave {
   rejectedReason: string | null;
   createdAt: string | Date;
   updatedAt: string | Date;
-  
+
   // Relations
   employeeId: string;
   employee?: IEmployee;
@@ -30,9 +30,15 @@ export interface ILeave {
 }
 
 export interface IApplyForLeavePayload {
-    leaveTypeId: string,
-    startDate: Date,
-    endDate: Date,
-    reason: string,
-    attachmentUrl?: string,
+  leaveTypeId: string,
+  startDate: Date,
+  endDate: Date,
+  reason: string,
+  attachmentUrl?: string,
+}
+
+export interface IUpdateForLeaveStatusPayload {
+  status: LeaveStatus;
+  reviewNote?: string;
+  rejectedReason?: string;
 }

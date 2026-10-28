@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { httpServer } from "@/lib/http/httpServer";
-import { ILeave } from "@/types/leave.type";
+import { ILeave, IUpdateForLeaveStatusPayload } from "@/types/leave.type";
 import { IPaginatedData } from "@/types/pagination.type";
 
 const getCompanyLeaves = async (queryString?: string) => {
@@ -20,6 +20,12 @@ const updateForEmployeeLeave = async (leaveId:string, payload: any) => {
     return result;
 }
 
+const updateLeaveStatus = async (leaveId:string, payload: IUpdateForLeaveStatusPayload) => {
+    const result = await httpServer.patch(`/api/v1/leaves/${leaveId}`, payload);
+
+    return result;
+}
+
 const deleteEmployeeLeave = async (leaveId: string) => {
     const result = await httpServer.delete(`/api/v1/leaves/${leaveId}`);
 
@@ -31,4 +37,5 @@ export const leaveService = {
     deleteEmployeeLeave,
     applyForEmplyeeLeave,
     updateForEmployeeLeave,
+    updateLeaveStatus,
 }
