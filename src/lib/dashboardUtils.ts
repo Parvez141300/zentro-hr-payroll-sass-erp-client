@@ -370,7 +370,7 @@ const departmentHeadSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Attendance",
-                href: "/department-head/dashboard/all-attendance",
+                href: "/department-head/dashboard/manage-attendance",
                 icon: "UserRoundCheck",
             },
             {
