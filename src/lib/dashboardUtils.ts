@@ -355,7 +355,7 @@ const departmentHeadSidebarNavItems: IDashboardSidebarNavSection[] = [
         items: [
             {
                 title: "Manage Employee",
-                href: "/department-head/dashboard/get-all-employee",
+                href: "/department-head/dashboard/manage-employee",
                 icon: "Users",
             },
             {
