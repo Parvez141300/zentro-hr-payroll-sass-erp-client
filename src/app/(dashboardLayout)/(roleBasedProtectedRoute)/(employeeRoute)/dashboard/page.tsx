@@ -1,8 +1,11 @@
+import EmployeeAttendanceStats from '@/components/modules/(dashboard)/employeeDashboard/statistics/EmployeeAttendanceStats'
 import React from 'react'
 
 const EmployeeDashboardPage = () => {
   return (
-    <div>EmployeeDashboardPage</div>
+    <div>
+      <EmployeeAttendanceStats />
+    </div>
   )
 }
 
