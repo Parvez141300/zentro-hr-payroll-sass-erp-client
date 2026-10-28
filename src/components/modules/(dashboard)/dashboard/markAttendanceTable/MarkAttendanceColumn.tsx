@@ -53,7 +53,6 @@ export const markEmployeeAttendanceColumn: ColumnDef<IEmployee, any>[] = [
     header: "Status",
     cell: ({ row }) => {
       const attendances = row.original?.user?.employee?.attendances ?? [];
-
       // Today's date at local midnight (compare by yyyy-mm-dd)
       const todayStr = new Date().toISOString().slice(0, 10);
 
