@@ -1,4 +1,4 @@
-import ManageDepartmentHeadEmployeeTable from "@/components/modules/(dashboard)/departmentHeadDashboard/manageEmployeeTable/ManageDepartmentHeadEmployeeTable";
+import AllDepartmentHeadTable from "@/components/modules/(dashboard)/departmentHeadDashboard/AllDepartmentHeadTable/AllDepartmentHeadTable";
 import { employeeService } from "@/services/employee.service";
 import {
   dehydrate,
@@ -27,7 +27,7 @@ const ManageEmployee = async ({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <ManageDepartmentHeadEmployeeTable queryString={queryString} />
+      <AllDepartmentHeadTable queryString={queryString} />
     </HydrationBoundary>
   );
 };
