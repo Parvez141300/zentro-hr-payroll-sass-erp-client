@@ -1,9 +1,12 @@
-import React from 'react'
+import DepartmentHeadAttendanceStats from "@/components/modules/(dashboard)/departmentHeadDashboard/statistics/DepatmentHeadAttendanceStats";
+import React from "react";
 
 const DepartmentHeadDashboard = () => {
   return (
-    <div>DepartmentHeadDashboard</div>
-  )
-}
+    <div>
+      <DepartmentHeadAttendanceStats />
+    </div>
+  );
+};
 
-export default DepartmentHeadDashboard
+export default DepartmentHeadDashboard;
