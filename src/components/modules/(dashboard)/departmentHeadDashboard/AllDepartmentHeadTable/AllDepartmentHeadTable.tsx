@@ -6,6 +6,7 @@ import { IDepartmentHead } from "@/types/departmentHead.type";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { departmentHeadColumn } from "./AllDepartmentHeadColumn";
+import ViewDepartmentHeadDialog from "./ViewDepartmentHeadDialog";
 
 const AllDepartmentHeadTable = ({ queryString }: { queryString?: string }) => {
   const {
@@ -34,6 +35,9 @@ const AllDepartmentHeadTable = ({ queryString }: { queryString?: string }) => {
   const handleView = (departmentHead: IDepartmentHead) => {
     setViewingDepartmentHead(departmentHead); // শুধু state সেট করছি, dialog নিজে বাইরে render হবে
   };
+
+  console.log('department head data', viewingDepartmentHead);
+
   return (
     <>
       {/* Department Head table */}
@@ -71,6 +75,14 @@ const AllDepartmentHeadTable = ({ queryString }: { queryString?: string }) => {
         }
         actions={{
           onView: handleView,
+        }}
+      />
+            {/* ✅ This is where you use it */}
+      <ViewDepartmentHeadDialog
+        headData={viewingDepartmentHead}
+        open={!!viewingDepartmentHead}
+        onOpenChange={(open) => {
+          if (!open) setViewingDepartmentHead(null);
         }}
       />
     </>
