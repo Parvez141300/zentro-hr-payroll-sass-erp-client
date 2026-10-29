@@ -1,8 +1,11 @@
+import HrAttendanceStats from '@/components/modules/(dashboard)/hrManagerDashboard/statistics/HrAttendanceStats'
 import React from 'react'
 
 const HrManagerDashboard = () => {
   return (
-    <div>HrManagerDashboard</div>
+    <div>
+      <HrAttendanceStats />
+    </div>
   )
 }
 
