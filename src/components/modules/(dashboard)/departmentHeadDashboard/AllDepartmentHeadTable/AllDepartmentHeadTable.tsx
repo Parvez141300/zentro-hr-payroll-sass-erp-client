@@ -59,6 +59,9 @@ const AllDepartmentHeadTable = ({ queryString }: { queryString?: string }) => {
             clearFilterKeys([
               "page",
               "sortBy",
+              "sortOrder",
+              "limit",
+              "skip",
             ]),
         }}
         pagination={
