@@ -19,7 +19,7 @@ export const updateSubscriptionPlanSchema = z.object({
             SubscriptionPlan.PRO,
             SubscriptionPlan.ENTERPRISE,
         ]
-    ),
+    ).optional(),
     displayName: z
         .string()
         .min(2, "Display name must be at least 2 characters")

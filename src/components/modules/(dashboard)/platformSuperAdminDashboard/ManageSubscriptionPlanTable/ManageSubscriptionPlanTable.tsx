@@ -1,6 +1,9 @@
 "use client";
 
-import { deleteSubscriptionPlanConfig, getAllSubscriptionPlanConfig } from "@/actions/subscriptionPlanConfig.action";
+import {
+  deleteSubscriptionPlanConfig,
+  getAllSubscriptionPlanConfig,
+} from "@/actions/subscriptionPlanConfig.action";
 import DataTable from "@/components/shared/tables/DataTable";
 import { useTableQueryParams } from "@/hooks/useTableQueryParams";
 import { ISubscriptionPlanConfig } from "@/types/subscriptionPlanConfig.type";
@@ -9,6 +12,7 @@ import React, { useState } from "react";
 import { subscriptionPlanConfigColumn } from "./SubscriptionPlanConfigColumn";
 import ViewSubscriptionPlanDialog from "./ViewSubscriptionPlanDialog";
 import DeletePopUpDialog from "@/components/shared/tables/DeletePopUpDialog";
+import EditSubscriptionPlanConfigDialog from "./EditSubscriptionPlanConfigDialog";
 
 const ManageSubscriptionPlanTable = ({
   queryString,
@@ -26,10 +30,7 @@ const ManageSubscriptionPlanTable = ({
     handleSearchChange,
   } = useTableQueryParams();
 
-  const {
-    data: subscriptionPlanConfigResponse,
-    isLoading,
-  } = useQuery({
+  const { data: subscriptionPlanConfigResponse, isLoading } = useQuery({
     queryKey: ["subscription-plans-config"],
     queryFn: () => getAllSubscriptionPlanConfig(queryString),
   });
@@ -103,7 +104,15 @@ const ManageSubscriptionPlanTable = ({
         }}
       />
 
-      
+      {/* ✅ Edit dialog — THIS IS WHERE YOU USE IT */}
+      <EditSubscriptionPlanConfigDialog
+        planData={editing}
+        open={!!editing}
+        onOpenChange={(open) => {
+          if (!open) setEditing(null);
+        }}
+      />
+
       {/* Delete employee dialog */}
       <DeletePopUpDialog
         open={!!deleting}

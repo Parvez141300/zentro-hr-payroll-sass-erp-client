@@ -33,22 +33,18 @@ import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 import { updateSubscriptionPlanConfig } from "@/actions/subscriptionPlanConfig.action";
-import { ISubscriptionPlanConfig } from "@/types/subscriptionPlanConfig.type";
+import {
+  ISubscriptionPlanConfig,
+  IUpdateSubscriptionPlanConfig,
+} from "@/types/subscriptionPlanConfig.type";
 import { SubscriptionPlan } from "@/types/enums.type";
+import { getIconComponent } from "@/lib/iconMapper";
 import {
   UpdateSubscriptionPlanFormValues,
   updateSubscriptionPlanSchema,
-} from "@/zod/subscriptionPlan.validation";
-import { getIconComponent } from "@/lib/iconMapper";
+} from "@/zod/subscriptionPlanConfig.validation";
 
 // ✅ Helper for error extraction
 const getErrorMessage = (errors: unknown[]): string => {
@@ -140,7 +136,7 @@ const EditSubscriptionPlanConfigDialog = ({
   }, [planData, open]);
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async (payload: any) => {
+    mutationFn: async (payload: IUpdateSubscriptionPlanConfig) => {
       if (!planData) throw new Error("No plan selected");
       return await updateSubscriptionPlanConfig(planData.id, payload);
     },
@@ -465,7 +461,7 @@ const EditSubscriptionPlanConfigDialog = ({
                         Active
                       </Label>
                       <p className="text-xs text-muted-foreground">
-                        Inactive plans won't be shown to new signups
+                        Inactive plans wont be shown to new signups
                       </p>
                     </div>
                     <Switch
@@ -490,7 +486,7 @@ const EditSubscriptionPlanConfigDialog = ({
                         Popular Badge
                       </Label>
                       <p className="text-xs text-muted-foreground">
-                        Shows "Most Popular" on this plan
+                        Shows &ldquo;Most Popular&ldquo; on this plan
                       </p>
                     </div>
                     <Switch
