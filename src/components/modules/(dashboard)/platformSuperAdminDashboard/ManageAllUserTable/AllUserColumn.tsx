@@ -8,7 +8,6 @@ import {
   CheckCircle2,
   XCircle,
   ShieldCheck,
-  Building2,
   Mail,
 } from "lucide-react";
 
@@ -101,44 +100,6 @@ export const userColumn: ColumnDef<IUser, any>[] = [
       );
     },
   }),
-
-  // ============================================
-  // COMPANY
-  // ============================================
-  columnHelper.accessor("companyId", {
-    header: "Company",
-    cell: ({ row }) => {
-      const user = row.original;
-
-      // Try to extract company name from the nested relation
-      const companyName =
-        user.superAdmin?.company?.name ||
-        user.hrManager?.company?.name ||
-        user.accountant?.company?.name ||
-        user.departmentHead?.company?.name ||
-        user.employee?.company?.name ||
-        null;
-
-      if (!companyName) {
-        return (
-          <span className="text-xs text-muted-foreground font-mono">
-            {user.companyId.slice(0, 8)}...
-          </span>
-        );
-      }
-
-      return (
-        <div className="flex items-center gap-2">
-          <Building2 className="h-4 w-4 text-muted-foreground" />
-          <span className="text-sm">{companyName}</span>
-        </div>
-      );
-    },
-  }),
-
-  // ============================================
-  // EMAIL VERIFIED
-  // ============================================
   columnHelper.accessor("emailVerified", {
     header: "Verified",
     cell: ({ getValue }) => {
@@ -159,34 +120,27 @@ export const userColumn: ColumnDef<IUser, any>[] = [
       );
     },
   }),
-
-  // ============================================
-  // ACCOUNT STATUS
-  // ============================================
   columnHelper.accessor("isActive", {
     header: "Status",
     cell: ({ getValue }) => {
       const isActive = getValue();
+      console.log('isactive', isActive);
       return isActive ? (
         <Badge
           variant="default"
           className="bg-emerald-500 hover:bg-emerald-600"
         >
           <CheckCircle2 className="h-3 w-3 mr-1" />
-          Active
+          Active {isActive}
         </Badge>
       ) : (
         <Badge variant="destructive">
           <XCircle className="h-3 w-3 mr-1" />
-          Inactive
+          Inactive {isActive}
         </Badge>
       );
     },
   }),
-
-  // ============================================
-  // CREATED AT
-  // ============================================
   columnHelper.accessor("createdAt", {
     header: "Created",
     cell: ({ getValue }) => {
@@ -198,10 +152,6 @@ export const userColumn: ColumnDef<IUser, any>[] = [
       );
     },
   }),
-
-  // ============================================
-  // UPDATED AT
-  // ============================================
   columnHelper.accessor("updatedAt", {
     header: "Updated",
     cell: ({ getValue }) => {

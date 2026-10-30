@@ -1,10 +1,12 @@
 "use client";
 
-import { getAllCompany } from "@/actions/company.action";
+import DataTable from "@/components/shared/tables/DataTable";
 import { useTableQueryParams } from "@/hooks/useTableQueryParams";
 import { IUser } from "@/types/user.type";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
+import { userColumn } from "./AllUserColumn";
+import { getAllUser } from "@/actions/user.action";
 
 const ManageAllUserTable = ({ queryString }: { queryString: string }) => {
   const {
@@ -20,7 +22,7 @@ const ManageAllUserTable = ({ queryString }: { queryString: string }) => {
 
   const { data: usersResponse, isLoading } = useQuery({
     queryKey: ["all-user"],
-    queryFn: () => getAllCompany(queryString),
+    queryFn: () => getAllUser(queryString),
   });
   console.log("subscription data:", usersResponse);
   const usersData = usersResponse?.data;
@@ -38,7 +40,42 @@ const ManageAllUserTable = ({ queryString }: { queryString: string }) => {
     setDeleting(employee); // শুধু state সেট করছি, dialog নিজে বাইরে render হবে
   };
 
-  return <div>ManageAllUserTable</div>;
+  return (
+    <>
+      <DataTable
+        title="Manage Users"
+        description="Manage your site users here."
+        data={users ?? []}
+        columns={userColumn}
+        isLoading={isLoading}
+        emptyMessage="No users found!"
+        sorting={{ state: sortingState, onSortingChange: handleSortingChange }}
+        toolbar={{
+          search: {
+            value: searchValue,
+            onChange: handleSearchChange,
+            placeholder: "Search users...",
+          },
+        }}
+        pagination={
+          paginationMeta
+            ? {
+                page,
+                limit,
+                total: paginationMeta.total,
+                totalPages: paginationMeta.totalPages,
+                onPageChange: handlePageChange,
+                onLimitChange: handleLimitChange,
+              }
+            : undefined
+        }
+        actions={{
+          onView: handleView,
+          onDelete: handleDelete,
+        }}
+      />
+    </>
+  );
 };
 
 export default ManageAllUserTable;

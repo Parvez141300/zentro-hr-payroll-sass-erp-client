@@ -1,5 +1,5 @@
 import ManageAllUserTable from "@/components/modules/(dashboard)/platformSuperAdminDashboard/ManageAllUserTable/ManageAllUserTable";
-import { companyService } from "@/services/company.service";
+import { userService } from "@/services/user.service";
 import {
   dehydrate,
   HydrationBoundary,
@@ -22,7 +22,7 @@ const ManageUsersPage = async ({
 
   await queryClient.prefetchQuery({
     queryKey: ["all-user"],
-    queryFn: () => companyService.getAllCompany(queryString),
+    queryFn: () => userService.getAllUser(queryString),
     staleTime: 1000 * 60 * 60, // 1 hour
     gcTime: 1000 * 60 * 60 * 24, // 1 day
   });
