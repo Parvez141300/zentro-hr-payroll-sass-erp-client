@@ -27,9 +27,11 @@ const ManageSubscriptionPlanPage = async ({
     staleTime: 1000 * 60 * 60, // 1 hour
     gcTime: 1000 * 60 * 60 * 24, // 1 day
   });
-  return <HydrationBoundary state={dehydrate(queryClient)}>
-    <ManageSubscriptionPlanTable queryString={queryString} />
-  </HydrationBoundary>;
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <ManageSubscriptionPlanTable queryString={queryString} />
+    </HydrationBoundary>
+  );
 };
 
 export default ManageSubscriptionPlanPage;

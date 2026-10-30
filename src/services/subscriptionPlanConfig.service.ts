@@ -3,7 +3,7 @@ import { IPaginatedData } from "@/types/pagination.type";
 import { ISubscriptionPlanConfig, IUpdateSubscriptionPlanConfig } from "@/types/subscriptionPlanConfig.type";
 
 const getAllSubscriptionPlanConfig = async (queryString?: string) => {
-    const result = await httpServer.get<IPaginatedData<ISubscriptionPlanConfig[]>>(`/api/v1/subscription-plans-config?search=${queryString}`);
+    const result = await httpServer.get<IPaginatedData<ISubscriptionPlanConfig[]>>(`/api/v1/subscription-plans-config?${queryString}`);
 
     return result;
 }
