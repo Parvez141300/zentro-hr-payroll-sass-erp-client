@@ -9,6 +9,8 @@ import { userColumn } from "./AllUserColumn";
 import { deleteUser, getAllUser } from "@/actions/user.action";
 import DeletePopUpDialog from "@/components/shared/tables/DeletePopUpDialog";
 import ViewUserDialog from "./ViewUserDialog";
+import RoleFilter from "./filters/RoleFilter";
+import IsActiveUserFilter from "./filters/IsActiveUserFilter";
 
 const ManageAllUserTable = ({ queryString }: { queryString: string }) => {
   const {
@@ -59,6 +61,12 @@ const ManageAllUserTable = ({ queryString }: { queryString: string }) => {
             onChange: handleSearchChange,
             placeholder: "Search users...",
           },
+          filters: (
+            <>
+              <IsActiveUserFilter />
+              <RoleFilter />
+            </>
+          ),
         }}
         pagination={
           paginationMeta
