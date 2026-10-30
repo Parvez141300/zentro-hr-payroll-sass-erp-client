@@ -27,3 +27,9 @@ export const createCompanyEmployee = async (payload: any, options?: IApiRequestO
 
     return result;
 };
+
+export const getAllUser = async (queryString?: string) => {
+    const result = await userService.getAllUser(queryString);
+
+    return result;
+}
