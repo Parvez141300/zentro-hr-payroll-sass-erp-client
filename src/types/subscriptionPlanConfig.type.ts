@@ -40,3 +40,17 @@ export interface IUpdateSubscriptionPlanConfig {
   popularBadge?: boolean;
   features?: ISubscriptionFeature[];
 }
+
+export interface ICreateSubscriptionPlanConfig {
+  displayName: string;
+  description: string;
+  priceUSD: number;
+  priceBDT: number;
+  yearlyPriceUSD: number;
+  yearlyPriceBDT: number;
+  maxEmployees: number;
+  sortOrder: number;
+  isActive: boolean;
+  popularBadge: boolean;
+  features: ISubscriptionFeature[];
+}
