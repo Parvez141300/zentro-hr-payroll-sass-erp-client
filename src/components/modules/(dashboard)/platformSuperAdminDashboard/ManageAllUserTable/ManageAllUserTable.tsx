@@ -42,6 +42,7 @@ const ManageAllUserTable = ({ queryString }: { queryString: string }) => {
 
   return (
     <>
+      {/* manage all user */}
       <DataTable
         title="Manage Users"
         description="Manage your site users here."
@@ -74,6 +75,7 @@ const ManageAllUserTable = ({ queryString }: { queryString: string }) => {
           onDelete: handleDelete,
         }}
       />
+      {/* delete user */}
     </>
   );
 };

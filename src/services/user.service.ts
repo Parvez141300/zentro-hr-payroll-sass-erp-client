@@ -35,10 +35,17 @@ const getAllUser = async (queryString?: string) => {
     return result;
 }
 
+const deleteUser = async (userId: string) => {
+    const result = await httpServer.delete(`/api/v1/users/delete/${userId}`);
+
+    return result;
+}
+
 export const userService = {
     createCompanyHr,
     createCompanyAccountant,
     createCompanyDepartmentHead,
     createCompanyEmployee,
     getAllUser,
+    deleteUser,
 };
