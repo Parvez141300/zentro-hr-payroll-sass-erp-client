@@ -1,8 +1,28 @@
 import { SubscriptionPlan } from "./enums.type";
 
-export interface IGetSubscriptionPlanConfigPayload {
-  search?: string;         // Search across name AND displayName
-  name?: SubscriptionPlan; // Filter by exact enum name
-  displayName?: string;    // Filter by displayName (partial match)
-  isActive?: boolean;      // Filter by active status
+export interface ISubscriptionFeature {
+  id: string;
+  icon: string;          // Lucide icon name (e.g., "Users", "Clock")
+  name: string;          // Feature display name (e.g., "Employee Management")
+  category: string;      // "core" | "attendance" | "leave" | "payroll" | "reports"
+  included: boolean;     // Whether this feature is included in the plan
+  description: string;   // Short description
+}
+
+export interface ISubscriptionPlanConfig {
+  id: string;
+  name: SubscriptionPlan;
+  displayName: string;
+  description: string | null;
+  priceUSD: number;
+  priceBDT: number;
+  yearlyPriceUSD: number | null;
+  yearlyPriceBDT: number | null;
+  maxEmployees: number;
+  features: ISubscriptionFeature[];  // Prisma Json → typed array
+  isActive: boolean;
+  sortOrder: number;
+  popularBadge: boolean;
+  createdAt: string | Date;
+  updatedAt: string | Date;
 }
