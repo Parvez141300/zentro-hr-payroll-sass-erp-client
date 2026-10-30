@@ -8,6 +8,7 @@ import React, { useState } from "react";
 import { userColumn } from "./AllUserColumn";
 import { deleteUser, getAllUser } from "@/actions/user.action";
 import DeletePopUpDialog from "@/components/shared/tables/DeletePopUpDialog";
+import ViewUserDialog from "./ViewUserDialog";
 
 const ManageAllUserTable = ({ queryString }: { queryString: string }) => {
   const {
@@ -76,7 +77,17 @@ const ManageAllUserTable = ({ queryString }: { queryString: string }) => {
           onDelete: handleDelete,
         }}
       />
-      {/* Delete employee dialog */}
+
+      {/* view user dialog */}
+      <ViewUserDialog
+        userData={viewing}
+        open={!!viewing}
+        onOpenChange={(open) => {
+          if (!open) setViewing(null);
+        }}
+      />
+
+      {/* Delete user dialog */}
       <DeletePopUpDialog
         open={!!deleting}
         onOpenChange={(open) => {
