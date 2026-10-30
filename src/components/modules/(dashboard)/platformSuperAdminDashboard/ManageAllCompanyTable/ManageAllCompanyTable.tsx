@@ -1,12 +1,13 @@
 "use client";
 
-import { getAllCompany } from "@/actions/company.action";
+import { deleteCompany, getAllCompany } from "@/actions/company.action";
 import DataTable from "@/components/shared/tables/DataTable";
 import { useTableQueryParams } from "@/hooks/useTableQueryParams";
 import { ICompany } from "@/types/company.type";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { companyColumn } from "./ManageAllCompanyColumn";
+import DeletePopUpDialog from "@/components/shared/tables/DeletePopUpDialog";
 
 const ManageAllCompanyTable = ({ queryString }: { queryString?: string }) => {
   const {
@@ -29,7 +30,7 @@ const ManageAllCompanyTable = ({ queryString }: { queryString?: string }) => {
   const companies = companyData?.data;
   const paginationMeta = companyData?.pagination;
 
-  console.log('companies', companies);
+  console.log("companies", companies);
 
   const [viewing, setViewing] = useState<ICompany | null>(null);
   const [deleting, setDeleting] = useState<ICompany | null>(null);
@@ -76,6 +77,20 @@ const ManageAllCompanyTable = ({ queryString }: { queryString?: string }) => {
           onView: handleView,
           onDelete: handleDelete,
         }}
+      />
+
+      {/* Delete employee dialog */}
+      <DeletePopUpDialog
+        open={!!deleting}
+        onOpenChange={(open) => {
+          if (!open) setDeleting(null);
+        }}
+        title="Delete Employee"
+        itemName={deleting?.name}
+        deleteAction={() => deleteCompany(deleting!.id)}
+        queryKey={["manage-companies"]}
+        successMessage="Company deleted successfully"
+        errorMessage="Failed to delete Company"
       />
     </>
   );
