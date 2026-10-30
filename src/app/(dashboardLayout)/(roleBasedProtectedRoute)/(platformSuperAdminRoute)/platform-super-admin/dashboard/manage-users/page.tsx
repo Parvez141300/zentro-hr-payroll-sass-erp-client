@@ -1,9 +1,36 @@
-import React from 'react'
+import ManageAllUserTable from "@/components/modules/(dashboard)/platformSuperAdminDashboard/ManageAllUserTable/ManageAllUserTable";
+import { companyService } from "@/services/company.service";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+import React from "react";
 
-const ManageUsersPage = async() => {
+const ManageUsersPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) => {
+  const queryParamsObject = await searchParams;
+
+  const queryString = Object.keys(queryParamsObject)
+    .map((key) => `${key}=${queryParamsObject[key]}`)
+    .join("&");
+
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ["all-user"],
+    queryFn: () => companyService.getAllCompany(queryString),
+    staleTime: 1000 * 60 * 60, // 1 hour
+    gcTime: 1000 * 60 * 60 * 24, // 1 day
+  });
   return (
-    <div>ManageUsersPage</div>
-  )
-}
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <ManageAllUserTable queryString={queryString} />
+    </HydrationBoundary>
+  );
+};
 
-export default ManageUsersPage
+export default ManageUsersPage;
