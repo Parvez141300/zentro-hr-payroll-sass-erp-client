@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { companyColumn } from "./ManageAllCompanyColumn";
 import DeletePopUpDialog from "@/components/shared/tables/DeletePopUpDialog";
+import ViewCompanyDialog from "./ViewCompanyDialog";
 
 const ManageAllCompanyTable = ({ queryString }: { queryString?: string }) => {
   const {
@@ -76,6 +77,15 @@ const ManageAllCompanyTable = ({ queryString }: { queryString?: string }) => {
         actions={{
           onView: handleView,
           onDelete: handleDelete,
+        }}
+      />
+
+      {/* ✅ This is where you use the dialog */}
+      <ViewCompanyDialog
+        companyData={viewing}
+        open={!!viewing}
+        onOpenChange={(open) => {
+          if (!open) setViewing(null);
         }}
       />
 
