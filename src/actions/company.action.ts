@@ -21,3 +21,9 @@ export const updateCompanyDetails = async (payload: any, options?: IApiRequestOp
 
     return result;
 }
+
+export const deleteCompany = async (companyId: string) => {
+    const result = await companyService.deleteCompany(companyId);
+
+    return result;
+}

@@ -6,6 +6,7 @@ import { useTableQueryParams } from "@/hooks/useTableQueryParams";
 import { ICompany } from "@/types/company.type";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
+import { companyColumn } from "./ManageAllCompanyColumn";
 
 const ManageAllCompanyTable = ({ queryString }: { queryString?: string }) => {
   const {
@@ -28,6 +29,8 @@ const ManageAllCompanyTable = ({ queryString }: { queryString?: string }) => {
   const companies = companyData?.data;
   const paginationMeta = companyData?.pagination;
 
+  console.log('companies', companies);
+
   const [viewing, setViewing] = useState<ICompany | null>(null);
   const [deleting, setDeleting] = useState<ICompany | null>(null);
 
@@ -41,12 +44,12 @@ const ManageAllCompanyTable = ({ queryString }: { queryString?: string }) => {
 
   return (
     <>
-      {/* subscirption plan config table */}
-      {/* <DataTable
-        title="Subscription Plan"
-        description="Manage your Subscription Plan Configuration here."
-        data={companies || []}
-        // columns={}
+      {/* manage all company table */}
+      <DataTable
+        title="Manage All Company"
+        description="Manage All Company here."
+        data={companies}
+        columns={companyColumn}
         isLoading={isLoading}
         emptyMessage="No employees found!"
         sorting={{ state: sortingState, onSortingChange: handleSortingChange }}
@@ -73,7 +76,7 @@ const ManageAllCompanyTable = ({ queryString }: { queryString?: string }) => {
           onView: handleView,
           onDelete: handleDelete,
         }}
-      /> */}
+      />
     </>
   );
 };

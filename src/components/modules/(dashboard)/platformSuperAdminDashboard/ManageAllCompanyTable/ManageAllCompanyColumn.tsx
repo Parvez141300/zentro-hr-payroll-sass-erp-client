@@ -14,19 +14,12 @@ import {
 
 const columnHelper = createColumnHelper<ICompany>();
 
-export const subscriptionPlanConfigColumn: ColumnDef<ICompany, any>[] = [
-  // ============================================
-  // SERIAL
-  // ============================================
+export const companyColumn: ColumnDef<ICompany, any>[] = [
   columnHelper.display({
     id: "serial",
     header: "SL",
     cell: (info) => info.row.index + 1,
   }),
-
-  // ============================================
-  // COMPANY (avatar + name + email)
-  // ============================================
   columnHelper.accessor("name", {
     header: "Company",
     cell: ({ row }) => {
@@ -59,10 +52,6 @@ export const subscriptionPlanConfigColumn: ColumnDef<ICompany, any>[] = [
       );
     },
   }),
-
-  // ============================================
-  // SUBSCRIPTION PLAN
-  // ============================================
   columnHelper.accessor("subscriptionPlan", {
     header: "Plan",
     cell: ({ getValue }) => {
@@ -74,10 +63,6 @@ export const subscriptionPlanConfigColumn: ColumnDef<ICompany, any>[] = [
       );
     },
   }),
-
-  // ============================================
-  // SUBSCRIPTION STATUS
-  // ============================================
   columnHelper.accessor("subscriptionStatus", {
     header: "Status",
     cell: ({ getValue }) => {
@@ -114,10 +99,6 @@ export const subscriptionPlanConfigColumn: ColumnDef<ICompany, any>[] = [
       );
     },
   }),
-
-  // ============================================
-  // MAX EMPLOYEES
-  // ============================================
   columnHelper.accessor("maxEmployees", {
     header: "Max Employees",
     cell: ({ getValue }) => {
@@ -132,10 +113,6 @@ export const subscriptionPlanConfigColumn: ColumnDef<ICompany, any>[] = [
       );
     },
   }),
-
-  // ============================================
-  // PAYMENT PROVIDER
-  // ============================================
   columnHelper.display({
     id: "paymentProvider",
     header: "Payment",
@@ -163,10 +140,6 @@ export const subscriptionPlanConfigColumn: ColumnDef<ICompany, any>[] = [
       return <span className="text-xs text-muted-foreground">—</span>;
     },
   }),
-
-  // ============================================
-  // SUBSCRIPTION EXPIRY
-  // ============================================
   columnHelper.accessor("subscriptionExpiry", {
     header: "Expires",
     cell: ({ getValue }) => {
@@ -189,10 +162,6 @@ export const subscriptionPlanConfigColumn: ColumnDef<ICompany, any>[] = [
       );
     },
   }),
-
-  // ============================================
-  // CREATED AT
-  // ============================================
   columnHelper.accessor("createdAt", {
     header: "Created",
     cell: ({ getValue }) => {
