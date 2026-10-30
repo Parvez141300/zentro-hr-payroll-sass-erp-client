@@ -1,10 +1,16 @@
 "use server";
 
 import { subscriptionPlanConfigService } from "@/services/subscriptionPlanConfig.service";
-import { IUpdateSubscriptionPlanConfig } from "@/types/subscriptionPlanConfig.type";
+import { ICreateSubscriptionPlanConfig, IUpdateSubscriptionPlanConfig } from "@/types/subscriptionPlanConfig.type";
 
 export const getAllSubscriptionPlanConfig = async (queryString?: string) => {
     const result = await subscriptionPlanConfigService.getAllSubscriptionPlanConfig(queryString);
+
+    return result;
+}
+
+export const createSubscriptionPlanConfig = async (payload: ICreateSubscriptionPlanConfig) => {
+    const result = await subscriptionPlanConfigService.createSubscriptionPlanConfig(payload);
 
     return result;
 }
