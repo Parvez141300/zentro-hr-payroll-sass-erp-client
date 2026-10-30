@@ -27,9 +27,16 @@ const createCompanyEmployee = async (payload: any, options?: IApiRequestOptions)
     return result;
 }
 
+const getAllUser = async (queryString?: string) => {
+    const result = await httpServer.get(`/api/v1/users/all-users?${queryString}`);
+
+    return result;
+}
+
 export const userService = {
     createCompanyHr,
     createCompanyAccountant,
     createCompanyDepartmentHead,
     createCompanyEmployee,
+    getAllUser,
 };
