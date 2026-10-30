@@ -33,3 +33,9 @@ export const getAllUser = async (queryString?: string) => {
 
     return result;
 }
+
+export const deleteUser =async (userId: string) => {
+    const result = await userService.deleteUser(userId);
+
+    return result;
+}
