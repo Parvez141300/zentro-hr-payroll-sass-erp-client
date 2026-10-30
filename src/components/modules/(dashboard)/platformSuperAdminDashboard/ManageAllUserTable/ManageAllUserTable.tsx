@@ -6,7 +6,8 @@ import { IUser } from "@/types/user.type";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { userColumn } from "./AllUserColumn";
-import { getAllUser } from "@/actions/user.action";
+import { deleteUser, getAllUser } from "@/actions/user.action";
+import DeletePopUpDialog from "@/components/shared/tables/DeletePopUpDialog";
 
 const ManageAllUserTable = ({ queryString }: { queryString: string }) => {
   const {
@@ -75,7 +76,19 @@ const ManageAllUserTable = ({ queryString }: { queryString: string }) => {
           onDelete: handleDelete,
         }}
       />
-      {/* delete user */}
+      {/* Delete employee dialog */}
+      <DeletePopUpDialog
+        open={!!deleting}
+        onOpenChange={(open) => {
+          if (!open) setDeleting(null);
+        }}
+        title="Delete User"
+        itemName={deleting?.name}
+        deleteAction={() => deleteUser(deleting!.id)}
+        queryKey={["companyEmployees"]}
+        successMessage="User deleted successfully"
+        errorMessage="Failed to delete User"
+      />
     </>
   );
 };
