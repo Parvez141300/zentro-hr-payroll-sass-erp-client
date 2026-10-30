@@ -26,3 +26,17 @@ export interface ISubscriptionPlanConfig {
   createdAt: string | Date;
   updatedAt: string | Date;
 }
+
+export interface IUpdateSubscriptionPlanConfig {
+  displayName?: string;
+  description?: string | null;
+  priceUSD?: number;
+  priceBDT?: number;
+  yearlyPriceUSD?: number | null;
+  yearlyPriceBDT?: number | null;
+  maxEmployees?: number;
+  sortOrder?: number;
+  isActive?: boolean;
+  popularBadge?: boolean;
+  features?: ISubscriptionFeature[];
+}
