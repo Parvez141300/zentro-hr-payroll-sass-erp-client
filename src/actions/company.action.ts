@@ -4,6 +4,12 @@
 import { IApiRequestOptions } from "@/lib/http/types";
 import { companyService } from "@/services/company.service";
 
+export const getAllCompany = async (queryString?: string) => {
+    const result = await companyService.getAllCompany(queryString);
+
+    return result;
+}
+
 export const getCompanyDetails = async () => {
     const result = await companyService.getCompanyDetails();
 
