@@ -1,9 +1,12 @@
-import React from 'react'
+import CreateSubscriptionPlanForm from "@/components/modules/(dashboard)/platformSuperAdminDashboard/ManageSubscriptionPlanTable/CreateSubscriptionPlanForm";
+import React from "react";
 
 const CreateSubscriptionPlanConfigPage = () => {
   return (
-    <div>CreateSubscriptionPlanConfigPage</div>
-  )
-}
+    <div>
+      <CreateSubscriptionPlanForm />
+    </div>
+  );
+};
 
-export default CreateSubscriptionPlanConfigPage
+export default CreateSubscriptionPlanConfigPage;

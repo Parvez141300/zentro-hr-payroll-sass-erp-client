@@ -42,12 +42,13 @@ export interface IUpdateSubscriptionPlanConfig {
 }
 
 export interface ICreateSubscriptionPlanConfig {
+  name: SubscriptionPlan;
   displayName: string;
-  description: string;
+  description: string | null;        // ✅ allow null
   priceUSD: number;
   priceBDT: number;
-  yearlyPriceUSD: number;
-  yearlyPriceBDT: number;
+  yearlyPriceUSD: number | null;     // ✅ allow null
+  yearlyPriceBDT: number | null;     // ✅ allow null
   maxEmployees: number;
   sortOrder: number;
   isActive: boolean;

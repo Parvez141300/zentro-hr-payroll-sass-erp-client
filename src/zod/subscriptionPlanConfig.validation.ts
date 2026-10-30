@@ -132,7 +132,7 @@ export const createSubscriptionPlanSchema = z.object({
         .refine((v) => !isNaN(Number(v)) && Number(v) >= 0, "Must be 0 or greater"),
     isActive: z.boolean(),
     popularBadge: z.boolean(),
-    features: z.array(featureSchema).default([]),
+    features: z.array(featureSchema), // ✅ No .default()
 });
 
 export type CreateSubscriptionPlanFormValues = z.infer<
