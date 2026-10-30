@@ -8,6 +8,13 @@ const getAllSubscriptionPlanConfig = async (queryString?: string) => {
     return result;
 }
 
+const deleteSubscriptionPlanConfig = async (planId: string) => {
+    const result = await httpServer.delete(`/api/v1/subscription-plans-config/${planId}`);
+
+    return result;
+}
+
 export const subscriptionPlanConfigService = {
-    getAllSubscriptionPlanConfig
+    getAllSubscriptionPlanConfig,
+    deleteSubscriptionPlanConfig,
 }

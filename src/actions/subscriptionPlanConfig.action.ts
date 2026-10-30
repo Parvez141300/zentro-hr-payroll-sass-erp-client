@@ -7,3 +7,9 @@ export const getAllSubscriptionPlanConfig = async (queryString?: string) => {
 
     return result;
 }
+
+export const deleteSubscriptionPlanConfig = async (planId: string) => {
+    const result = await subscriptionPlanConfigService.deleteSubscriptionPlanConfig(planId);
+
+    return result
+}

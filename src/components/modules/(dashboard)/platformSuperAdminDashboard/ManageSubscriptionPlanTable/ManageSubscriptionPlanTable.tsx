@@ -1,6 +1,6 @@
 "use client";
 
-import { getAllSubscriptionPlanConfig } from "@/actions/subscriptionPlanConfig.action";
+import { deleteSubscriptionPlanConfig, getAllSubscriptionPlanConfig } from "@/actions/subscriptionPlanConfig.action";
 import DataTable from "@/components/shared/tables/DataTable";
 import { useTableQueryParams } from "@/hooks/useTableQueryParams";
 import { ISubscriptionPlanConfig } from "@/types/subscriptionPlanConfig.type";
@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { subscriptionPlanConfigColumn } from "./SubscriptionPlanConfigColumn";
 import ViewSubscriptionPlanDialog from "./ViewSubscriptionPlanDialog";
+import DeletePopUpDialog from "@/components/shared/tables/DeletePopUpDialog";
 
 const ManageSubscriptionPlanTable = ({
   queryString,
@@ -100,6 +101,21 @@ const ManageSubscriptionPlanTable = ({
         onOpenChange={(open) => {
           if (!open) setViewing(null);
         }}
+      />
+
+      
+      {/* Delete employee dialog */}
+      <DeletePopUpDialog
+        open={!!deleting}
+        onOpenChange={(open) => {
+          if (!open) setDeleting(null);
+        }}
+        title="Delete Employee"
+        itemName={deleting?.name}
+        deleteAction={() => deleteSubscriptionPlanConfig(deleting!.id)}
+        queryKey={["companyEmployees"]}
+        successMessage="Employee deleted successfully"
+        errorMessage="Failed to delete employee"
       />
     </>
   );
