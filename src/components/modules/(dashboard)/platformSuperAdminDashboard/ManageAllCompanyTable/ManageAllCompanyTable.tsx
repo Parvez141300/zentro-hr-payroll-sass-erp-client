@@ -50,7 +50,7 @@ const ManageAllCompanyTable = ({ queryString }: { queryString?: string }) => {
       <DataTable
         title="Manage All Company"
         description="Manage All Company here."
-        data={companies}
+        data={companies ?? []}
         columns={companyColumn}
         isLoading={isLoading}
         emptyMessage="No employees found!"
