@@ -40,12 +40,15 @@ import Link from "next/link";
 import BorderBeamButton from "../buttons/BorderBeamButton";
 import { ThemeToggle } from "../themeToggle/ThemeToggle";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { getClientLoggedInUserInfo } from "@/actions/auth.action";
 import { Spinner } from "@/components/ui/spinner";
 import DropdownNavMenu from "./DropdownNavMenu";
 import { ISessionUser } from "@/types/auth.type";
+import { useQuery } from "@tanstack/react-query";
+import { getClientLoggedInUserInfo } from "@/actions/auth.action";
 
+// ============================================
+// TYPES
+// ============================================
 interface MenuItem {
   title: string;
   url: string;
@@ -58,17 +61,14 @@ interface Navbar1Props {
   className?: string;
   menu?: MenuItem[];
   auth?: {
-    login: {
-      title: string;
-      url: string;
-    };
-    signup: {
-      title: string;
-      url: string;
-    };
+    login: { title: string; url: string };
+    signup: { title: string; url: string };
   };
 }
 
+// ============================================
+// MAIN COMPONENT
+// ============================================
 const Navbar1 = ({
   menu = [
     { title: "Home", url: "/" },
@@ -127,14 +127,8 @@ const Navbar1 = ({
         },
       ],
     },
-    {
-      title: "Pricing",
-      url: "/pricing",
-    },
-    {
-      title: "Contact",
-      url: "/contact",
-    },
+    { title: "Pricing", url: "/pricing" },
+    { title: "Contact", url: "/contact" },
   ],
   auth = {
     login: { title: "Login", url: "#" },
@@ -143,35 +137,17 @@ const Navbar1 = ({
   className,
 }: Navbar1Props) => {
   const pathName = usePathname();
-  const [session, setSession] = useState<ISessionUser | null>(null);
-  const [loading, setLoading] = useState(true);
 
-  console.log(session, "this from session data");
+  // ✅ Fetch session via useQuery
+  const { data: sessionResponse, isLoading } = useQuery({
+    queryKey: ["user-info"],
+    queryFn: () => getClientLoggedInUserInfo(),
+    staleTime: 5 * 60 * 1000,
+    retry: false,
+  });
 
-  useEffect(() => {
-    const fetchSession = async () => {
-      setLoading(true);
-      try {
-        const response = await getClientLoggedInUserInfo();
-        const data = response.data;
-        setSession(data);
-        setLoading(false);
-      } catch (error) {
-        if (error instanceof Error) {
-          if (error.message === "Access token is missing") {
-            return;
-          }
-        }
-        console.error(error instanceof Error && error.message);
-        setSession(null);
-        setLoading(false);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSession();
-  }, []);
+  // ✅ Safely extract session — no cast needed
+  const session: ISessionUser | null = sessionResponse?.data ?? null;
 
   return (
     <section className={cn("py-4", className)}>
@@ -179,7 +155,6 @@ const Navbar1 = ({
         {/* Desktop Menu */}
         <nav className="hidden items-center justify-between lg:flex">
           <div className="flex items-center gap-6">
-            {/* Logo */}
             <Logo width={70} height={30} />
             <div className="flex items-center">
               <NavigationMenu>
@@ -191,10 +166,10 @@ const Navbar1 = ({
           </div>
           <div className="flex items-center gap-5">
             <ThemeToggle />
-            {loading ? (
+            {isLoading ? (
               <Spinner />
             ) : session ? (
-              <DropdownNavMenu sessionUser={session} setSession={setSession} />
+              <DropdownNavMenu sessionUser={session} />
             ) : (
               <Link href={auth.signup.url}>
                 <BorderBeamButton>
@@ -209,7 +184,6 @@ const Navbar1 = ({
         {/* Mobile Menu */}
         <div className="block lg:hidden">
           <div className="flex items-center justify-between">
-            {/* Logo */}
             <Logo width={50} height={20} />
             <Sheet>
               <SheetTrigger render={<Button variant="outline" size="icon" />}>
@@ -228,13 +202,10 @@ const Navbar1 = ({
 
                   <div className="flex items-center justify-between">
                     <ThemeToggle />
-                    {loading ? (
+                    {isLoading ? (
                       <Spinner />
                     ) : session ? (
-                      <DropdownNavMenu
-                        sessionUser={session}
-                        setSession={setSession}
-                      />
+                      <DropdownNavMenu sessionUser={session} />
                     ) : (
                       <Link href={auth.signup.url}>
                         <BorderBeamButton>
@@ -254,8 +225,12 @@ const Navbar1 = ({
   );
 };
 
+// ============================================
+// HELPER FUNCTIONS
+// ============================================
 const renderMenuItem = (item: MenuItem, pathName: string) => {
   const isActive = pathName === item.url;
+
   if (item.items) {
     return (
       <NavigationMenuItem key={item.title}>

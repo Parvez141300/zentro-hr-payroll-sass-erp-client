@@ -18,6 +18,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { ISessionUser } from "@/types/auth.type";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   ChevronsUpDownIcon,
   SparklesIcon,
@@ -32,6 +33,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 export function NavUser({ user }: { user: ISessionUser }) {
+  const queryClient = useQueryClient();
   const { isMobile } = useSidebar();
   const router = useRouter();
 
@@ -42,6 +44,10 @@ export function NavUser({ user }: { user: ISessionUser }) {
       const logout = await logoutUser();
       if (logout.success) {
         toast.success("Logout successful", { id: toastId });
+        // clear cashed data
+        queryClient.removeQueries({ queryKey: ["user-info"] });
+        queryClient.clear();
+        
         router.push("/login");
       }
       console.log(logout);

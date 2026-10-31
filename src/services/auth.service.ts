@@ -51,6 +51,7 @@ const getClientLoggedInUserInfo = async () => {
     return info;
 }
 
+
 const logoutUser = async () => {
     try {
         const result = await httpServer.post("/api/v1/auth/logout");

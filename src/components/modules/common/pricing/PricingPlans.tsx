@@ -10,6 +10,9 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { getIconComponent } from "@/lib/iconMapper";
 import { SubscriptionPlan } from "@/types/enums.type";
+import { useQuery } from "@tanstack/react-query";
+import { getClientLoggedInUserInfo } from "@/actions/auth.action";
+import { toast } from "sonner";
 
 // API থেকে আসা ডেটার টাইপ
 interface Feature {
@@ -59,9 +62,23 @@ const PricingPlans = ({ plans, className }: PricingPlansProps) => {
     }
   };
 
+  const { data: loggedInUser } = useQuery({
+    queryKey: ["user-info"],
+    queryFn: async () => {
+      const result = await getClientLoggedInUserInfo();
+
+      return result;
+    },
+  });
+
   const handlePlan = (planData: Plan) => {
-    console.log('plan data: ', planData);
-  }
+    if (!loggedInUser) {
+      return toast.warning("User must be logged in to purchase a plan");
+    }
+    console.log("plan data: ", planData);
+    console.log("current loggedin user", loggedInUser);
+  };
+  console.log("current loggedin user", loggedInUser);
 
   return (
     <section className={cn("", className)}>

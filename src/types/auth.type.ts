@@ -82,8 +82,6 @@ export interface ISessionUser {
     
     createdAt: string | Date;
     updatedAt: string | Date;
-    isDeleted: boolean;
-    deletedAt?: Date | string | null;
 }
 
 export interface IChangePassword {

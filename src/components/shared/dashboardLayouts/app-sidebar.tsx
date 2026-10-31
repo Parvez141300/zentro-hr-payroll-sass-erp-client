@@ -37,8 +37,6 @@ export function AppSidebar() {
         <NavUser
           user={{
             ...userInfo!.data,
-            isDeleted: false,
-            deletedAt: null,
           }}
         />
       </SidebarFooter>

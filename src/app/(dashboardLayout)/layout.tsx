@@ -45,7 +45,7 @@ const RootDashboardLayout = async ({
               <ThemeToggle />
               <SidebarMobile
                 sidebarNavItems={sidebarNavItems}
-                userInfo={{ ...userInfo!.data, isDeleted: false }}
+                userInfo={{ ...userInfo!.data }}
               />
             </div>
           </header>
