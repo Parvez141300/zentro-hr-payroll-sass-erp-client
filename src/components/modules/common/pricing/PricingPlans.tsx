@@ -59,6 +59,10 @@ const PricingPlans = ({ plans, className }: PricingPlansProps) => {
     }
   };
 
+  const handlePlan = (planData: Plan) => {
+    console.log('plan data: ', planData);
+  }
+
   return (
     <section className={cn("", className)}>
       <div>
@@ -209,6 +213,7 @@ const PricingPlans = ({ plans, className }: PricingPlansProps) => {
                         className="w-full mt-6"
                         variant={isPopular ? "default" : "outline"}
                         size="lg"
+                        onClick={() => handlePlan(plan)}
                       >
                         Get Started <ArrowRight className="h-4 w-4 ml-2" />
                       </Button>
