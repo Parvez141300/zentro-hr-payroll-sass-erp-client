@@ -34,7 +34,7 @@ export default function PricingData() {
     );
   }
 
-  const plans = (data?.data as Plan[]) || [];
+  const plans = (data?.data?.data as Plan[]) || [];
 
   console.log("Pricing plans:", plans);
   if (plans.length === 0) {
