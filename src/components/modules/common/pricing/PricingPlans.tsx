@@ -13,6 +13,7 @@ import { SubscriptionPlan } from "@/types/enums.type";
 import { useQuery } from "@tanstack/react-query";
 import { getClientLoggedInUserInfo } from "@/actions/auth.action";
 import { toast } from "sonner";
+import PaymentGatewayDialog from "./PaymentGatewayDialog";
 
 // API থেকে আসা ডেটার টাইপ
 interface Feature {
@@ -50,6 +51,9 @@ interface PricingPlansProps {
 const PricingPlans = ({ plans, className }: PricingPlansProps) => {
   const [isAnnually, setIsAnnually] = useState(false);
 
+  const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+
   // সাজানো plans (sortOrder অনুযায়ী)
   const sortedPlans = [...plans].sort((a, b) => a.sortOrder - b.sortOrder);
 
@@ -77,8 +81,48 @@ const PricingPlans = ({ plans, className }: PricingPlansProps) => {
     }
     console.log("plan data: ", planData);
     console.log("current loggedin user", loggedInUser);
+    setSelectedPlan(planData);
   };
-  console.log("current loggedin user", loggedInUser);
+
+  const handleGatewaySelection = async (gateway: "stripe" | "sslcommerz") => {
+    if (!selectedPlan) return;
+
+    setIsProcessing(true);
+    try {
+      // ✅ Re-verify auth at checkout time
+      const freshUser = await getClientLoggedInUserInfo();
+      if (!freshUser?.data) {
+        toast.error("Session expired. Please log in again.");
+        setSelectedPlan(null);
+        return;
+      }
+
+      console.log("Checkout started:", {
+        plan: selectedPlan.name,
+        gateway,
+        billingCycle: isAnnually ? "yearly" : "monthly",
+      });
+
+      // TODO: Replace with real checkout
+      // const { url } = await createCheckoutSession({
+      //   planId: selectedPlan.id,
+      //   gateway,
+      //   billingCycle: isAnnually ? "yearly" : "monthly",
+      // });
+      // window.location.href = url;
+
+      toast.success(
+        `Redirecting to ${gateway === "stripe" ? "Stripe" : "SSLCommerz"}...`,
+      );
+      setSelectedPlan(null);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error("Failed to start checkout. Please try again.");
+      }
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   return (
     <section className={cn("", className)}>
@@ -244,6 +288,26 @@ const PricingPlans = ({ plans, className }: PricingPlansProps) => {
           </div>
         </div>
       </div>
+      {/* ✅ Payment Gateway Dialog — key forces fresh state per plan */}
+      {selectedPlan && (
+        <PaymentGatewayDialog
+          key={selectedPlan.id}
+          open={!!selectedPlan}
+          onOpenChange={(open) => {
+            if (!open) setSelectedPlan(null);
+          }}
+          planName={selectedPlan.name}
+          planDisplayName={selectedPlan.displayName}
+          priceUSD={selectedPlan.priceUSD}
+          priceBDT={selectedPlan.priceBDT}
+          yearlyPriceUSD={selectedPlan.yearlyPriceUSD}
+          yearlyPriceBDT={selectedPlan.yearlyPriceBDT}
+          periodText={isAnnually ? "per year" : "per month"}
+          maxEmployees={selectedPlan.maxEmployees}
+          isLoading={isProcessing}
+          onSelectGateway={handleGatewaySelection}
+        />
+      )}
     </section>
   );
 };
