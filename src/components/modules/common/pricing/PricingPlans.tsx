@@ -9,6 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { getIconComponent } from "@/lib/iconMapper";
+import { SubscriptionPlan } from "@/types/enums.type";
 
 // API থেকে আসা ডেটার টাইপ
 interface Feature {
@@ -201,14 +202,20 @@ const PricingPlans = ({ plans, className }: PricingPlansProps) => {
                     </ul>
                   </div>
 
-                  {/* বাটন */}
-                  <Button
-                    className="w-full mt-6"
-                    variant={isPopular ? "default" : "outline"}
-                    size="lg"
-                  >
-                    Get Started <ArrowRight className="h-4 w-4 ml-2" />
-                  </Button>
+                  {plan.name !== SubscriptionPlan.FREE ? (
+                    <>
+                      {/* বাটন */}
+                      <Button
+                        className="w-full mt-6"
+                        variant={isPopular ? "default" : "outline"}
+                        size="lg"
+                      >
+                        Get Started <ArrowRight className="h-4 w-4 ml-2" />
+                      </Button>
+                    </>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               );
             })}
