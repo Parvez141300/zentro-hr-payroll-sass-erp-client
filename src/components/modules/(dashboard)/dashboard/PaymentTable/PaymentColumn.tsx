@@ -69,15 +69,6 @@ export const paymentColumn: ColumnDef<IPayment, any>[] = [
     cell: (info) => info.row.index + 1,
   }),
 
-  columnHelper.accessor("transactionId", {
-    header: "Transaction ID",
-    cell: ({ row }) => (
-      <span className="font-mono text-xs">
-        {row.original.transactionId || "N/A"}
-      </span>
-    ),
-  }),
-
   columnHelper.accessor("plan", {
     header: "Plan",
     cell: ({ row }) => (
