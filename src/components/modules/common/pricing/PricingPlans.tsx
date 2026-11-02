@@ -80,6 +80,17 @@ const PricingPlans = ({ plans, className }: PricingPlansProps) => {
     },
   });
 
+  // check whether the customer already purchased any plan or not
+  const isActivePlan =
+    loggedInUser?.data.company?.subscriptionPlan === SubscriptionPlan.BASIC
+      ? true
+      : loggedInUser?.data.company?.subscriptionPlan ===
+          SubscriptionPlan.ENTERPRISE
+        ? true
+        : loggedInUser?.data.company?.subscriptionPlan === SubscriptionPlan.PRO
+          ? true
+          : false;
+
   const handlePlan = (planData: Plan) => {
     if (!loggedInUser) {
       toast.warning("User must be logged in to purchase a plan");
@@ -118,7 +129,7 @@ const PricingPlans = ({ plans, className }: PricingPlansProps) => {
         const { data: stripeResponseData } = await createStripeCheckoutSession({
           planName: selectedPlan.name as SubscriptionPlan,
           billingCycle: isAnnually ? BillingCycle.YEARLY : BillingCycle.MONTHLY,
-          successUrl: `${clientEnv.NEXT_PUBLIC_FRONTEND_URL}/super-admin/dashboard/payments`
+          successUrl: `${clientEnv.NEXT_PUBLIC_FRONTEND_URL}/super-admin/dashboard/payments`,
         });
         window.location.href = stripeResponseData.url;
       } else if (gateway === "sslcommerz") {
@@ -288,6 +299,7 @@ const PricingPlans = ({ plans, className }: PricingPlansProps) => {
                         variant={isPopular ? "default" : "outline"}
                         size="lg"
                         onClick={() => handlePlan(plan)}
+                        disabled={isActivePlan}
                       >
                         Get Started <ArrowRight className="h-4 w-4 ml-2" />
                       </Button>

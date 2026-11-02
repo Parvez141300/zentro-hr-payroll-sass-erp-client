@@ -1,4 +1,5 @@
 import { IAccountant } from "./accountant.type";
+import { ICompany } from "./company.type";
 import { IDepartmentHead } from "./departmentHead.type";
 import { IEmployee } from "./employee.type";
 import { EmployeeStatus, EmploymentType, Gender, HrScope, SalaryType, UserRole } from "./enums.type";
@@ -24,6 +25,7 @@ export interface IUser {
   accountant?: IAccountant;
   departmentHead?: IDepartmentHead;
   employee?: IEmployee;
+  company?:ICompany
 }
 
 
