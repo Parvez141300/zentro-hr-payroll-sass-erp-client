@@ -15,6 +15,7 @@ import { getClientLoggedInUserInfo } from "@/actions/auth.action";
 import { toast } from "sonner";
 import PaymentGatewayDialog from "./PaymentGatewayDialog";
 import { useRouter } from "next/navigation";
+import { createStripeCheckoutSession } from "@/actions/stripe.action";
 
 // API থেকে আসা ডেটার টাইপ
 interface Feature {
@@ -94,6 +95,10 @@ const PricingPlans = ({ plans, className }: PricingPlansProps) => {
 
     setIsProcessing(true);
     try {
+      toast.success(
+        `Redirecting to ${gateway === "stripe" ? "Stripe" : "SSLCommerz"}...`,
+      );
+
       // ✅ Re-verify auth at checkout time
       const freshUser = loggedInUser;
       if (!freshUser?.data) {
@@ -108,21 +113,22 @@ const PricingPlans = ({ plans, className }: PricingPlansProps) => {
         billingCycle: isAnnually ? BillingCycle.YEARLY : BillingCycle.MONTHLY,
       });
 
-      // TODO: Replace with real checkout
-      // const { url } = await createCheckoutSession({
-      //   planId: selectedPlan.id,
-      //   gateway,
-      //   billingCycle: isAnnually ? "yearly" : "monthly",
-      // });
-      // window.location.href = url;
+      if (gateway === "stripe") {
+        const { data: stripeResponseData } = await createStripeCheckoutSession({
+          planName: selectedPlan.name as SubscriptionPlan,
+          billingCycle: isAnnually ? BillingCycle.YEARLY : BillingCycle.MONTHLY,
+        });
+        window.location.href = stripeResponseData.url;
+      } else if (gateway === "sslcommerz") {
+        console.log("stripe gateway");
+      }
 
-      toast.success(
-        `Redirecting to ${gateway === "stripe" ? "Stripe" : "SSLCommerz"}...`,
-      );
       setSelectedPlan(null);
     } catch (error) {
       if (error instanceof Error) {
-        toast.error("Failed to start checkout. Please try again.");
+        toast.error(
+          `Failed to start checkout. Please try again: ${error.message}`,
+        );
       }
     } finally {
       setIsProcessing(false);

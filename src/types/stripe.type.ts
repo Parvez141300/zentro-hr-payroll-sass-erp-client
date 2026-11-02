@@ -6,3 +6,9 @@ export interface ICreateCheckoutSessionPayload {
     successUrl?: string;
     cancelUrl?: string;
 }
+
+export interface ICreateCheckoutSessionResponse {
+    sessionId: string;
+    paymentId: string;
+    url: string;
+}
