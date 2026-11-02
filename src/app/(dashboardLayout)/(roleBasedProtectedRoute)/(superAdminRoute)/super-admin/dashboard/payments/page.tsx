@@ -1,4 +1,6 @@
-import { QueryClient } from "@tanstack/react-query";
+import PaymentTable from "@/components/modules/(dashboard)/dashboard/PaymentTable/PaymentTable";
+import { paymentService } from "@/services/payment.service";
+import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 import React from "react";
 
 const PaymentsPage = async ({
@@ -16,9 +18,16 @@ const PaymentsPage = async ({
 
   await queryClient.prefetchQuery({
     queryKey: ["company-payments", queryString],
-    // queryFn: () => (queryString),
+    queryFn: () => paymentService.getCompanyPayments(queryString),
   });
-  return <div>PaymentsPage</div>;
+
+  return (
+    <>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <PaymentTable queryString={queryString} />
+      </HydrationBoundary>
+    </>
+  );
 };
 
 export default PaymentsPage;

@@ -1,3 +1,5 @@
+"use server";
+
 import { paymentService } from "@/services/payment.service"
 
 export const getCompanyPayments = async(queryString?: string)=> {
