@@ -14,6 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getClientLoggedInUserInfo } from "@/actions/auth.action";
 import { toast } from "sonner";
 import PaymentGatewayDialog from "./PaymentGatewayDialog";
+import { useRouter } from "next/navigation";
 
 // API থেকে আসা ডেটার টাইপ
 interface Feature {
@@ -49,6 +50,8 @@ interface PricingPlansProps {
 }
 
 const PricingPlans = ({ plans, className }: PricingPlansProps) => {
+  const router = useRouter();
+
   const [isAnnually, setIsAnnually] = useState(false);
 
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
@@ -77,7 +80,9 @@ const PricingPlans = ({ plans, className }: PricingPlansProps) => {
 
   const handlePlan = (planData: Plan) => {
     if (!loggedInUser) {
-      return toast.warning("User must be logged in to purchase a plan");
+      toast.warning("User must be logged in to purchase a plan");
+
+      return router.push("/login")
     }
     console.log("plan data: ", planData);
     console.log("current loggedin user", loggedInUser);
