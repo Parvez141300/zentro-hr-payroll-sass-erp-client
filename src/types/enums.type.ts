@@ -77,6 +77,12 @@ export enum SubscriptionStatus {
   PAST_DUE = "PAST_DUE",
 }
 
+// billing cycle
+export enum BillingCycle {
+  MONTHLY = "MONTHLY",
+  YEARLY = "YEARLY",
+}
+
 // 🆕 Salary Type
 export enum SalaryType {
   MONTHLY = "MONTHLY",

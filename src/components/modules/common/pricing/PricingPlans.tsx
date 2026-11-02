@@ -9,7 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { getIconComponent } from "@/lib/iconMapper";
-import { SubscriptionPlan } from "@/types/enums.type";
+import { BillingCycle, SubscriptionPlan } from "@/types/enums.type";
 import { useQuery } from "@tanstack/react-query";
 import { getClientLoggedInUserInfo } from "@/actions/auth.action";
 import { toast } from "sonner";
@@ -82,7 +82,7 @@ const PricingPlans = ({ plans, className }: PricingPlansProps) => {
     if (!loggedInUser) {
       toast.warning("User must be logged in to purchase a plan");
 
-      return router.push("/login")
+      return router.push("/login");
     }
     console.log("plan data: ", planData);
     console.log("current loggedin user", loggedInUser);
@@ -95,7 +95,7 @@ const PricingPlans = ({ plans, className }: PricingPlansProps) => {
     setIsProcessing(true);
     try {
       // ✅ Re-verify auth at checkout time
-      const freshUser = await getClientLoggedInUserInfo();
+      const freshUser = loggedInUser;
       if (!freshUser?.data) {
         toast.error("Session expired. Please log in again.");
         setSelectedPlan(null);
@@ -105,7 +105,7 @@ const PricingPlans = ({ plans, className }: PricingPlansProps) => {
       console.log("Checkout started:", {
         plan: selectedPlan.name,
         gateway,
-        billingCycle: isAnnually ? "yearly" : "monthly",
+        billingCycle: isAnnually ? BillingCycle.YEARLY : BillingCycle.MONTHLY,
       });
 
       // TODO: Replace with real checkout
