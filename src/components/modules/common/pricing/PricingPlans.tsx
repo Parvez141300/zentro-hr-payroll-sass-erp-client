@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import PaymentGatewayDialog from "./PaymentGatewayDialog";
 import { useRouter } from "next/navigation";
 import { createStripeCheckoutSession } from "@/actions/stripe.action";
+import { clientEnv } from "@/lib/env";
 
 // API থেকে আসা ডেটার টাইপ
 interface Feature {
@@ -117,6 +118,7 @@ const PricingPlans = ({ plans, className }: PricingPlansProps) => {
         const { data: stripeResponseData } = await createStripeCheckoutSession({
           planName: selectedPlan.name as SubscriptionPlan,
           billingCycle: isAnnually ? BillingCycle.YEARLY : BillingCycle.MONTHLY,
+          successUrl: `${clientEnv.NEXT_PUBLIC_FRONTEND_URL}/super-admin/dashboard/payments`
         });
         window.location.href = stripeResponseData.url;
       } else if (gateway === "sslcommerz") {
