@@ -77,6 +77,21 @@ export enum SubscriptionStatus {
   PAST_DUE = "PAST_DUE",
 }
 
+// payment gateway
+export enum PaymentGateway {
+  STRIPE = "STRIPE",
+  SSLCOMMERZ = "SSLCOMMERZ",
+}
+
+// payment status
+export enum PaymentStatus {
+  PENDING = "PENDING",
+  SUCCESS = "SUCCESS",
+  FAILED = "FAILED",
+  REFUNDED = "REFUNDED",
+  CANCELLED = "CANCELLED",
+}
+
 // billing cycle
 export enum BillingCycle {
   MONTHLY = "MONTHLY",
