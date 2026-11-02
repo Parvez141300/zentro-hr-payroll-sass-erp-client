@@ -47,7 +47,7 @@ export function NavUser({ user }: { user: ISessionUser }) {
         // clear cashed data
         queryClient.removeQueries({ queryKey: ["user-info"] });
         queryClient.clear();
-        
+
         router.push("/login");
       }
       console.log(logout);
@@ -121,12 +121,22 @@ export function NavUser({ user }: { user: ISessionUser }) {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <BadgeCheckIcon />
-                Account
+                <Link
+                  href="/profile"
+                  className="flex items-center gap-2"
+                >
+                  <BadgeCheckIcon />
+                  Profile
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <CreditCardIcon />
-                Billing
+                <Link
+                  href="/super-admin/dashboard/payments"
+                  className="flex items-center gap-2"
+                >
+                  <CreditCardIcon />
+                  Payments
+                </Link>
               </DropdownMenuItem>
               {/* <DropdownMenuItem>
                 <BellIcon />
