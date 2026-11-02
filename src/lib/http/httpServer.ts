@@ -7,31 +7,26 @@ import { handleAxiosError } from "../axios/handleAxiosError";
 
 async function getValidCookieHeader(): Promise<string> {
     let accessToken = await cookieUtils.getCookie("accessToken");
-    const refreshToken = await cookieUtils.getCookie("refreshToken");
-    const sessionToken = await cookieUtils.getCookie("better-auth.session_token");
+    let refreshToken = await cookieUtils.getCookie("refreshToken");
+    let sessionToken = await cookieUtils.getCookie("better-auth.session_token");
 
     if (refreshToken && sessionToken) {
-        const accessExpired = await tokenUtils.isTokenExpired(accessToken as string);
+        const accessExpired = await tokenUtils.isTokenExpired(accessToken ?? "");
 
         if (accessExpired) {
             const refreshExpired = await tokenUtils.isTokenExpired(refreshToken);
-
-            if (refreshExpired) {
-                throw new Error("Login Again");
-            }
+            if (refreshExpired) throw new Error("Login Again");
 
             const refreshed = await serverTokenRefresh(refreshToken, sessionToken);
+            if (!refreshed) throw new Error("Refresh Failed");
 
-            if (!refreshed) {
-                throw new Error("Refresh Failed");
-            }
-
-            // রিফ্রেশের পর নতুন accessToken আবার কুকি থেকে পড়ুন
-            accessToken = await cookieUtils.getCookie("accessToken");
+            // কুকি থেকে নয়, সরাসরি রিটার্ন করা মান ব্যবহার করুন
+            accessToken = refreshed.accessToken;
+            refreshToken = refreshed.refreshToken;
+            sessionToken = refreshed.sessionToken;
         }
     }
 
-    // Cookie header বানানো — যা যা আছে সব জুড়ে দিন
     const cookiePairs: string[] = [];
     if (accessToken) cookiePairs.push(`accessToken=${accessToken}`);
     if (refreshToken) cookiePairs.push(`refreshToken=${refreshToken}`);

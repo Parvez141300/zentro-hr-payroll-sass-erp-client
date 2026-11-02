@@ -7,7 +7,9 @@ const getTokenSecondsRemaining = async (token: string) => {
     if (!token) return 0;
 
     const decoded = await jwtUtils.verifyToken(token, envVars.JWT_TOKEN_SECRET) as JwtPayload;
-
+    
+    if (!decoded?.exp) return 0;
+    
     const secondsRemaining = (decoded.exp as number) - (Date.now() / 1000) as number;
 
     return secondsRemaining > 0 ? secondsRemaining : 0;
