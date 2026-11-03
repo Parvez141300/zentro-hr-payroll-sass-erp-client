@@ -1,8 +1,8 @@
 import { httpServer } from "@/lib/http/httpServer";
-import { ISSLCommerzInitiatePaymentPayload } from "@/types/sslCommerz.type";
+import { ISSLCommerzInitiatePaymentPayload, ISSLCommerzInitiatePaymentResponse } from "@/types/sslCommerz.type";
 
 const createSSLCommerzPayment = async (payload: ISSLCommerzInitiatePaymentPayload) => {
-    const result = await httpServer.post("/api/v1/sslcommerz", payload);
+    const result = await httpServer.post<ISSLCommerzInitiatePaymentResponse>("/api/v1/sslcommerz/initiate", payload);
 
     return result;
 }

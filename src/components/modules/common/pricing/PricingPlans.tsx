@@ -17,6 +17,7 @@ import PaymentGatewayDialog from "./PaymentGatewayDialog";
 import { useRouter } from "next/navigation";
 import { createStripeCheckoutSession } from "@/actions/stripe.action";
 import { clientEnv } from "@/lib/env";
+import { createSSLCommerzPayment } from "@/actions/sslCommerz.action";
 
 // API থেকে আসা ডেটার টাইপ
 interface Feature {
@@ -107,10 +108,6 @@ const PricingPlans = ({ plans, className }: PricingPlansProps) => {
 
     setIsProcessing(true);
     try {
-      toast.success(
-        `Redirecting to ${gateway === "stripe" ? "Stripe" : "SSLCommerz"}...`,
-      );
-
       // ✅ Re-verify auth at checkout time
       const freshUser = loggedInUser;
       if (!freshUser?.data) {
@@ -119,21 +116,34 @@ const PricingPlans = ({ plans, className }: PricingPlansProps) => {
         return;
       }
 
-      console.log("Checkout started:", {
-        plan: selectedPlan.name,
-        gateway,
-        billingCycle: isAnnually ? BillingCycle.YEARLY : BillingCycle.MONTHLY,
-      });
-
       if (gateway === "stripe") {
         const { data: stripeResponseData } = await createStripeCheckoutSession({
           planName: selectedPlan.name as SubscriptionPlan,
           billingCycle: isAnnually ? BillingCycle.YEARLY : BillingCycle.MONTHLY,
           successUrl: `${clientEnv.NEXT_PUBLIC_FRONTEND_URL}/super-admin/dashboard/payments`,
         });
+        if (stripeResponseData.url) {
+          toast.success(
+            `Redirecting to ${gateway === "stripe" ? "Stripe" : "SSLCommerz"}...`,
+          );
+        }
         window.location.href = stripeResponseData.url;
       } else if (gateway === "sslcommerz") {
-        console.log("stripe gateway");
+        console.log("stripe gateway", {
+          plan: selectedPlan.name,
+          gateway,
+          billingCycle: isAnnually ? BillingCycle.YEARLY : BillingCycle.MONTHLY,
+        });
+        const { data: sslCommerzResponseData } = await createSSLCommerzPayment({
+          planName: selectedPlan.name as SubscriptionPlan,
+          billingCycle: isAnnually ? BillingCycle.YEARLY : BillingCycle.MONTHLY,
+        });
+        if (sslCommerzResponseData.url) {
+          toast.success(
+            `Redirecting to SSLCommerz"}...`,
+          );
+        }
+        window.location.href = sslCommerzResponseData.url;
       }
 
       setSelectedPlan(null);

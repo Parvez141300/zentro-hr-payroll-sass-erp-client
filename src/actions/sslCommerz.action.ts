@@ -1,3 +1,5 @@
+"use server";
+
 import { sslCommerzService } from "@/services/sslCommerz.service";
 import { ISSLCommerzInitiatePaymentPayload } from "@/types/sslCommerz.type";
 
