@@ -14,6 +14,9 @@ import {
   Crown,
   Settings,
   ArrowLeft,
+  ListChecks,
+  Plus,
+  Trash2,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -40,14 +43,16 @@ import {
 
 import { createSubscriptionPlanConfig } from "@/actions/subscriptionPlanConfig.action";
 import { SubscriptionPlan } from "@/types/enums.type";
+import { getIconComponent } from "@/lib/iconMapper";
 import {
   CreateSubscriptionPlanFormValues,
   createSubscriptionPlanSchema,
 } from "@/zod/subscriptionPlanConfig.validation";
+import { ICreateSubscriptionPlanConfig } from "@/types/subscriptionPlanConfig.type";
 
-// ✅ Helper for error extraction
-const getErrorMessage = (errors: unknown[]): string => {
-  return errors
+// ─── Helper for error extraction ───
+const getErrorMessage = (errors: unknown[]): string =>
+  errors
     .map((err) => {
       if (typeof err === "string") return err;
       if (err && typeof err === "object" && "message" in err) {
@@ -57,15 +62,36 @@ const getErrorMessage = (errors: unknown[]): string => {
     })
     .filter(Boolean)
     .join(", ");
-};
 
-// ✅ Plan code options
+// ─── Plan code options ───
 const PLAN_CODE_OPTIONS = [
   { value: SubscriptionPlan.FREE, label: "FREE" },
   { value: SubscriptionPlan.BASIC, label: "BASIC" },
   { value: SubscriptionPlan.PRO, label: "PRO" },
   { value: SubscriptionPlan.ENTERPRISE, label: "ENTERPRISE" },
 ];
+
+// ─── Available icons (must match your iconMapper.ts) ───
+const AVAILABLE_ICONS = [
+  "Users",
+  "Package",
+  "Crown",
+  "Settings",
+  "ListChecks",
+  "DollarSign",
+  "CheckCircle2",
+  "Shield",
+  "Zap",
+  "BarChart3",
+  "Database",
+  "Mail",
+  "FileText",
+  "Clock",
+] as const;
+
+// ─── UUID-ish id generator for new features ───
+const generateFeatureId = () =>
+  `feat_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
 
 const CreateSubscriptionPlanForm = () => {
   const queryClient = useQueryClient();
@@ -84,7 +110,7 @@ const CreateSubscriptionPlanForm = () => {
       sortOrder: "0",
       isActive: true,
       popularBadge: false,
-      features: [], // ✅ Required (matches schema)
+      features: [],
     } as CreateSubscriptionPlanFormValues,
     validators: {
       onChange: createSubscriptionPlanSchema,
@@ -104,7 +130,7 @@ const CreateSubscriptionPlanForm = () => {
         sortOrder: Number(value.sortOrder),
         isActive: value.isActive,
         popularBadge: value.popularBadge,
-        features: value.features,
+        features: value.features ?? [], // ✅ always send array
       };
 
       mutate(payload);
@@ -112,20 +138,7 @@ const CreateSubscriptionPlanForm = () => {
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async (payload: {
-      name: SubscriptionPlan;
-      displayName: string;
-      description: string | null;
-      priceUSD: number;
-      priceBDT: number;
-      yearlyPriceUSD: number | null;
-      yearlyPriceBDT: number | null;
-      maxEmployees: number;
-      sortOrder: number;
-      isActive: boolean;
-      popularBadge: boolean;
-      features: CreateSubscriptionPlanFormValues["features"];
-    }) => {
+    mutationFn: async (payload: ICreateSubscriptionPlanConfig) => {
       return await createSubscriptionPlanConfig(payload);
     },
     onSuccess: () => {
@@ -180,7 +193,6 @@ const CreateSubscriptionPlanForm = () => {
                 Plan Identity
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Plan Code */}
                 <form.Field name="name">
                   {(field) => {
                     const isInvalid =
@@ -218,7 +230,6 @@ const CreateSubscriptionPlanForm = () => {
                   }}
                 </form.Field>
 
-                {/* Display Name */}
                 <form.Field name="displayName">
                   {(field) => {
                     const isInvalid =
@@ -243,7 +254,6 @@ const CreateSubscriptionPlanForm = () => {
                   }}
                 </form.Field>
 
-                {/* Description */}
                 <form.Field name="description">
                   {(field) => {
                     const isInvalid =
@@ -282,7 +292,6 @@ const CreateSubscriptionPlanForm = () => {
                 Pricing
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Monthly USD */}
                 <form.Field name="priceUSD">
                   {(field) => {
                     const isInvalid =
@@ -310,7 +319,6 @@ const CreateSubscriptionPlanForm = () => {
                   }}
                 </form.Field>
 
-                {/* Monthly BDT */}
                 <form.Field name="priceBDT">
                   {(field) => {
                     const isInvalid =
@@ -338,7 +346,6 @@ const CreateSubscriptionPlanForm = () => {
                   }}
                 </form.Field>
 
-                {/* Yearly USD */}
                 <form.Field name="yearlyPriceUSD">
                   {(field) => {
                     const isInvalid =
@@ -368,7 +375,6 @@ const CreateSubscriptionPlanForm = () => {
                   }}
                 </form.Field>
 
-                {/* Yearly BDT */}
                 <form.Field name="yearlyPriceBDT">
                   {(field) => {
                     const isInvalid =
@@ -411,7 +417,6 @@ const CreateSubscriptionPlanForm = () => {
                 Limits & Order
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Max Employees */}
                 <form.Field name="maxEmployees">
                   {(field) => {
                     const isInvalid =
@@ -441,7 +446,6 @@ const CreateSubscriptionPlanForm = () => {
                   }}
                 </form.Field>
 
-                {/* Sort Order */}
                 <form.Field name="sortOrder">
                   {(field) => {
                     const isInvalid =
@@ -481,7 +485,6 @@ const CreateSubscriptionPlanForm = () => {
                 Visibility & Badges
               </h4>
               <div className="space-y-3">
-                {/* Is Active */}
                 <form.Field name="isActive">
                   {(field) => (
                     <div className="flex items-center justify-between p-3 rounded-lg border bg-muted/20">
@@ -502,7 +505,6 @@ const CreateSubscriptionPlanForm = () => {
                   )}
                 </form.Field>
 
-                {/* Popular Badge */}
                 <form.Field name="popularBadge">
                   {(field) => (
                     <div className="flex items-center justify-between p-3 rounded-lg border bg-muted/20">
@@ -528,6 +530,195 @@ const CreateSubscriptionPlanForm = () => {
                 </form.Field>
               </div>
             </div>
+
+            <Separator />
+
+            {/* ============================================ */}
+            {/* FEATURES — optional & fully editable */}
+            {/* ============================================ */}
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <h4 className="text-sm font-semibold flex items-center gap-2">
+                    <ListChecks className="h-4 w-4 text-primary" />
+                    Features
+                  </h4>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Optional — you can add features later from the edit page.
+                  </p>
+                </div>
+                <form.Field name="features">
+                  {(field) => (
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        const current = field.state.value ?? [];
+                        field.handleChange([
+                          ...current,
+                          {
+                            id: generateFeatureId(),
+                            icon: "Package",
+                            name: "",
+                            category: "General",
+                            included: true,
+                            description: "",
+                          },
+                        ]);
+                      }}
+                    >
+                      <Plus className="h-4 w-4 mr-1" />
+                      Add Feature
+                    </Button>
+                  )}
+                </form.Field>
+              </div>
+
+              <form.Field name="features">
+                {(field) => {
+                  const features = field.state.value ?? [];
+
+                  if (features.length === 0) {
+                    return (
+                      <div className="text-center py-8 border rounded-lg bg-muted/10">
+                        <ListChecks className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
+                        <p className="text-sm text-muted-foreground">
+                          No features yet. You can add them now or later.
+                        </p>
+                      </div>
+                    );
+                  }
+
+                  const updateFeature = (
+                    index: number,
+                    patch: Partial<(typeof features)[number]>,
+                  ) => {
+                    const updated = features.map((f, i) =>
+                      i === index ? { ...f, ...patch } : f,
+                    );
+                    field.handleChange(updated);
+                  };
+
+                  const removeFeature = (index: number) => {
+                    field.handleChange(features.filter((_, i) => i !== index));
+                  };
+
+                  return (
+                    <div className="space-y-3">
+                      {features.map((feature, index) => {
+                        const Icon = getIconComponent(feature.icon);
+                        return (
+                          <div
+                            key={feature.id}
+                            className="rounded-lg border p-3 bg-muted/10 space-y-3"
+                          >
+                            {/* Row 1: icon preview + name + included + delete */}
+                            <div className="flex items-center gap-3">
+                              <div className="p-2 rounded-md bg-background border shrink-0">
+                                <Icon className="h-4 w-4 text-primary" />
+                              </div>
+
+                              <div className="flex-1 min-w-0">
+                                <Input
+                                  placeholder="Feature name (e.g., Payroll Management)"
+                                  value={feature.name}
+                                  onChange={(e) =>
+                                    updateFeature(index, {
+                                      name: e.target.value,
+                                    })
+                                  }
+                                  className="h-9"
+                                />
+                              </div>
+
+                              <div className="flex items-center gap-2 shrink-0">
+                                <span className="text-xs text-muted-foreground">
+                                  Included
+                                </span>
+                                <Switch
+                                  checked={feature.included}
+                                  onCheckedChange={(checked) =>
+                                    updateFeature(index, {
+                                      included: checked,
+                                    })
+                                  }
+                                />
+                                <Button
+                                  type="button"
+                                  size="icon"
+                                  variant="ghost"
+                                  className="text-destructive hover:text-destructive"
+                                  onClick={() => removeFeature(index)}
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </div>
+
+                            {/* Row 2: icon + category + description */}
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                              <div className="space-y-1">
+                                <Label className="text-xs text-muted-foreground">
+                                  Icon
+                                </Label>
+                                <select
+                                  value={feature.icon}
+                                  onChange={(e) =>
+                                    updateFeature(index, {
+                                      icon: e.target.value,
+                                    })
+                                  }
+                                  className="w-full h-9 rounded-md border bg-background px-2 text-sm"
+                                >
+                                  {AVAILABLE_ICONS.map((iconName) => (
+                                    <option key={iconName} value={iconName}>
+                                      {iconName}
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
+
+                              <div className="space-y-1">
+                                <Label className="text-xs text-muted-foreground">
+                                  Category
+                                </Label>
+                                <Input
+                                  value={feature.category}
+                                  onChange={(e) =>
+                                    updateFeature(index, {
+                                      category: e.target.value,
+                                    })
+                                  }
+                                  className="h-9"
+                                  placeholder="e.g., HR, Payroll"
+                                />
+                              </div>
+
+                              <div className="space-y-1">
+                                <Label className="text-xs text-muted-foreground">
+                                  Description
+                                </Label>
+                                <Input
+                                  value={feature.description}
+                                  onChange={(e) =>
+                                    updateFeature(index, {
+                                      description: e.target.value,
+                                    })
+                                  }
+                                  className="h-9"
+                                  placeholder="Short description"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  );
+                }}
+              </form.Field>
+            </div>
           </CardContent>
 
           <CardFooter className="flex justify-end gap-3 pt-4 border-t">
@@ -539,7 +730,6 @@ const CreateSubscriptionPlanForm = () => {
             >
               Cancel
             </Button>
-            {/* ✅ FIXED: form.Subscribe (not form.Submit) */}
             <form.Subscribe
               selector={(state) => [state.canSubmit, state.isSubmitting]}
             >
