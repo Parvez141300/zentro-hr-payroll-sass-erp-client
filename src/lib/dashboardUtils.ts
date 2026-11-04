@@ -1,7 +1,10 @@
-
 import { IDashboardSidebarNavSection } from "@/types/dashboard.type";
-import { UserRole } from "@/types/enums.type";
+import { SubscriptionPlan, UserRole } from "@/types/enums.type";
+import { IUser } from "@/types/user.type";
 
+// ===============================================================
+// 1. Default dashboard route per role
+// ===============================================================
 const getDefaultDashboardRoute = (role: UserRole) => {
     switch (role) {
         case UserRole.PLATFORM_SUPER_ADMIN:
@@ -19,7 +22,7 @@ const getDefaultDashboardRoute = (role: UserRole) => {
         default:
             return "/";
     }
-}
+};
 
 export const getDashboardCommonProtectedRoute = (role: UserRole) => {
     const commonRoute = getDefaultDashboardRoute(role);
@@ -37,11 +40,14 @@ export const getDashboardCommonProtectedRoute = (role: UserRole) => {
                     href: "/profile",
                     icon: "User",
                 },
-            ]
+            ],
         },
-    ]
-}
+    ];
+};
 
+// ===============================================================
+// 2. Platform Super Admin (NOT plan-scoped — always full access)
+// ===============================================================
 const platformSuperAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
     {
         title: "Companies",
@@ -65,7 +71,7 @@ const platformSuperAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
                 title: "Create Subscription Plan",
                 href: "/platform-super-admin/dashboard/create-subscription-plan",
                 icon: "Plus",
-            }
+            },
         ],
     },
     {
@@ -78,11 +84,14 @@ const platformSuperAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
             },
         ],
     },
-]
+];
 
-const superAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
+// ===============================================================
+// 3. SUPER_ADMIN — FREE plan
+// ===============================================================
+const superAdminFreeNavItems: IDashboardSidebarNavSection[] = [
     {
-        title:"Company",
+        title: "Company",
         items: [
             {
                 title: "Company Details",
@@ -114,7 +123,63 @@ const superAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
                 href: "/super-admin/dashboard/manage-designation",
                 icon: "Building2",
             },
-        ]
+        ],
+    },
+    {
+        title: "Employee",
+        items: [
+            {
+                title: "Manage Employee",
+                href: "/super-admin/dashboard/manage-employee",
+                icon: "Users",
+            },
+            {
+                title: "Create Employee",
+                href: "/super-admin/dashboard/create-employee",
+                icon: "Plus",
+            },
+        ],
+    },
+];
+
+// ===============================================================
+// 4. SUPER_ADMIN — BASIC / PRO / ENTERPRISE (full set)
+// ===============================================================
+const superAdminFullNavItems: IDashboardSidebarNavSection[] = [
+    {
+        title: "Company",
+        items: [
+            {
+                title: "Company Details",
+                href: "/super-admin/dashboard/company-details",
+                icon: "Factory",
+            },
+            {
+                title: "Edit Company",
+                href: "/super-admin/dashboard/edit-company",
+                icon: "Edit",
+            },
+        ],
+    },
+    {
+        title: "Department",
+        items: [
+            {
+                title: "Manage Department",
+                href: "/super-admin/dashboard/manage-department",
+                icon: "Building2",
+            },
+        ],
+    },
+    {
+        title: "Designation",
+        items: [
+            {
+                title: "Manage Designation",
+                href: "/super-admin/dashboard/manage-designation",
+                icon: "Building2",
+            },
+        ],
     },
     {
         title: "Attendance",
@@ -216,11 +281,14 @@ const superAdminSidebarNavItems: IDashboardSidebarNavSection[] = [
             },
         ],
     },
-]
+];
 
-const hrManagerSidebarNavItems: IDashboardSidebarNavSection[] = [
+// ===============================================================
+// 5. HR_MANAGER — FREE plan
+// ===============================================================
+const hrManagerFreeNavItems: IDashboardSidebarNavSection[] = [
     {
-        title:"Company",
+        title: "Company",
         items: [
             {
                 title: "Company Details",
@@ -247,7 +315,58 @@ const hrManagerSidebarNavItems: IDashboardSidebarNavSection[] = [
                 href: "/hr-manager/dashboard/manage-designation",
                 icon: "Building2",
             },
-        ]
+        ],
+    },
+    {
+        title: "Employee",
+        items: [
+            {
+                title: "Manage Employee",
+                href: "/hr-manager/dashboard/manage-employee",
+                icon: "Users",
+            },
+            {
+                title: "Create Employee",
+                href: "/hr-manager/dashboard/create-employee",
+                icon: "Plus",
+            },
+        ],
+    },
+];
+
+// ===============================================================
+// 6. HR_MANAGER — BASIC / PRO / ENTERPRISE (full set)
+// ===============================================================
+const hrManagerFullNavItems: IDashboardSidebarNavSection[] = [
+    {
+        title: "Company",
+        items: [
+            {
+                title: "Company Details",
+                href: "/hr-manager/dashboard/company-details",
+                icon: "Factory",
+            },
+        ],
+    },
+    {
+        title: "Department",
+        items: [
+            {
+                title: "Manage Department",
+                href: "/hr-manager/dashboard/manage-department",
+                icon: "Building2",
+            },
+        ],
+    },
+    {
+        title: "Designation",
+        items: [
+            {
+                title: "Manage Designation",
+                href: "/hr-manager/dashboard/manage-designation",
+                icon: "Building2",
+            },
+        ],
     },
     {
         title: "Attendance",
@@ -304,42 +423,12 @@ const hrManagerSidebarNavItems: IDashboardSidebarNavSection[] = [
             },
         ],
     },
-]
+];
 
-const accountantSidebarNavItems: IDashboardSidebarNavSection[] = [
-    {
-        title: "Company",
-        items: [
-            {
-                title: "Company Details",
-                href: "/accountant/dashboard/company-details",
-                icon: "Factory",
-            },
-        ]
-    },
-    {
-        title: "Payroll",
-        items: [
-            {
-                title: "Manage Payroll",
-                href: "/accountant/dashboard/manage-payroll",
-                icon: "Users",
-            },
-        ],
-    },
-    {
-        title: "Employee",
-        items: [
-            {
-                title: "Manage Employee",
-                href: "/accountant/dashboard/get-all-employee",
-                icon: "Users",
-            },
-        ],
-    },
-]
-
-const departmentHeadSidebarNavItems: IDashboardSidebarNavSection[] = [
+// ===============================================================
+// 7. DEPARTMENT_HEAD — FREE plan
+// ===============================================================
+const departmentHeadFreeNavItems: IDashboardSidebarNavSection[] = [
     {
         title: "Company",
         items: [
@@ -348,7 +437,7 @@ const departmentHeadSidebarNavItems: IDashboardSidebarNavSection[] = [
                 href: "/department-head/dashboard/company-details",
                 icon: "Factory",
             },
-        ]
+        ],
     },
     {
         title: "Employee",
@@ -362,7 +451,38 @@ const departmentHeadSidebarNavItems: IDashboardSidebarNavSection[] = [
                 title: "Create Employee",
                 href: "/department-head/dashboard/create-employee",
                 icon: "Plus",
-            }
+            },
+        ],
+    },
+];
+
+// ===============================================================
+// 8. DEPARTMENT_HEAD — BASIC / PRO / ENTERPRISE (full set)
+// ===============================================================
+const departmentHeadFullNavItems: IDashboardSidebarNavSection[] = [
+    {
+        title: "Company",
+        items: [
+            {
+                title: "Company Details",
+                href: "/department-head/dashboard/company-details",
+                icon: "Factory",
+            },
+        ],
+    },
+    {
+        title: "Employee",
+        items: [
+            {
+                title: "Manage Employee",
+                href: "/department-head/dashboard/manage-employee",
+                icon: "Users",
+            },
+            {
+                title: "Create Employee",
+                href: "/department-head/dashboard/create-employee",
+                icon: "Plus",
+            },
         ],
     },
     {
@@ -400,9 +520,12 @@ const departmentHeadSidebarNavItems: IDashboardSidebarNavSection[] = [
             },
         ],
     },
-]
+];
 
-const employeeSidebarNavItems: IDashboardSidebarNavSection[] = [
+// ===============================================================
+// 9. EMPLOYEE — FREE plan
+// ===============================================================
+const employeeFreeNavItems: IDashboardSidebarNavSection[] = [
     {
         title: "Company",
         items: [
@@ -411,7 +534,33 @@ const employeeSidebarNavItems: IDashboardSidebarNavSection[] = [
                 href: "/dashboard/company-details",
                 icon: "Factory",
             },
-        ]
+        ],
+    },
+    {
+        title: "Attendance",
+        items: [
+            {
+                title: "Attendance",
+                href: "/dashboard/attendance",
+                icon: "UserRoundCheck",
+            },
+        ],
+    },
+];
+
+// ===============================================================
+// 10. EMPLOYEE — BASIC / PRO / ENTERPRISE (full set)
+// ===============================================================
+const employeeFullNavItems: IDashboardSidebarNavSection[] = [
+    {
+        title: "Company",
+        items: [
+            {
+                title: "Company Details",
+                href: "/dashboard/company-details",
+                icon: "Factory",
+            },
+        ],
     },
     {
         title: "Attendance",
@@ -443,45 +592,74 @@ const employeeSidebarNavItems: IDashboardSidebarNavSection[] = [
             },
         ],
     },
-]
+];
 
-export const getDashboardNavItemsByRole = (role: UserRole) => {
-    const DashboardCommonProtectedRoute = getDashboardCommonProtectedRoute(role);
+// ===============================================================
+// 11. Plan helper + role/plan resolver
+// ===============================================================
+const isFreePlan = (plan?: SubscriptionPlan | null): boolean =>
+    !plan || plan === SubscriptionPlan.FREE;
+
+const getRoleNavItemsByPlan = (
+    role: UserRole,
+    plan: SubscriptionPlan | null | undefined,
+): IDashboardSidebarNavSection[] => {
+    const free = isFreePlan(plan);
+
     switch (role) {
         case UserRole.PLATFORM_SUPER_ADMIN:
-            return [
-                ...DashboardCommonProtectedRoute,
-                ...platformSuperAdminSidebarNavItems
-            ];
+            // Platform-level — not tied to a tenant subscription plan.
+            return platformSuperAdminSidebarNavItems;
+
         case UserRole.SUPER_ADMIN:
-            return [
-                ...DashboardCommonProtectedRoute,
-                ...superAdminSidebarNavItems
-            ];
+            return free ? superAdminFreeNavItems : superAdminFullNavItems;
+
         case UserRole.HR_MANAGER:
-            return [
-                ...DashboardCommonProtectedRoute,
-                ...hrManagerSidebarNavItems
-            ];
-        case UserRole.ACCOUNTANT:
-            return [
-                ...DashboardCommonProtectedRoute,
-                ...accountantSidebarNavItems
-            ];
+            return free ? hrManagerFreeNavItems : hrManagerFullNavItems;
+
         case UserRole.DEPARTMENT_HEAD:
-            return [
-                ...DashboardCommonProtectedRoute,
-                ...departmentHeadSidebarNavItems
-            ];
+            return free ? departmentHeadFreeNavItems : departmentHeadFullNavItems;
+
         case UserRole.EMPLOYEE:
-            return [
-                ...DashboardCommonProtectedRoute,
-                ...employeeSidebarNavItems
-            ];
-            break;
+            return free ? employeeFreeNavItems : employeeFullNavItems;
+
+        // ACCOUNTANT currently has no nav items defined — uncomment when ready.
+        // case UserRole.ACCOUNTANT:
+        //     return free ? accountantFreeNavItems : accountantFullNavItems;
 
         default:
             return [];
-            break;
     }
-}
+};
+
+// ===============================================================
+// 12. Public API — main export used by the sidebar
+// ===============================================================
+export const getDashboardNavItemsByRole = (userInfo: IUser) => {
+    const role = userInfo.role;
+    const companyInfo = userInfo.company;
+    const plan = companyInfo?.subscriptionPlan as SubscriptionPlan | undefined;
+
+    const commonRoutes = getDashboardCommonProtectedRoute(role);
+    const roleNavItems = getRoleNavItemsByPlan(role, plan);
+
+    return [...commonRoutes, ...roleNavItems];
+};
+
+// ===============================================================
+// 13. Helper for route-guarding (middleware / layout)
+//     Use this so the sidebar and the route protection stay in sync.
+// ===============================================================
+export const getAccessibleHrefs = (userInfo: IUser): string[] => {
+    const sections = getDashboardNavItemsByRole(userInfo);
+    return sections.flatMap((section) => section.items.map((item) => item.href));
+};
+
+export const canAccessRoute = (userInfo: IUser, pathname: string): boolean => {
+    const accessible = getAccessibleHrefs(userInfo);
+    return accessible.some(
+        (href) => pathname === href || pathname.startsWith(`${href}/`),
+    );
+};
+
+export { getDefaultDashboardRoute };

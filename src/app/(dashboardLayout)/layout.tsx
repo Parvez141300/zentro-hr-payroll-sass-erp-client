@@ -23,7 +23,7 @@ const RootDashboardLayout = async ({
     queryFn: () => authService.getClientLoggedInUserInfo(),
   });
   const userInfo = await authService.getClientLoggedInUserInfo();
-  const sidebarNavItems = getDashboardNavItemsByRole(userInfo.data.role);
+  const sidebarNavItems = getDashboardNavItemsByRole(userInfo.data);
   return (
     <div>
       {" "}

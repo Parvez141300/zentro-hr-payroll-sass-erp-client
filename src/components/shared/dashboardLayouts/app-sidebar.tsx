@@ -22,7 +22,7 @@ export function AppSidebar() {
   });
 
   console.log("userInfo", userInfo);
-  const sidebarNavItems = getDashboardNavItemsByRole(userInfo!.data.role);
+  const sidebarNavItems = getDashboardNavItemsByRole(userInfo!.data);
   console.log("sidebarNavItems", sidebarNavItems);
 
   return (
