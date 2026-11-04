@@ -23,6 +23,7 @@ import {
   Layers,
   Package,
   TrendingUp,
+  AlertCircle,
 } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -39,6 +40,33 @@ interface ViewSubscriptionPlanDialogProps {
 }
 
 // ============================================
+// HELPERS
+// ============================================
+const formatDate = (d: string | Date | null | undefined) =>
+  d ? format(new Date(d), "PPP 'at' hh:mm a") : "N/A";
+
+const formatUSD = (amount: number | null | undefined) =>
+  amount != null ? `$${amount.toLocaleString()}` : "—";
+
+const formatBDT = (amount: number | null | undefined) =>
+  amount != null ? `৳${amount.toLocaleString()}` : "—";
+
+// Calculate yearly savings
+const calcYearlySavings = (
+  priceUSD: number,
+  yearlyPriceUSD: number | null | undefined,
+) => {
+  const monthlyYearly = priceUSD * 12;
+  const savings =
+    yearlyPriceUSD != null && monthlyYearly > 0
+      ? monthlyYearly - yearlyPriceUSD
+      : 0;
+  const percent =
+    monthlyYearly > 0 ? Math.round((savings / monthlyYearly) * 100) : 0;
+  return { savings, percent };
+};
+
+// ============================================
 // MAIN COMPONENT
 // ============================================
 const ViewSubscriptionPlanDialog = ({
@@ -49,6 +77,7 @@ const ViewSubscriptionPlanDialog = ({
   if (!planData) return null;
 
   const {
+    id,
     name,
     displayName,
     description,
@@ -65,25 +94,15 @@ const ViewSubscriptionPlanDialog = ({
     updatedAt,
   } = planData;
 
-  // Format date
-  const formatDate = (d: string | Date | null | undefined) =>
-    d ? format(new Date(d), "PPP 'at' hh:mm a") : "N/A";
-
-  // Format currency
-  const formatUSD = (amount: number | null | undefined) =>
-    amount != null ? `$${amount.toLocaleString()}` : "—";
-
-  const formatBDT = (amount: number | null | undefined) =>
-    amount != null ? `৳${amount.toLocaleString()}` : "—";
-
   // Feature stats
   const includedFeatures = features.filter((f) => f.included);
   const excludedFeatures = features.filter((f) => !f.included);
+  const hasFeatures = features.length > 0;
 
   // Group features by category
   const featuresByCategory = features.reduce(
     (acc, feature) => {
-      const cat = feature.category || "other";
+      const cat = feature.category?.trim() || "other";
       if (!acc[cat]) acc[cat] = [];
       acc[cat].push(feature);
       return acc;
@@ -91,16 +110,9 @@ const ViewSubscriptionPlanDialog = ({
     {} as Record<string, typeof features>,
   );
 
-  // Calculate yearly savings
-  const monthlyYearly = priceUSD * 12;
-  const yearlySavingsUSD =
-    yearlyPriceUSD != null && monthlyYearly > 0
-      ? monthlyYearly - yearlyPriceUSD
-      : 0;
-  const yearlySavingsPercent =
-    monthlyYearly > 0
-      ? Math.round((yearlySavingsUSD / monthlyYearly) * 100)
-      : 0;
+  // Yearly savings
+  const usdSavings = calcYearlySavings(priceUSD, yearlyPriceUSD);
+  const bdtSavings = calcYearlySavings(priceBDT, yearlyPriceBDT);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -117,7 +129,7 @@ const ViewSubscriptionPlanDialog = ({
           {/* HEADER */}
           {/* ============================================ */}
           <div className="flex items-start justify-between gap-4">
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap mb-2">
                 <Badge variant="outline" className="font-mono text-xs">
                   {name}
@@ -146,7 +158,7 @@ const ViewSubscriptionPlanDialog = ({
                   </Badge>
                 )}
               </div>
-              <h3 className="text-2xl font-bold">{displayName}</h3>
+              <h3 className="text-2xl font-bold wrap-break-word">{displayName}</h3>
               {description && (
                 <p className="text-sm text-muted-foreground mt-1">
                   {description}
@@ -202,13 +214,13 @@ const ViewSubscriptionPlanDialog = ({
                 <p className="text-xs text-muted-foreground mt-1">
                   per year / Stripe
                 </p>
-                {yearlySavingsUSD > 0 && (
+                {usdSavings.percent > 0 && (
                   <Badge
                     variant="default"
                     className="mt-2 bg-emerald-500 hover:bg-emerald-600"
                   >
                     <TrendingUp className="h-3 w-3 mr-1" />
-                    Save {yearlySavingsPercent}%
+                    Save {usdSavings.percent}%
                   </Badge>
                 )}
               </div>
@@ -224,6 +236,15 @@ const ViewSubscriptionPlanDialog = ({
                 <p className="text-xs text-muted-foreground mt-1">
                   per year / SSLCommerz
                 </p>
+                {bdtSavings.percent > 0 && (
+                  <Badge
+                    variant="default"
+                    className="mt-2 bg-emerald-500 hover:bg-emerald-600"
+                  >
+                    <TrendingUp className="h-3 w-3 mr-1" />
+                    Save {bdtSavings.percent}%
+                  </Badge>
+                )}
               </div>
             </div>
           </div>
@@ -268,89 +289,105 @@ const ViewSubscriptionPlanDialog = ({
               <h4 className="text-sm font-semibold flex items-center gap-2">
                 <Layers className="h-4 w-4 text-primary" />
                 Features
-              </h4>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <span className="flex items-center gap-1">
-                  <CheckCircle2 className="h-3 w-3 text-emerald-500" />
-                  {includedFeatures.length} included
-                </span>
-                {excludedFeatures.length > 0 && (
-                  <span className="flex items-center gap-1">
-                    <XCircle className="h-3 w-3 text-rose-500" />
-                    {excludedFeatures.length} excluded
+                {hasFeatures && (
+                  <span className="text-xs text-muted-foreground font-normal">
+                    ({features.length} total)
                   </span>
                 )}
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              {Object.entries(featuresByCategory).map(
-                ([category, categoryFeatures]) => (
-                  <div key={category}>
-                    <p className="text-xs font-semibold tracking-wider text-muted-foreground mb-2 capitalize">
-                      {category}
-                    </p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                      {categoryFeatures.map((feature) => {
-                        const Icon = getIconComponent(feature.icon);
-                        return (
-                          <div
-                            key={feature.id}
-                            className={cn(
-                              "flex items-start gap-3 p-3 rounded-lg border transition-colors",
-                              feature.included
-                                ? "bg-emerald-500/5 border-emerald-500/20"
-                                : "bg-muted/20 border-border/50 opacity-60",
-                            )}
-                          >
-                            <div
-                              className={cn(
-                                "p-1.5 rounded-md shrink-0",
-                                feature.included
-                                  ? "bg-emerald-500/10"
-                                  : "bg-muted",
-                              )}
-                            >
-                              <Icon
-                                className={cn(
-                                  "h-4 w-4",
-                                  feature.included
-                                    ? "text-emerald-600"
-                                    : "text-muted-foreground",
-                                )}
-                              />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center gap-2">
-                                <span
-                                  className={cn(
-                                    "text-sm font-medium",
-                                    !feature.included &&
-                                      "text-muted-foreground line-through",
-                                  )}
-                                >
-                                  {feature.name}
-                                </span>
-                                {feature.included ? (
-                                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
-                                ) : (
-                                  <XCircle className="h-3.5 w-3.5 text-rose-500 shrink-0" />
-                                )}
-                              </div>
-                              {feature.description && (
-                                <p className="text-xs text-muted-foreground mt-0.5">
-                                  {feature.description}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ),
+              </h4>
+              {hasFeatures && (
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <span className="flex items-center gap-1">
+                    <CheckCircle2 className="h-3 w-3 text-emerald-500" />
+                    {includedFeatures.length} included
+                  </span>
+                  {excludedFeatures.length > 0 && (
+                    <span className="flex items-center gap-1">
+                      <XCircle className="h-3 w-3 text-rose-500" />
+                      {excludedFeatures.length} excluded
+                    </span>
+                  )}
+                </div>
               )}
             </div>
+
+            {!hasFeatures ? (
+              <div className="text-center py-8 border rounded-lg bg-muted/10">
+                <AlertCircle className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
+                <p className="text-sm text-muted-foreground">
+                  No features have been added to this plan yet.
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {Object.entries(featuresByCategory).map(
+                  ([category, categoryFeatures]) => (
+                    <div key={category}>
+                      <p className="text-xs font-semibold tracking-wider text-muted-foreground mb-2 capitalize">
+                        {category}
+                      </p>
+                      <div className="flex flex-col gap-2">
+                        {categoryFeatures.map((feature) => {
+                          const Icon = getIconComponent(feature.icon);
+                          return (
+                            <div
+                              key={feature.id}
+                              className={cn(
+                                "flex items-start gap-3 p-3 rounded-lg border transition-colors",
+                                feature.included
+                                  ? "bg-emerald-500/5 border-emerald-500/20"
+                                  : "bg-muted/20 border-border/50 opacity-60",
+                              )}
+                            >
+                              <div
+                                className={cn(
+                                  "p-1.5 rounded-md shrink-0",
+                                  feature.included
+                                    ? "bg-emerald-500/10"
+                                    : "bg-muted",
+                                )}
+                              >
+                                <Icon
+                                  className={cn(
+                                    "h-4 w-4",
+                                    feature.included
+                                      ? "text-emerald-600"
+                                      : "text-muted-foreground",
+                                  )}
+                                />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2">
+                                  <span
+                                    className={cn(
+                                      "text-sm font-medium",
+                                      !feature.included &&
+                                        "text-muted-foreground line-through",
+                                    )}
+                                  >
+                                    {feature.name}
+                                  </span>
+                                  {feature.included ? (
+                                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
+                                  ) : (
+                                    <XCircle className="h-3.5 w-3.5 text-rose-500 shrink-0" />
+                                  )}
+                                </div>
+                                {feature.description && (
+                                  <p className="text-xs text-muted-foreground mt-0.5">
+                                    {feature.description}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ),
+                )}
+              </div>
+            )}
           </div>
 
           <Separator />
@@ -367,7 +404,7 @@ const ViewSubscriptionPlanDialog = ({
               <div className="space-y-1">
                 <span className="text-xs text-muted-foreground">Plan ID</span>
                 <p className="text-sm font-mono text-muted-foreground break-all">
-                  {planData.id}
+                  {id}
                 </p>
               </div>
               <div className="space-y-1">
