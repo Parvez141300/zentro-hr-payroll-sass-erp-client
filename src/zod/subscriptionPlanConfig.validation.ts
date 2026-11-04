@@ -1,7 +1,8 @@
-// src/zod/subscriptionPlan.validation.ts
+// src/zod/subscriptionPlanConfig.validation.ts
 import { z } from "zod";
-import { SubscriptionPlan } from "@/types/enums.type"; // adjust import
+import { SubscriptionPlan } from "@/types/enums.type";
 
+// ─── Feature schema ───
 const featureSchema = z.object({
     id: z.string(),
     icon: z.string(),
@@ -11,15 +12,36 @@ const featureSchema = z.object({
     description: z.string(),
 });
 
+// ─── Shared field helpers ───
+const requiredPrice = (label: string) =>
+    z
+        .string()
+        .min(1, `${label} is required`)
+        .refine(
+            (v) => !isNaN(Number(v)) && Number(v) >= 0,
+            `${label} must be a positive number`
+        );
+
+const optionalPrice = (label: string) =>
+    z
+        .string()
+        .optional()
+        .or(z.literal(""))
+        .refine(
+            (v) => v === "" || v === undefined || (!isNaN(Number(v)) && Number(v) >= 0),
+            `${label} must be a positive number or empty`
+        );
+
+// ─── Update schema ───
 export const updateSubscriptionPlanSchema = z.object({
-    name: z.enum(
-        [
+    name: z
+        .enum([
             SubscriptionPlan.FREE,
             SubscriptionPlan.BASIC,
             SubscriptionPlan.PRO,
             SubscriptionPlan.ENTERPRISE,
-        ]
-    ).optional(),
+        ])
+        .optional(),
     displayName: z
         .string()
         .min(2, "Display name must be at least 2 characters")
@@ -29,60 +51,41 @@ export const updateSubscriptionPlanSchema = z.object({
         .max(500, "Description must be less than 500 characters")
         .optional()
         .or(z.literal("")),
-    priceUSD: z
-        .string()
-        .min(1, "Required")
-        .refine((v) => !isNaN(Number(v)) && Number(v) >= 0, "Must be a positive number"),
-    priceBDT: z
-        .string()
-        .min(1, "Required")
-        .refine((v) => !isNaN(Number(v)) && Number(v) >= 0, "Must be a positive number"),
-    yearlyPriceUSD: z
-        .string()
-        .optional()
-        .or(z.literal(""))
-        .refine(
-            (v) => v === "" || (!isNaN(Number(v)) && Number(v) >= 0),
-            "Must be a positive number or empty"
-        ),
-    yearlyPriceBDT: z
-        .string()
-        .optional()
-        .or(z.literal(""))
-        .refine(
-            (v) => v === "" || (!isNaN(Number(v)) && Number(v) >= 0),
-            "Must be a positive number or empty"
-        ),
+    priceUSD: requiredPrice("Monthly price (USD)"),
+    priceBDT: requiredPrice("Monthly price (BDT)"),
+    yearlyPriceUSD: optionalPrice("Yearly price (USD)"),
+    yearlyPriceBDT: optionalPrice("Yearly price (BDT)"),
     maxEmployees: z
         .string()
-        .min(1, "Required")
+        .min(1, "Max employees is required")
         .refine(
             (v) => !isNaN(Number(v)) && Number(v) >= 1,
-            "Must be at least 1"
+            "Max employees must be at least 1"
         ),
     sortOrder: z
         .string()
-        .min(1, "Required")
-        .refine((v) => !isNaN(Number(v)) && Number(v) >= 0, "Must be 0 or greater"),
+        .min(1, "Sort order is required")
+        .refine(
+            (v) => !isNaN(Number(v)) && Number(v) >= 0,
+            "Sort order must be 0 or greater"
+        ),
     isActive: z.boolean(),
     popularBadge: z.boolean(),
-    features: z.array(featureSchema),
+    features: z.array(featureSchema).optional(),
 });
 
 export type UpdateSubscriptionPlanFormValues = z.infer<
     typeof updateSubscriptionPlanSchema
 >;
 
-// ✅ Create schema — all required
+// ─── Create schema ───
 export const createSubscriptionPlanSchema = z.object({
-    name: z.enum(
-        [
-            SubscriptionPlan.FREE,
-            SubscriptionPlan.BASIC,
-            SubscriptionPlan.PRO,
-            SubscriptionPlan.ENTERPRISE,
-        ]
-    ),
+    name: z.enum([
+        SubscriptionPlan.FREE,
+        SubscriptionPlan.BASIC,
+        SubscriptionPlan.PRO,
+        SubscriptionPlan.ENTERPRISE,
+    ]),
     displayName: z
         .string()
         .min(2, "Display name must be at least 2 characters")
@@ -92,47 +95,28 @@ export const createSubscriptionPlanSchema = z.object({
         .max(500, "Description must be less than 500 characters")
         .optional()
         .or(z.literal("")),
-    priceUSD: z
-        .string()
-        .min(1, "Monthly price (USD) is required")
-        .refine(
-            (v) => !isNaN(Number(v)) && Number(v) >= 0,
-            "Must be a positive number"
-        ),
-    priceBDT: z
-        .string()
-        .min(1, "Monthly price (BDT) is required")
-        .refine(
-            (v) => !isNaN(Number(v)) && Number(v) >= 0,
-            "Must be a positive number"
-        ),
-    yearlyPriceUSD: z
-        .string()
-        .optional()
-        .or(z.literal(""))
-        .refine(
-            (v) => v === "" || (!isNaN(Number(v)) && Number(v) >= 0),
-            "Must be a positive number or empty"
-        ),
-    yearlyPriceBDT: z
-        .string()
-        .optional()
-        .or(z.literal(""))
-        .refine(
-            (v) => v === "" || (!isNaN(Number(v)) && Number(v) >= 0),
-            "Must be a positive number or empty"
-        ),
+    priceUSD: requiredPrice("Monthly price (USD)"),
+    priceBDT: requiredPrice("Monthly price (BDT)"),
+    yearlyPriceUSD: optionalPrice("Yearly price (USD)"),
+    yearlyPriceBDT: optionalPrice("Yearly price (BDT)"),
     maxEmployees: z
         .string()
         .min(1, "Max employees is required")
-        .refine((v) => !isNaN(Number(v)) && Number(v) >= 1, "Must be at least 1"),
+        .refine(
+            (v) => !isNaN(Number(v)) && Number(v) >= 1,
+            "Max employees must be at least 1"
+        ),
     sortOrder: z
         .string()
         .min(1, "Sort order is required")
-        .refine((v) => !isNaN(Number(v)) && Number(v) >= 0, "Must be 0 or greater"),
+        .refine(
+            (v) => !isNaN(Number(v)) && Number(v) >= 0,
+            "Sort order must be 0 or greater"
+        ),
     isActive: z.boolean(),
     popularBadge: z.boolean(),
-    features: z.array(featureSchema), // ✅ No .default()
+    // ✅ Optional so create form can omit it
+    features: z.array(featureSchema).optional(),
 });
 
 export type CreateSubscriptionPlanFormValues = z.infer<

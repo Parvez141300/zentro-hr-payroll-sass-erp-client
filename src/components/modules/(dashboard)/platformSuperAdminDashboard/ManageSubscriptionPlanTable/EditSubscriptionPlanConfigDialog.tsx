@@ -7,14 +7,14 @@ import { toast } from "sonner";
 import {
   Loader2,
   Save,
-  CheckCircle2,
-  XCircle,
   Package,
   DollarSign,
   Users,
   Crown,
   ListChecks,
   Settings,
+  Plus,
+  Trash2,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -46,9 +46,9 @@ import {
   updateSubscriptionPlanSchema,
 } from "@/zod/subscriptionPlanConfig.validation";
 
-// ✅ Helper for error extraction
-const getErrorMessage = (errors: unknown[]): string => {
-  return errors
+// ─── Helper for error extraction ───
+const getErrorMessage = (errors: unknown[]): string =>
+  errors
     .map((err) => {
       if (typeof err === "string") return err;
       if (err && typeof err === "object" && "message" in err) {
@@ -58,7 +58,29 @@ const getErrorMessage = (errors: unknown[]): string => {
     })
     .filter(Boolean)
     .join(", ");
-};
+
+// ─── UUID-ish id generator for new features ───
+const generateFeatureId = () =>
+  `feat_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+
+// ─── Available icons (extend as needed) ───
+// NOTE: These must exist in your iconMapper.ts
+const AVAILABLE_ICONS = [
+  "Users",
+  "Package",
+  "Crown",
+  "Settings",
+  "ListChecks",
+  "DollarSign",
+  "CheckCircle2",
+  "Shield",
+  "Zap",
+  "BarChart3",
+  "Database",
+  "Mail",
+  "FileText",
+  "Clock",
+] as const;
 
 interface EditSubscriptionPlanConfigDialogProps {
   planData: ISubscriptionPlanConfig | null;
@@ -94,7 +116,7 @@ const EditSubscriptionPlanConfigDialog = ({
     onSubmit: ({ value }) => {
       if (!planData) return;
 
-      const payload = {
+      const payload: IUpdateSubscriptionPlanConfig = {
         displayName: value.displayName,
         description: value.description || null,
         priceUSD: Number(value.priceUSD),
@@ -107,7 +129,7 @@ const EditSubscriptionPlanConfigDialog = ({
         sortOrder: Number(value.sortOrder),
         isActive: value.isActive,
         popularBadge: value.popularBadge,
-        features: value.features,
+        ...(value.features !== undefined && { features: value.features }),
       };
 
       mutate(payload);
@@ -156,7 +178,7 @@ const EditSubscriptionPlanConfigDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Edit Subscription Plan</DialogTitle>
           <DialogDescription>
@@ -182,7 +204,6 @@ const EditSubscriptionPlanConfigDialog = ({
               Plan Identity
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Plan Name (read-only) */}
               <div className="space-y-1.5">
                 <Label>Plan Code</Label>
                 <Badge variant="outline" className="font-mono text-sm h-9 px-3">
@@ -193,7 +214,6 @@ const EditSubscriptionPlanConfigDialog = ({
                 </p>
               </div>
 
-              {/* Display Name */}
               <form.Field name="displayName">
                 {(field) => {
                   const isInvalid =
@@ -218,7 +238,6 @@ const EditSubscriptionPlanConfigDialog = ({
                 }}
               </form.Field>
 
-              {/* Description */}
               <form.Field name="description">
                 {(field) => {
                   const isInvalid =
@@ -257,7 +276,6 @@ const EditSubscriptionPlanConfigDialog = ({
               Pricing
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Monthly USD */}
               <form.Field name="priceUSD">
                 {(field) => {
                   const isInvalid =
@@ -273,7 +291,6 @@ const EditSubscriptionPlanConfigDialog = ({
                         value={field.state.value}
                         onBlur={field.handleBlur}
                         onChange={(e) => field.handleChange(e.target.value)}
-                        placeholder="0"
                       />
                       {isInvalid && (
                         <p className="text-sm text-destructive">
@@ -285,7 +302,6 @@ const EditSubscriptionPlanConfigDialog = ({
                 }}
               </form.Field>
 
-              {/* Monthly BDT */}
               <form.Field name="priceBDT">
                 {(field) => {
                   const isInvalid =
@@ -301,7 +317,6 @@ const EditSubscriptionPlanConfigDialog = ({
                         value={field.state.value}
                         onBlur={field.handleBlur}
                         onChange={(e) => field.handleChange(e.target.value)}
-                        placeholder="0"
                       />
                       {isInvalid && (
                         <p className="text-sm text-destructive">
@@ -313,7 +328,6 @@ const EditSubscriptionPlanConfigDialog = ({
                 }}
               </form.Field>
 
-              {/* Yearly USD */}
               <form.Field name="yearlyPriceUSD">
                 {(field) => {
                   const isInvalid =
@@ -341,7 +355,6 @@ const EditSubscriptionPlanConfigDialog = ({
                 }}
               </form.Field>
 
-              {/* Yearly BDT */}
               <form.Field name="yearlyPriceBDT">
                 {(field) => {
                   const isInvalid =
@@ -382,7 +395,6 @@ const EditSubscriptionPlanConfigDialog = ({
               Limits & Order
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Max Employees */}
               <form.Field name="maxEmployees">
                 {(field) => {
                   const isInvalid =
@@ -397,7 +409,6 @@ const EditSubscriptionPlanConfigDialog = ({
                         value={field.state.value}
                         onBlur={field.handleBlur}
                         onChange={(e) => field.handleChange(e.target.value)}
-                        placeholder="e.g., 200"
                       />
                       <p className="text-xs text-muted-foreground">
                         Use 999999 for unlimited
@@ -412,7 +423,6 @@ const EditSubscriptionPlanConfigDialog = ({
                 }}
               </form.Field>
 
-              {/* Sort Order */}
               <form.Field name="sortOrder">
                 {(field) => {
                   const isInvalid =
@@ -427,7 +437,6 @@ const EditSubscriptionPlanConfigDialog = ({
                         value={field.state.value}
                         onBlur={field.handleBlur}
                         onChange={(e) => field.handleChange(e.target.value)}
-                        placeholder="e.g., 3"
                       />
                       {isInvalid && (
                         <p className="text-sm text-destructive">
@@ -452,7 +461,6 @@ const EditSubscriptionPlanConfigDialog = ({
               Visibility & Badges
             </h4>
             <div className="space-y-3">
-              {/* Is Active */}
               <form.Field name="isActive">
                 {(field) => (
                   <div className="flex items-center justify-between p-3 rounded-lg border bg-muted/20">
@@ -461,7 +469,7 @@ const EditSubscriptionPlanConfigDialog = ({
                         Active
                       </Label>
                       <p className="text-xs text-muted-foreground">
-                        Inactive plans wont be shown to new signups
+                        Inactive plans won&apos;t be shown to new signups
                       </p>
                     </div>
                     <Switch
@@ -473,7 +481,6 @@ const EditSubscriptionPlanConfigDialog = ({
                 )}
               </form.Field>
 
-              {/* Popular Badge */}
               <form.Field name="popularBadge">
                 {(field) => (
                   <div className="flex items-center justify-between p-3 rounded-lg border bg-muted/20">
@@ -486,7 +493,7 @@ const EditSubscriptionPlanConfigDialog = ({
                         Popular Badge
                       </Label>
                       <p className="text-xs text-muted-foreground">
-                        Shows &ldquo;Most Popular&ldquo; on this plan
+                        Shows &ldquo;Most Popular&rdquo; on this plan
                       </p>
                     </div>
                     <Switch
@@ -503,35 +510,182 @@ const EditSubscriptionPlanConfigDialog = ({
           <Separator />
 
           {/* ============================================ */}
-          {/* FEATURES (read-only for now) */}
+          {/* FEATURES — fully editable */}
           {/* ============================================ */}
           <div>
-            <h4 className="text-sm font-semibold mb-3 flex items-center gap-2">
-              <ListChecks className="h-4 w-4 text-primary" />
-              Features ({planData.features?.length || 0})
-            </h4>
-            <p className="text-xs text-muted-foreground mb-3">
-              Features are managed by the platform. Contact support to modify.
-            </p>
-            <div className="space-y-2 max-h-60 overflow-y-auto">
-              {planData.features?.map((feature) => {
-                const Icon = getIconComponent(feature.icon);
-                return (
-                  <div
-                    key={feature.id}
-                    className="flex items-center gap-3 p-2 rounded-md border bg-muted/10"
+            <div className="flex items-center justify-between mb-3">
+              <h4 className="text-sm font-semibold flex items-center gap-2">
+                <ListChecks className="h-4 w-4 text-primary" />
+                Features
+              </h4>
+              <form.Field name="features">
+                {(field) => (
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      const current = field.state.value ?? [];
+                      field.handleChange([
+                        ...current,
+                        {
+                          id: generateFeatureId(),
+                          icon: "Package",
+                          name: "",
+                          category: "General",
+                          included: true,
+                          description: "",
+                        },
+                      ]);
+                    }}
                   >
-                    <Icon className="h-4 w-4 text-muted-foreground shrink-0" />
-                    <span className="text-sm flex-1">{feature.name}</span>
-                    {feature.included ? (
-                      <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-                    ) : (
-                      <XCircle className="h-4 w-4 text-rose-500" />
-                    )}
+                    <Plus className="h-4 w-4 mr-1" />
+                    Add Feature
+                  </Button>
+                )}
+              </form.Field>
+            </div>
+
+            <form.Field name="features">
+              {(field) => {
+                const features = field.state.value ?? [];
+
+                if (features.length === 0) {
+                  return (
+                    <div className="text-center py-8 border rounded-lg bg-muted/10">
+                      <ListChecks className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
+                      <p className="text-sm text-muted-foreground">
+                        No features yet. Click &ldquo;Add Feature&rdquo; to
+                        create one.
+                      </p>
+                    </div>
+                  );
+                }
+
+                const updateFeature = (
+                  index: number,
+                  patch: Partial<(typeof features)[number]>,
+                ) => {
+                  const updated = features.map((f, i) =>
+                    i === index ? { ...f, ...patch } : f,
+                  );
+                  field.handleChange(updated);
+                };
+
+                const removeFeature = (index: number) => {
+                  field.handleChange(features.filter((_, i) => i !== index));
+                };
+
+                return (
+                  <div className="space-y-3">
+                    {features.map((feature, index) => {
+                      const Icon = getIconComponent(feature.icon);
+                      return (
+                        <div
+                          key={feature.id}
+                          className="rounded-lg border p-3 bg-muted/10 space-y-3"
+                        >
+                          {/* Row 1: Icon preview + name + included + delete */}
+                          <div className="flex items-center gap-3">
+                            <div className="p-2 rounded-md bg-background border shrink-0">
+                              <Icon className="h-4 w-4 text-primary" />
+                            </div>
+
+                            <div className="flex-1 min-w-0">
+                              <Input
+                                placeholder="Feature name (e.g., Payroll Management)"
+                                value={feature.name}
+                                onChange={(e) =>
+                                  updateFeature(index, { name: e.target.value })
+                                }
+                                className="h-9"
+                              />
+                            </div>
+
+                            <div className="flex items-center gap-2 shrink-0">
+                              <span className="text-xs text-muted-foreground">
+                                Included
+                              </span>
+                              <Switch
+                                checked={feature.included}
+                                onCheckedChange={(checked) =>
+                                  updateFeature(index, { included: checked })
+                                }
+                              />
+                              <Button
+                                type="button"
+                                size="icon"
+                                variant="ghost"
+                                className="text-destructive hover:text-destructive"
+                                onClick={() => removeFeature(index)}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+
+                          {/* Row 2: icon + category + description */}
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                            <div className="space-y-1">
+                              <Label className="text-xs text-muted-foreground">
+                                Icon
+                              </Label>
+                              <select
+                                value={feature.icon}
+                                onChange={(e) =>
+                                  updateFeature(index, {
+                                    icon: e.target.value,
+                                  })
+                                }
+                                className="w-full h-9 rounded-md border bg-background px-2 text-sm"
+                              >
+                                {AVAILABLE_ICONS.map((iconName) => (
+                                  <option key={iconName} value={iconName}>
+                                    {iconName}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+
+                            <div className="space-y-1">
+                              <Label className="text-xs text-muted-foreground">
+                                Category
+                              </Label>
+                              <Input
+                                value={feature.category}
+                                onChange={(e) =>
+                                  updateFeature(index, {
+                                    category: e.target.value,
+                                  })
+                                }
+                                className="h-9"
+                                placeholder="e.g., HR, Payroll"
+                              />
+                            </div>
+
+                            <div className="space-y-1">
+                              <Label className="text-xs text-muted-foreground">
+                                Description
+                              </Label>
+                              <Input
+                                value={feature.description}
+                                onChange={(e) =>
+                                  updateFeature(index, {
+                                    description: e.target.value,
+                                  })
+                                }
+                                className="h-9"
+                                placeholder="Short description"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 );
-              })}
-            </div>
+              }}
+            </form.Field>
           </div>
 
           {/* ============================================ */}
