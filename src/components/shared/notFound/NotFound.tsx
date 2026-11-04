@@ -29,7 +29,7 @@ export default function NotFound() {
 
   const quickLinks = [
     { title: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { title: "Home", href: "/home", icon: Home },
+    { title: "Home", href: "/", icon: Home },
     { title: "Attendance", href: "/attendance", icon: UserRoundCheck },
     { title: "Payroll", href: "/payroll", icon: CreditCard },
     { title: "About", href: "/about", icon: Info },
