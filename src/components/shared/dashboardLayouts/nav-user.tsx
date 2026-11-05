@@ -33,6 +33,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 export function NavUser({ user }: { user: ISessionUser }) {
+  const currentPath = window.location.pathname;
   const queryClient = useQueryClient();
   const { isMobile } = useSidebar();
   const router = useRouter();
@@ -48,7 +49,7 @@ export function NavUser({ user }: { user: ISessionUser }) {
         queryClient.removeQueries({ queryKey: ["user-info"] });
         queryClient.clear();
 
-        router.push("/login");
+        router.push(`/login?redirect=${encodeURIComponent(currentPath)}`);
       }
       console.log(logout);
     } catch (error) {
@@ -121,10 +122,7 @@ export function NavUser({ user }: { user: ISessionUser }) {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <Link
-                  href="/profile"
-                  className="flex items-center gap-2"
-                >
+                <Link href="/profile" className="flex items-center gap-2">
                   <BadgeCheckIcon />
                   Profile
                 </Link>
