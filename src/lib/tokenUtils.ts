@@ -27,10 +27,10 @@ const setTokenInCookie = async (name: string, value: string, fallbackMaxAgeInSec
     await cookieUtils.setCookie(name, value, maxAgeInSeconds);
 }
 
-const isTokenExpired = async (token: string) => {
+const isTokenExpired = async (token: string, thresholdSecond = 300) => {
     try {
         const secondsRemaining = await getTokenSecondsRemaining(token);
-        return secondsRemaining === 0;
+        return secondsRemaining >= 0 && secondsRemaining <= thresholdSecond;
     } catch (error) {
         console.log(`This error is from isTokenExpired: ${error instanceof Error && error.message}`);
         return true;
