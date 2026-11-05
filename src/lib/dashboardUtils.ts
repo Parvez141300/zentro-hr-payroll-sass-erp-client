@@ -13,8 +13,8 @@ const getDefaultDashboardRoute = (role: UserRole) => {
             return "/super-admin/dashboard";
         case UserRole.HR_MANAGER:
             return "/hr-manager/dashboard";
-        case UserRole.ACCOUNTANT:
-            return "/accountant/dashboard";
+        // case UserRole.ACCOUNTANT:
+        //     return "/accountant/dashboard";
         case UserRole.DEPARTMENT_HEAD:
             return "/department-head/dashboard";
         case UserRole.EMPLOYEE:
