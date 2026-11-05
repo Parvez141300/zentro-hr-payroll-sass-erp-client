@@ -657,9 +657,20 @@ export const getAccessibleHrefs = (userInfo: IUser): string[] => {
 
 export const canAccessRoute = (userInfo: IUser, pathname: string): boolean => {
     const accessible = getAccessibleHrefs(userInfo);
-    return accessible.some(
-        (href) => pathname === href || pathname.startsWith(`${href}/`),
-    );
+
+    return accessible.some((href) => {
+        // ১. exact match — সবসময় allowed
+        if (pathname === href) return true;
+
+        // ২. dashboard root হলে prefix match করবে না
+        //    (নাহলে সব subroute allowed হয়ে যাবে)
+        const isDashboardRoot = href === "/dashboard" ||
+            href.endsWith("/dashboard");
+        if (isDashboardRoot) return false;
+
+        // ৩. অন্য route হলে prefix match allowed (dynamic route-এর জন্য)
+        return pathname.startsWith(`${href}/`);
+    });
 };
 
 export { getDefaultDashboardRoute };
