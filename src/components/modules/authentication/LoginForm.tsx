@@ -17,7 +17,7 @@ import { loginSchema } from "@/zod/auth.validation";
 import { useForm } from "@tanstack/react-form";
 import { Eye, EyeOff, LockKeyhole, LogIn, Mail } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
@@ -25,6 +25,7 @@ const LoginForm = () => {
   const [show, setShow] = useState<boolean>(false);
   const [formError, setFormError] = useState<string | null>(null);
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const form = useForm({
     defaultValues: {
@@ -42,6 +43,10 @@ const LoginForm = () => {
           setFormError(null);
           toast.success("Successfully Logged in", { id: toastId });
           form.reset();
+          const search = searchParams.get("redirect");
+          if (search) {
+            return router.push(`${search}`);
+          }
           router.push("/");
         }
         if (!userLogin) {
