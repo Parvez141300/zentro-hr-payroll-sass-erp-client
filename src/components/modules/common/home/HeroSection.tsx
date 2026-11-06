@@ -1,14 +1,21 @@
+import DepthCarousel from "@/components/shared/carousel/DepthCarousel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   ArrowRight,
-  Building2,
+  // Building2,
   PlayCircle,
   Radio,
   Sparkles,
   Star,
 } from "lucide-react";
 import Link from "next/link";
+
+const items = [
+  { image: "/assets/carouselImages/dashboard-1.png", alt: "One" },
+  { image: "/assets/carouselImages/dashboard-2.png", alt: "Two" },
+  { image: "/assets/carouselImages/dashboard-3.png", alt: "Three" },
+];
 
 // Hero Section
 const HeroSection = () => (
@@ -77,7 +84,7 @@ const HeroSection = () => (
 
         <div className="relative">
           <div className="relative rounded-2xl overflow-hidden shadow-xl border border-border/50">
-            <div className="aspect-video bg-linear-to-br from-primary/20 to-secondary/20 flex items-center justify-center p-8">
+            {/* <div className="aspect-video bg-linear-to-br from-primary/20 to-secondary/20 flex items-center justify-center p-8">
               <div className="text-center">
                 <Building2 className="h-16 w-16 text-primary mx-auto mb-4" />
                 <p className="text-muted-foreground">Dashboard Preview</p>
@@ -86,7 +93,32 @@ const HeroSection = () => (
                 </Badge>
               </div>
             </div>
-            <div className="absolute inset-0 border border-primary/20 rounded-2xl pointer-events-none" />
+            <div className="absolute inset-0 border border-primary/20 rounded-2xl pointer-events-none" /> */}
+            <div style={{ height: "500px", position: "relative" }}>
+              <DepthCarousel
+                items={items}
+                depth={200}
+                spread={90}
+                tilt={2}
+                tiltDirection="right"
+                perspective={1400}
+                visibleCards={4}
+                falloff={0.2}
+                blur={6}
+                autoplay
+                loop
+                cardWidth={800}
+                cardHeight={400}
+                radius={18}
+                tint="#05060a"
+                duration={700}
+                ease="power3.out"
+                autoplayDelay={3200}
+                showControls
+                showIndicators
+                className="drop-shadow-lg drop-shadow-indigo-500/50"
+              />
+            </div>
           </div>
 
           {/* Floating Cards */}
