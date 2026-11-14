@@ -1,5 +1,9 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import Logo from "../logo/Logo";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 interface FooterLink {
   name: string;
@@ -39,10 +43,10 @@ const defaultProps: Footer2Props = {
       title: "Quick Links",
       links: [
         { name: "Home", href: "/" },
-        { name: "Attendance", href: "/" },
+        { name: "Attendance", href: "/attendance" },
         { name: "Leave", href: "/leave" },
         { name: "Payroll", href: "/payroll" },
-        { name: "Pricing", href: "#" },
+        { name: "Pricing", href: "/pricing" },
       ],
     },
     {
@@ -70,7 +74,18 @@ const defaultProps: Footer2Props = {
 const MAX_SECTIONS = 3;
 
 const Footer2 = (props: Props) => {
-  const { description, sections, businessAddress, copyright, legalLinks, className } = {
+  const path = usePathname();
+
+  console.log(path);
+
+  const {
+    description,
+    sections,
+    businessAddress,
+    copyright,
+    legalLinks,
+    className,
+  } = {
     ...defaultProps,
     ...props,
   };
@@ -99,9 +114,12 @@ const Footer2 = (props: Props) => {
                   {section.links.map((link, linkIdx) => (
                     <li
                       key={linkIdx}
-                      className="font-medium hover:text-primary"
+                      className={cn(
+                        "font-medium hover:text-primary",
+                        path === link.href ? "underline font-bold" : "",
+                      )}
                     >
-                      <a href={link.href}>{link.name}</a>
+                      <Link href={link.href}>{link.name}</Link>
                     </li>
                   ))}
                 </ul>
