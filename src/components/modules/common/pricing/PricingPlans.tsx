@@ -82,24 +82,21 @@ const PricingPlans = ({ plans, className }: PricingPlansProps) => {
   });
 
   // check whether the customer already purchased any plan or not
+  // ✅ Null-safe: data can be null even when the wrapper object exists.
+  const currentPlan = loggedInUser?.data?.company?.subscriptionPlan;
+
   const isActivePlan =
-    loggedInUser?.data.company?.subscriptionPlan === SubscriptionPlan.BASIC
-      ? true
-      : loggedInUser?.data.company?.subscriptionPlan ===
-          SubscriptionPlan.ENTERPRISE
-        ? true
-        : loggedInUser?.data.company?.subscriptionPlan === SubscriptionPlan.PRO
-          ? true
-          : false;
+    currentPlan === SubscriptionPlan.BASIC ||
+    currentPlan === SubscriptionPlan.PRO ||
+    currentPlan === SubscriptionPlan.ENTERPRISE;
 
   const handlePlan = (planData: Plan) => {
-    if (!loggedInUser) {
+    // ✅ Check `data` itself, not just the wrapper
+    if (!loggedInUser?.data) {
       toast.warning("User must be logged in to purchase a plan");
 
       return router.push("/login");
     }
-    console.log("plan data: ", planData);
-    console.log("current loggedin user", loggedInUser);
     setSelectedPlan(planData);
   };
 
@@ -129,19 +126,12 @@ const PricingPlans = ({ plans, className }: PricingPlansProps) => {
         }
         window.location.href = stripeResponseData.url;
       } else if (gateway === "sslcommerz") {
-        console.log("stripe gateway", {
-          plan: selectedPlan.name,
-          gateway,
-          billingCycle: isAnnually ? BillingCycle.YEARLY : BillingCycle.MONTHLY,
-        });
         const { data: sslCommerzResponseData } = await createSSLCommerzPayment({
           planName: selectedPlan.name as SubscriptionPlan,
           billingCycle: isAnnually ? BillingCycle.YEARLY : BillingCycle.MONTHLY,
         });
         if (sslCommerzResponseData.url) {
-          toast.success(
-            `Redirecting to SSLCommerz"}...`,
-          );
+          toast.success(`Redirecting to SSLCommerz...`);
         }
         window.location.href = sslCommerzResponseData.url;
       }
@@ -301,21 +291,16 @@ const PricingPlans = ({ plans, className }: PricingPlansProps) => {
                     </ul>
                   </div>
 
-                  {plan.name !== SubscriptionPlan.FREE ? (
-                    <>
-                      {/* বাটন */}
-                      <Button
-                        className="w-full mt-6"
-                        variant={isPopular ? "default" : "outline"}
-                        size="lg"
-                        onClick={() => handlePlan(plan)}
-                        disabled={isActivePlan}
-                      >
-                        Get Started <ArrowRight className="h-4 w-4 ml-2" />
-                      </Button>
-                    </>
-                  ) : (
-                    <></>
+                  {plan.name !== SubscriptionPlan.FREE && (
+                    <Button
+                      className="w-full mt-6"
+                      variant={isPopular ? "default" : "outline"}
+                      size="lg"
+                      onClick={() => handlePlan(plan)}
+                      disabled={isActivePlan}
+                    >
+                      Get Started <ArrowRight className="h-4 w-4 ml-2" />
+                    </Button>
                   )}
                 </div>
               );

@@ -76,8 +76,6 @@ const MAX_SECTIONS = 3;
 const Footer2 = (props: Props) => {
   const path = usePathname();
 
-  console.log(path);
-
   const {
     description,
     sections,
