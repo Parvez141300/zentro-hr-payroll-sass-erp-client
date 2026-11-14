@@ -1,7 +1,5 @@
-
 import Link from "next/link";
 import {
-  Clock,
   Smartphone,
   Fingerprint,
   BarChart3,
@@ -22,7 +20,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-
+import Image from "next/image";
 
 const FEATURES_LIST = [
   {
@@ -103,18 +101,13 @@ export default function Attendance() {
       </div>
 
       {/* Feature Image */}
-      <div className="relative w-full h-100 rounded-xl overflow-hidden mb-12 bg-linear-to-r from-primary/20 to-secondary/20">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center">
-            <Clock className="h-20 w-20 text-primary mx-auto mb-4" />
-            <h2 className="text-2xl font-semibold text-foreground">
-              Attendance Dashboard
-            </h2>
-            <p className="text-muted-foreground">
-              Track employee attendance
-            </p>
-          </div>
-        </div>
+      <div className="relative w-full aspect-video overflow-hidden rounded-xl mb-12 bg-linear-to-r from-primary/20 to-secondary/20">
+        <Image
+          src="/assets/carouselImages/dashboard-1.png"
+          alt="Dashboard preview"
+          fill
+          className="object-cover"
+        />
       </div>
 
       {/* Features Grid */}
