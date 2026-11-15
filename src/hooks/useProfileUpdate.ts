@@ -53,7 +53,7 @@ const getProfileEndpoint = (role: UserRole, userId: string): string => {
         PLATFORM_SUPER_ADMIN: `/api/v1/admins/platform-super-admin/${userId}`,
         Super_ADMIN: `/api/v1/admins/super-admin/${userId}`,
         HR_MANAGER: `/api/v1/hr-managers/${userId}`,
-        ACCOUNTANT: `/api/v1/accountants/${userId}`,
+        // ACCOUNTANT: `/api/v1/accountants/${userId}`,
         DEPARTMENT_HEAD: `/api/v1/department-heads/${userId}`,
         EMPLOYEE: `/api/v1/employees/${userId}`,
     };
