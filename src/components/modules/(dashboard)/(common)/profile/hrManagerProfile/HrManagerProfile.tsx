@@ -94,7 +94,7 @@ const HrManagerProfile = ({ userData }: { userData: IUser }) => {
     },
     {
       label: "Designation",
-      value: userData.hrManager?.designation?.name || "N/A",
+      value: userData.hrManager?.designation?.title || "N/A",
       icon: <Users className="w-4 h-4" />,
     },
   ];

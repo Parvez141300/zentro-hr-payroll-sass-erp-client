@@ -125,7 +125,7 @@ const EmployeeProfile = ({ userData }: { userData: IUser }) => {
     },
     {
       label: "Designation",
-      value: userData.employee?.designation?.name || "N/A",
+      value: userData.employee?.designation?.title || "N/A",
       icon: <Users className="w-4 h-4" />,
     },
     {
