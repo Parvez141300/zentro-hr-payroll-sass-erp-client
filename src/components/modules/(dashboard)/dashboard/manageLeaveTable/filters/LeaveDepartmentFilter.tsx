@@ -26,13 +26,14 @@ const LeaveDepartmentFilter = () => {
   const [selectedDepartment, setSelectedDepartment] =
     useState<string>(initialDepartmentId);
 
-  const handleDepartmentChange = (value: string) => {
-    setSelectedDepartment(value);
+  const handleDepartmentChange = (value: string | null) => {
+    const departmentId = value ?? "";
+    setSelectedDepartment(departmentId);
 
     const params = new URLSearchParams(searchParams.toString());
 
-    if (value) {
-      params.set("departmentId", value);
+    if (departmentId) {
+      params.set("departmentId", departmentId);
     } else {
       params.delete("departmentId");
     }
