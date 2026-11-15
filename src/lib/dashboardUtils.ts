@@ -144,7 +144,7 @@ const superAdminFreeNavItems: IDashboardSidebarNavSection[] = [
         title: "Payments",
         items: [
             {
-                title: "Manage Employee",
+                title: "All Payments",
                 href: "/super-admin/dashboard/payments",
                 icon: "CreditCard",
             },
@@ -295,7 +295,7 @@ const superAdminFullNavItems: IDashboardSidebarNavSection[] = [
         title: "Payments",
         items: [
             {
-                title: "Manage Employee",
+                title: "Al Payments",
                 href: "/super-admin/dashboard/payments",
                 icon: "CreditCard",
             },
