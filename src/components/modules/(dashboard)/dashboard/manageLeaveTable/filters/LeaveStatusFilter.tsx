@@ -18,13 +18,14 @@ const LeaveStatusFilter = () => {
   const initialStatus = searchParams.get("status") || "";
   const [selectedStatus, setSelectedStatus] = useState<string>(initialStatus);
 
-  const handleStatusChange = (value: string) => {
-    setSelectedStatus(value);
+  const handleStatusChange = (value: string | null) => {
+    const status = value ?? "";
+    setSelectedStatus(status);
 
     const params = new URLSearchParams(searchParams.toString());
 
-    if (value) {
-      params.set("status", value);
+    if (status) {
+      params.set("status", status);
     } else {
       params.delete("status");
     }
@@ -45,7 +46,7 @@ const LeaveStatusFilter = () => {
     <div className="max-w-50">
       <Select
         value={selectedStatus}
-        onValueChange={(value: string) => handleStatusChange(value as string)}
+        onValueChange={handleStatusChange}
       >
         <SelectTrigger className="w-full">
           <SelectValue placeholder="All Status" />

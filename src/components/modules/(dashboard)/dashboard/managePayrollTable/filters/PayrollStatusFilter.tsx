@@ -38,7 +38,6 @@ const PayrollStatusFilter = () => {
     { value: PayrollStatus.DRAFT, label: "Draft" },
     { value: PayrollStatus.APPROVED, label: "Approved" },
     { value: PayrollStatus.PAID, label: "Paid" },
-    { value: PayrollStatus.GENERATED, label: "Generated" },
     { value: PayrollStatus.CANCELLED, label: "Cancelled" },
   ];
 
