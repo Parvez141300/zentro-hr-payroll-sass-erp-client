@@ -140,6 +140,16 @@ const superAdminFreeNavItems: IDashboardSidebarNavSection[] = [
             },
         ],
     },
+    {
+        title: "Payments",
+        items: [
+            {
+                title: "Manage Employee",
+                href: "/super-admin/dashboard/payments",
+                icon: "CreditCard",
+            },
+        ],
+    },
 ];
 
 // ===============================================================
@@ -278,6 +288,16 @@ const superAdminFullNavItems: IDashboardSidebarNavSection[] = [
                 title: "Create Employee",
                 href: "/super-admin/dashboard/create-employee",
                 icon: "Plus",
+            },
+        ],
+    },
+    {
+        title: "Payments",
+        items: [
+            {
+                title: "Manage Employee",
+                href: "/super-admin/dashboard/payments",
+                icon: "CreditCard",
             },
         ],
     },
