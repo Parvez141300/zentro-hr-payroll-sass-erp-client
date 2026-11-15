@@ -36,7 +36,7 @@ const RoleFilter = () => {
   const roleOptions = [
     { value: UserRole.SUPER_ADMIN, label: "Super Admin" },
     { value: UserRole.HR_MANAGER, label: "HR Manager" },
-    { value: UserRole.ACCOUNTANT, label: "Accountant" },
+    // { value: UserRole.ACCOUNTANT, label: "Accountant" },
     { value: UserRole.DEPARTMENT_HEAD, label: "Department Head" },
     { value: UserRole.EMPLOYEE, label: "Employee" },
   ];
