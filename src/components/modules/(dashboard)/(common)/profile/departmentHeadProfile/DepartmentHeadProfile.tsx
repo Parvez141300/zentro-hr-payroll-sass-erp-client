@@ -97,7 +97,7 @@ const DepartmentHeadProfile = ({ userData }: { userData: IUser }) => {
     },
     {
       label: "Designation",
-      value: userData.departmentHead?.designation?.name || "N/A",
+      value: userData.departmentHead?.designation?.title || "N/A",
       icon: <Users className="w-4 h-4" />,
     },
   ];
