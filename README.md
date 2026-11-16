@@ -77,7 +77,6 @@ Zentro is a modern HR and Payroll ERP platform designed to centralize employee m
 | `PLATFORM_SUPER_ADMIN`    | প্ল্যাটফর্ম সুপার অ্যাডমিন | Owns the SaaS platform, manages all companies, plans, and system settings |
 | `SUPER_ADMIN`             | সুপার অ্যাডমিন           | Full company access, manages everything within their company |
 | `HR_MANAGER`              | এইচআর ম্যানেজার          | Manages employees, leave, attendance within their company |
-| `ACCOUNTANT`              | অ্যাকাউন্ট্যান্ট         | Manages payroll, salary, financial reports |
 | `DEPARTMENT_HEAD`         | বিভাগীয় প্রধান          | Manages own department team & leave approvals |
 | `EMPLOYEE`                | কর্মচারী                 | Views own profile, applies for leave, sees payslip |
 
@@ -119,17 +118,6 @@ Zentro is a modern HR and Payroll ERP platform designed to centralize employee m
 - View HR Reports
 
 Cannot: Delete Departments, Delete Employees, Manage Payroll, Manage System Settings
-
-#### ACCOUNTANT — Can:
-
-- View Employees ✅
-- Generate Payroll
-- Edit Payroll
-- Mark Payroll as Paid
-- View Financial Reports
-- View Payment History
-
-Cannot: Manage Employees, Manage Attendance, Approve Leave, Manage Settings
 
 #### DEPARTMENT_HEAD — Can:
 
