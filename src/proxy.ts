@@ -21,7 +21,6 @@ const isProtectedRoute = (pathname: string): boolean => {
     '/accountant',
     '/platform-super-admin',
     '/profile',
-    '/reset-password',   // হ্যাঁ, এটাও protected (login লাগে)
   ];
   return protectedPrefixes.some(
     (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)
