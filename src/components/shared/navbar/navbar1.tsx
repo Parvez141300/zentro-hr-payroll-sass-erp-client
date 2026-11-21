@@ -45,6 +45,7 @@ import DropdownNavMenu from "./DropdownNavMenu";
 import { ISessionUser } from "@/types/auth.type";
 import { useQuery } from "@tanstack/react-query";
 import { getClientLoggedInUserInfo } from "@/actions/auth.action";
+import { useEffect, useState } from "react";
 
 // ============================================
 // TYPES
@@ -137,6 +138,8 @@ const Navbar1 = ({
   className,
 }: Navbar1Props) => {
   const pathName = usePathname();
+  // navbar show and hide state
+  const [isVisible, setIsVisible] = useState(true);
 
   // ✅ Fetch session via useQuery
   const { data: sessionResponse, isLoading } = useQuery({
@@ -149,75 +152,107 @@ const Navbar1 = ({
   // ✅ Safely extract session — no cast needed
   const session: ISessionUser | null = sessionResponse?.data ?? null;
 
+  // navbar hide and show useEffect
+  useEffect(() => {
+    let lastScroll = window.scrollY;
+
+    const handleNavHideShow = () => {
+      const currentScroll = window.scrollY;
+      const scrollDown = currentScroll > lastScroll;
+      const scrollUp = currentScroll < lastScroll;
+
+      if (scrollDown && currentScroll > 500) {
+        setIsVisible(false);
+      } else if (scrollUp) {
+        setIsVisible(true);
+      }
+
+      lastScroll = currentScroll;
+    };
+
+    window.addEventListener("scroll", handleNavHideShow, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleNavHideShow);
+    };
+  }, []);
+
   return (
-    <section className={cn("py-4", className)}>
-      <div className="max-w-7xl mx-auto px-4">
-        {/* Desktop Menu */}
-        <nav className="hidden items-center justify-between lg:flex">
-          <div className="flex items-center gap-6">
-            <Logo width={70} height={30} />
-            <div className="flex items-center">
-              <NavigationMenu>
-                <NavigationMenuList>
-                  {menu.map((item) => renderMenuItem(item, pathName))}
-                </NavigationMenuList>
-              </NavigationMenu>
+    <section
+      className={cn(
+        "fixed w-full backdrop-blur-xs z-20 shadow-md shadow-accent duration-500",
+        isVisible ? "translate-y-0" : "-translate-y-full",
+      )}
+    >
+      <div className={cn("py-4", className)}>
+        <div className="max-w-7xl mx-auto px-4">
+          {/* Desktop Menu */}
+          <nav className="hidden items-center justify-between lg:flex">
+            <div className="flex items-center gap-6">
+              <Logo width={70} height={30} />
+              <div className="flex items-center">
+                <NavigationMenu>
+                  <NavigationMenuList>
+                    {menu.map((item) => renderMenuItem(item, pathName))}
+                  </NavigationMenuList>
+                </NavigationMenu>
+              </div>
             </div>
-          </div>
-          <div className="flex items-center gap-5">
-            <ThemeToggle />
-            {isLoading ? (
-              <Spinner />
-            ) : session ? (
-              <DropdownNavMenu sessionUser={session} />
-            ) : (
-              <Link href={auth.signup.url}>
-                <BorderBeamButton>
-                  {auth.signup.title}
-                  <ArrowRight />
-                </BorderBeamButton>
-              </Link>
-            )}
-          </div>
-        </nav>
+            <div className="flex items-center gap-5">
+              <ThemeToggle />
+              {isLoading ? (
+                <Spinner />
+              ) : session ? (
+                <DropdownNavMenu sessionUser={session} />
+              ) : (
+                <Link href={auth.signup.url}>
+                  <BorderBeamButton>
+                    {auth.signup.title}
+                    <ArrowRight />
+                  </BorderBeamButton>
+                </Link>
+              )}
+            </div>
+          </nav>
 
-        {/* Mobile Menu */}
-        <div className="block lg:hidden">
-          <div className="flex items-center justify-between">
-            <Logo width={50} height={20} />
-            <Sheet>
-              <SheetTrigger render={<Button variant="outline" size="icon" />}>
-                <Menu className="size-4" />
-              </SheetTrigger>
-              <SheetContent className="overflow-y-auto">
-                <SheetHeader>
-                  <SheetTitle>
-                    <Logo width={50} height={20} />
-                  </SheetTitle>
-                </SheetHeader>
-                <div className="flex flex-col gap-6 p-4">
-                  <Accordion className="flex w-full flex-col gap-4">
-                    {menu.map((item) => renderMobileMenuItem(item, pathName))}
-                  </Accordion>
+          {/* Mobile Menu */}
+          <div className="block lg:hidden">
+            <div className="flex items-center justify-between">
+              <Logo width={50} height={20} />
+              <Sheet>
+                <SheetTrigger render={<Button variant="outline" size="icon" />}>
+                  <Menu className="size-4" />
+                </SheetTrigger>
+                <SheetContent className="overflow-y-auto">
+                  <SheetHeader>
+                    <SheetTitle>
+                      <Logo width={50} height={20} />
+                    </SheetTitle>
+                  </SheetHeader>
+                  <div className="flex flex-col gap-6 p-4">
+                    <Accordion className="flex w-full flex-col gap-4">
+                      {menu.map((item) => renderMobileMenuItem(item, pathName))}
+                    </Accordion>
 
-                  <div className="flex items-center justify-between">
-                    <ThemeToggle />
-                    {isLoading ? (
-                      <Spinner />
-                    ) : session ? (
-                      <DropdownNavMenu sessionUser={session} />
-                    ) : (
-                      <Link href={auth.signup.url}>
-                        <BorderBeamButton>
-                          {auth.signup.title}
-                          <ArrowRight />
-                        </BorderBeamButton>
-                      </Link>
-                    )}
+                    <div className="flex items-center justify-between">
+                      <ThemeToggle />
+                      {isLoading ? (
+                        <Spinner />
+                      ) : session ? (
+                        <DropdownNavMenu sessionUser={session} />
+                      ) : (
+                        <Link href={auth.signup.url}>
+                          <BorderBeamButton>
+                            {auth.signup.title}
+                            <ArrowRight />
+                          </BorderBeamButton>
+                        </Link>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </SheetContent>
-            </Sheet>
+                </SheetContent>
+              </Sheet>
+            </div>
           </div>
         </div>
       </div>

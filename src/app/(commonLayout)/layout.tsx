@@ -5,7 +5,7 @@ import React from "react";
 const CommonLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      <nav className="fixed w-full backdrop-blur-xs z-20 shadow-md shadow-accent">
+      <nav className="">
         <Navbar1 className="" />
       </nav>
       <main className="max-w-7xl mx-auto my-10 mt-32 px-4 w-full">
