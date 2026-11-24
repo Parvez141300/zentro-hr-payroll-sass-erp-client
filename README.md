@@ -8,7 +8,7 @@
 
 1. [Project Overview](#1-project-overview)
 2. [Tech Stack](#2-tech-stack)
-3. [Role-Based Access Control (RBAC)](#6-role-based-access-control-rbac)
+3. [Role-Based Access Control (RBAC)](#3-role-based-access-control-rbac)
 4. [Role Profile Models](#4-role-profile-models)
 5. [Features by Module](#5-features-by-module)
 6. [Database Schema](#6-database-schema)
@@ -48,43 +48,46 @@ Zentro is a modern HR and Payroll ERP platform designed to centralize employee m
 
 ## 2. Tech Stack
 
-| Layer                   | Technology               | Purpose                   |
-| ----------------------- | ------------------------ | ------------------------- |
-| Frontend Framework      | Next.js (App Router)     | Pages, routing, SSR       |
-| UI Components           | Shadcn UI + Tailwind CSS | Design system             |
-| State Management        | TanStack Query v5        | Server state, caching     |
-| Form Handling           | TanStack Form            | Validation, submission    |
-| Authentication          | Better Auth              | Session, roles, JWT       |
-| Backend                 | Express.js               | REST API server           |
-| ORM                     | Prisma ORM               | Database queries          |
-| Database                | PostgreSQL               | Data storage              |
-| File Storage            | Cloudinary (free tier)   | Profile photos, documents |
-| PDF Generation          | React PDF                | Payslip download          |
-| Payment (International) | Stripe                   | Subscription billing      |
-| Payment (Bangladesh)    | SSLCommerz               | Local payment gateway     |
-| Deployment (Frontend)   | Vercel                   | Free hosting              |
-| Deployment (Backend)    | Railway                  | Free hosting              |
-| Deployment (DB)         | Supabase / Neon          | Free PostgreSQL           |
+| Layer                   | Technology               | Purpose                          |
+| ----------------------- | ------------------------ | -------------------------------- |
+| Frontend Framework      | Next.js (App Router)     | Pages, routing, SSR              |
+| UI Components           | Shadcn UI + Tailwind CSS | Design system                    |
+| State Management        | TanStack Query v5        | Server state, caching            |
+| Form Handling           | TanStack Form            | Validation, submission           |
+| Reuseable Table         | TanStack Table           | Mange Table                      |
+| Authentication          | Better Auth              | Session, roles, JWT              |
+| Backend                 | Express.js               | REST API server                  |
+| ORM                     | Prisma ORM               | Database queries                 |
+| Database                | PostgreSQL               | Data storage                     |
+| File Storage            | Cloudinary (free tier)   | Profile photos, documents        |
+| Email Sending           | Node Mailer              | Send mail payslip, password rest |
+| PDF Generation          | React PDF                | Payslip download                 |
+| Payment (International) | Stripe                   | Subscription billing             |
+| Payment (Bangladesh)    | SSLCommerz               | Local payment gateway            |
+| Deployment (Frontend)   | Vercel                   | Free hosting                     |
+| Deployment (Backend)    | Render                   | Free hosting                     |
+| Deployment (DB)         | Supabase / Neon          | Free PostgreSQL                  |
 
 ---
 
 ## 3. Role-Based Access Control (RBAC)
 
-### The 6 Roles (Now including Platform Admin)
+### The 5 Roles (Now including Platform Admin)
 
-| Role                      | বাংলা                    | Description                                        |
-| ------------------------- | ------------------------ | -------------------------------------------------- |
-| `PLATFORM_SUPER_ADMIN`    | প্ল্যাটফর্ম সুপার অ্যাডমিন | Owns the SaaS platform, manages all companies, plans, and system settings |
-| `SUPER_ADMIN`             | সুপার অ্যাডমিন           | Full company access, manages everything within their company |
-| `HR_MANAGER`              | এইচআর ম্যানেজার          | Manages employees, leave, attendance within their company |
-| `DEPARTMENT_HEAD`         | বিভাগীয় প্রধান          | Manages own department team & leave approvals |
-| `EMPLOYEE`                | কর্মচারী                 | Views own profile, applies for leave, sees payslip |
+| Role                   | বাংলা                      | Description                                                               |
+| ---------------------- | -------------------------- | ------------------------------------------------------------------------- |
+| `PLATFORM_SUPER_ADMIN` | প্ল্যাটফর্ম সুপার অ্যাডমিন | Owns the SaaS platform, manages all companies, plans, and system settings |
+| `SUPER_ADMIN`          | সুপার অ্যাডমিন             | Full company access, manages everything within their company              |
+| `HR_MANAGER`           | এইচআর ম্যানেজার            | Manages employees, leave, attendance within their company                 |
+| `DEPARTMENT_HEAD`      | বিভাগীয় প্রধান            | Manages own department team & leave approvals                             |
+| `EMPLOYEE`             | কর্মচারী                   | Views own profile, applies for leave, sees payslip                        |
 
 ---
 
 ### Permission Matrix
 
 #### PLATFORM_SUPER_ADMIN — Can do everything across ALL companies:
+
 - Manage ALL Companies ✅
 - View ALL Subscriptions ✅
 - Create/Edit/Delete Subscription Plans ✅
@@ -348,7 +351,7 @@ Employee হলো সাধারণ কর্মচারী। তার prof
 ### 🏢 Module 3: Department & Designation Management
 
 - Create, edit, delete departments and designations ✅
-- Assign department head 
+- Assign department head
 - Create designations under each department
 - View employees per department
 
@@ -469,6 +472,7 @@ _(Details in Section 7)_
 **Access:** শুধু `PLATFORM_SUPER_ADMIN`
 
 **Pages:**
+
 - `/platform/dashboard` — Main dashboard
 - `/platform/companies` — সব কোম্পানি দেখুন
 - `/platform/subscription-plans` — প্ল্যান ম্যানেজ করুন
@@ -478,6 +482,7 @@ _(Details in Section 7)_
 - `/platform/settings` — সেটিংস
 
 **Seed Data:**
+
 ```bash
 POST /api/platform/setup
 {
@@ -504,128 +509,128 @@ POST /api/platform/setup
 // ============================================
 
 generator client {
-  provider = "prisma-client-js"
+provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+provider = "postgresql"
+url = env("DATABASE_URL")
 }
 
 // ─── ENUMS ────────────────────────────────────────────
 
 // Role Enum
 enum Role {
-    PLATFORM_SUPER_ADMIN
-    Super_ADMIN
-    HR_MANAGER
-    ACCOUNTANT
-    DEPARTMENT_HEAD
-    EMPLOYEE
+PLATFORM_SUPER_ADMIN
+Super_ADMIN
+HR_MANAGER
+ACCOUNTANT
+DEPARTMENT_HEAD
+EMPLOYEE
 }
 
 // Gender Enum
 enum Gender {
-  MALE
-  FEMALE
-  OTHER
+MALE
+FEMALE
+OTHER
 }
 
 // Employment Type Enum
 enum EmploymentType {
-  FULL_TIME
-  PART_TIME
-  CONTRACT
-  INTERN
+FULL_TIME
+PART_TIME
+CONTRACT
+INTERN
 }
 
 // Employee Status Enum
 enum EmployeeStatus {
-  ACTIVE
-  INACTIVE
-  TERMINATED
-  ON_LEAVE
+ACTIVE
+INACTIVE
+TERMINATED
+ON_LEAVE
 }
 
 // Attendance Status Enum
 enum AttendanceStatus {
-  PRESENT
-  ABSENT
-  LATE
-  HALF_DAY
-  HOLIDAY
-  WEEKEND
+PRESENT
+ABSENT
+LATE
+HALF_DAY
+HOLIDAY
+WEEKEND
 }
 
 // Leave Status Enum
 enum LeaveStatus {
-  PENDING
-  APPROVED_BY_HEAD
-  APPROVED
-  REJECTED
-  CANCELLED
+PENDING
+APPROVED_BY_HEAD
+APPROVED
+REJECTED
+CANCELLED
 }
 
 // Payroll Status Enum
 enum PayrollStatus {
-  DRAFT
-  APPROVED
-  PAID
-  CANCELLED
+DRAFT
+APPROVED
+PAID
+CANCELLED
 }
 
 // Subscription Plan Enum
 enum SubscriptionPlan {
-  FREE
-  BASIC
-  PRO
-  ENTERPRISE
+FREE
+BASIC
+PRO
+ENTERPRISE
 }
 
 // Subscription Status Enum
 enum SubscriptionStatus {
-  ACTIVE
-  EXPIRED
-  CANCELLED
-  TRIAL
-  PAST_DUE
+ACTIVE
+EXPIRED
+CANCELLED
+TRIAL
+PAST_DUE
 }
 
 // Payment Status Enum
 enum PaymentStatus {
-  PENDING
-  SUCCESS
-  FAILED
-  REFUNDED
-  CANCELLED
+PENDING
+SUCCESS
+FAILED
+REFUNDED
+CANCELLED
 }
 
 // Payment Gateway Enum
 enum PaymentGateway {
-  STRIPE
-  SSLCOMMERZ
+STRIPE
+SSLCOMMERZ
 }
 
 // 🆕 HR Scope Enum
 enum HrScope {
-  COMPANY_WIDE     // Manages all departments
-  DEPARTMENT_SPECIFIC // Manages specific department only
-  REGIONAL         // Manages specific region
+COMPANY_WIDE // Manages all departments
+DEPARTMENT_SPECIFIC // Manages specific department only
+REGIONAL // Manages specific region
 }
 
 // ─── COMPANY (TENANT) ───────────────────────────────────
 
 model Company {
-    id              String    @id @default(cuid())
-    name            String    @unique
-    logo            String?
-    address         String?
-    email           String    @unique
-    phone           String?
-    taxId           String?
-    website         String?
-    fiscalYearStart DateTime?
-    fiscalYearEnd   DateTime?
+id String @id @default(cuid())
+name String @unique
+logo String?
+address String?
+email String @unique
+phone String?
+taxId String?
+website String?
+fiscalYearStart DateTime?
+fiscalYearEnd DateTime?
 
     // Subscription
     subscriptionPlan   SubscriptionPlan   @default(FREE)
@@ -667,96 +672,95 @@ model Company {
     @@index([email], name: "idx_company_email")
     @@index([isDeleted], name: "idx_doctor_isDeleted")
     @@map("company")
-}
 
+}
 
 // ─── BASE USER ─────────────────────────────────────────
 
 model User {
-  id            String    @id
-  name          String
-  email         String
-  role          Role      @default(EMPLOYEE)
-  isActive      Boolean   @default(true)
-  isDeleted     Boolean   @default(false)
-  deletedAt     DateTime?
-  emailVerified Boolean   @default(false)
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  sessions      Session[]
-  accounts      Account[]
+id String @id
+name String
+email String
+role Role @default(EMPLOYEE)
+isActive Boolean @default(true)
+isDeleted Boolean @default(false)
+deletedAt DateTime?
+emailVerified Boolean @default(false)
+image String?
+createdAt DateTime @default(now())
+updatedAt DateTime @updatedAt
+sessions Session[]
+accounts Account[]
 
-  //relations
-  companyId String?
-  company   Company? @relation(fields: [companyId], references: [id], onDelete: Cascade)
+//relations
+companyId String?
+company Company? @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
-  platformSuperAdmin PlatformSuperAdmin?
-  superAdmin         SuperAdmin?
-  hrManager          HrManager?
-  accountant         Accountant?
-  departmentHead     DepartmentHead?
-  employee           Employee?
+platformSuperAdmin PlatformSuperAdmin?
+superAdmin SuperAdmin?
+hrManager HrManager?
+accountant Accountant?
+departmentHead DepartmentHead?
+employee Employee?
 
-  @@unique([email])
-  @@index([email], name: "idx_user_email")
-  @@map("user")
+@@unique([email])
+@@index([email], name: "idx_user_email")
+@@map("user")
 }
 
 model Session {
-  id        String   @id
-  expiresAt DateTime
-  token     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  ipAddress String?
-  userAgent String?
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+id String @id
+expiresAt DateTime
+token String
+createdAt DateTime @default(now())
+updatedAt DateTime @updatedAt
+ipAddress String?
+userAgent String?
+userId String
+user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([token])
-  @@index([userId])
-  @@map("session")
+@@unique([token])
+@@index([userId])
+@@map("session")
 }
 
 model Account {
-  id                    String    @id
-  accountId             String
-  providerId            String
-  userId                String
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  accessToken           String?
-  refreshToken          String?
-  idToken               String?
-  accessTokenExpiresAt  DateTime?
-  refreshTokenExpiresAt DateTime?
-  scope                 String?
-  password              String?
-  createdAt             DateTime  @default(now())
-  updatedAt             DateTime  @updatedAt
+id String @id
+accountId String
+providerId String
+userId String
+user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+accessToken String?
+refreshToken String?
+idToken String?
+accessTokenExpiresAt DateTime?
+refreshTokenExpiresAt DateTime?
+scope String?
+password String?
+createdAt DateTime @default(now())
+updatedAt DateTime @updatedAt
 
-  @@index([userId])
-  @@map("account")
+@@index([userId])
+@@map("account")
 }
 
 model Verification {
-  id         String   @id
-  identifier String
-  value      String
-  expiresAt  DateTime
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+id String @id
+identifier String
+value String
+expiresAt DateTime
+createdAt DateTime @default(now())
+updatedAt DateTime @updatedAt
 
-  @@index([identifier])
-  @@map("verification")
+@@index([identifier])
+@@map("verification")
 }
-
 
 // ─── ROLE PROFILES (with companyId) ────────────────────
 
 // Platform Admin Model
 model PlatformSuperAdmin {
-    id String @id @default(cuid())
+id String @id @default(cuid())
 
     name String
     email    String
@@ -775,13 +779,13 @@ model PlatformSuperAdmin {
     @@index([email], name: "idx_platform_super_admin_email")
     @@index([userId], name: "idx_platform_super_admin_userId")
     @@map("platform_super_admin")
+
 }
 
-
 model SuperAdmin {
-    id     String @id @default(cuid())
-    userId String @unique
-    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+id String @id @default(cuid())
+userId String @unique
+user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     name String
     phone    String?
@@ -799,10 +803,11 @@ model SuperAdmin {
     @@index([userId], name: "idx_superAdmin_userId")
     @@index([companyId], name: "idx_superAdmin_companyId")
     @@map("super_admin")
+
 }
 
 model HrManager {
-    id String @id @default(cuid())
+id String @id @default(cuid())
 
     name     String
     phone        String?
@@ -840,11 +845,11 @@ model HrManager {
     @@index([employeeCode], name: "idx_hrManager_employeeCode")
     @@index([departmentId], name: "idx_hrManager_departmentId")
     @@map("hr_manager")
+
 }
 
-
 model Accountant {
-    id String @id @default(cuid())
+id String @id @default(cuid())
 
     name         String
     phone            String?
@@ -870,11 +875,11 @@ model Accountant {
 
     @@index([companyId], name: "idx_accountant_companyId")
     @@map("accountant")
+
 }
 
-
 model DepartmentHead {
-    id     String @id @default(cuid())
+id String @id @default(cuid())
 
     name       String
     phone          String?
@@ -905,10 +910,11 @@ model DepartmentHead {
     @@index([companyId], name: "idx_departmentHead_companyId")
     @@index([departmentId], name: "idx_departmentHead_departmentId")
     @@map("department_head")
+
 }
 
 model Employee {
-    id String @id @default(cuid())
+id String @id @default(cuid())
 
     // Personal Info
     name    String
@@ -965,13 +971,13 @@ model Employee {
     @@index([departmentId], name: "idx_employee_departmentId")
     @@index([designationId], name: "idx_employee_designationId")
     @@map("employee")
-}
 
+}
 
 // ─── DEPARTMENT & DESIGNATION ──────────────────────────
 
 model DepartmentHead {
-    id     String @id @default(cuid())
+id String @id @default(cuid())
 
     name       String
     phone          String?
@@ -1002,14 +1008,15 @@ model DepartmentHead {
     @@index([companyId], name: "idx_departmentHead_companyId")
     @@index([departmentId], name: "idx_departmentHead_departmentId")
     @@map("department_head")
+
 }
 
 model Designation {
-    id           String  @id @default(cuid())
-    title        String
-    description  String?
-    departmentId String
-    isDeleted    Boolean @default(false)
+id String @id @default(cuid())
+title String
+description String?
+departmentId String
+isDeleted Boolean @default(false)
 
     deletedAt DateTime?
     createdAt DateTime  @default(now())
@@ -1029,13 +1036,13 @@ model Designation {
     @@index([companyId], name: "idx_designation_companyId")
     @@index([departmentId], name: "idx_designation_departmentId")
     @@map("designation")
-}
 
+}
 
 // ─── ATTENDANCE ────────────────────────────────────────
 
 model Attendance {
-    id String @id @default(cuid())
+id String @id @default(cuid())
 
     date             DateTime
     status           AttendanceStatus @default(PRESENT)
@@ -1061,13 +1068,13 @@ model Attendance {
     @@index([employeeId], name: "idx_attendance_employeeId")
     @@index([companyId], name: "idx_attendance_companyId")
     @@map("attendance")
-}
 
+}
 
 // ─── LEAVE ─────────────────────────────────────────────
 
 model Leave {
-    id String @id @default(cuid())
+id String @id @default(cuid())
 
     startDate        DateTime
     endDate          DateTime
@@ -1097,13 +1104,13 @@ model Leave {
     @@index([leaveTypeId], name: "idx_leave_leaveTypeId")
     @@index([companyId], name: "idx_leave_companyId")
     @@map("leave")
-}
 
+}
 
 // ─── PAYROLL ───────────────────────────────────────────
 
 model Payroll {
-    id String @id @default(cuid())
+id String @id @default(cuid())
 
     month Int
     year  Int
@@ -1138,25 +1145,25 @@ model Payroll {
     @@unique([employeeId, month, year])
     @@index([companyId], name: "idx_payroll_companyId")
     @@map("payroll")
-}
 
+}
 
 // ─── SUBSCRIPTION & PAYMENT ────────────────────────────
 
 model SubscriptionPlanConfig {
-    id             String           @id @default(cuid())
-    name           SubscriptionPlan @unique // FREE, BASIC, PRO, ENTERPRISE
-    displayName    String
-    description    String?
-    priceUSD       Float
-    priceBDT       Float
-    yearlyPriceUSD Float?
-    yearlyPriceBDT Float?
-    maxEmployees   Int
-    features       Json
-    isActive       Boolean          @default(true)
-    sortOrder      Int              @default(0)
-    popularBadge   Boolean          @default(false)
+id String @id @default(cuid())
+name SubscriptionPlan @unique // FREE, BASIC, PRO, ENTERPRISE
+displayName String
+description String?
+priceUSD Float
+priceBDT Float
+yearlyPriceUSD Float?
+yearlyPriceBDT Float?
+maxEmployees Int
+features Json
+isActive Boolean @default(true)
+sortOrder Int @default(0)
+popularBadge Boolean @default(false)
 
     // ⭐ NO companyId here! - This is PLATFORM level
     createdAt DateTime @default(now())
@@ -1165,11 +1172,11 @@ model SubscriptionPlanConfig {
     @@index([name], name: "idx_subscription_plan_name")
     @@index([isActive], name: "idx_subscription_plan_isActive")
     @@map("subscription_plan_config")
+
 }
 
-
 model SubscriptionHistory {
-    id String @id @default(cuid())
+id String @id @default(cuid())
 
     plan      SubscriptionPlan
     status    SubscriptionStatus
@@ -1188,11 +1195,11 @@ model SubscriptionHistory {
     @@index([companyId], name: "idx_subscription_history_companyId")
     @@index([startDate, endDate], name: "idx_subscription_history_date_range")
     @@map("subscription_history")
+
 }
 
-
 model Payment {
-    id String @id @default(cuid())
+id String @id @default(cuid())
 
     gateway   PaymentGateway
     plan      SubscriptionPlan
@@ -1227,32 +1234,34 @@ model Payment {
 
     @@index([companyId], name: "idx_payment_companyId")
     @@map("payment")
+
 }
 
 // ─── AUDIT LOG (For Future) ─────────────────────────────────────────
 
 model AuditLog {
-  id          String   @id @default(cuid())
-  userId      String
-  action      String
-  targetType  String
-  targetId    String?
-  details     Json?
-  ipAddress   String?
-  userAgent   String?
-  
-  companyId   String
-  company     Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  
-  createdAt   DateTime @default(now())
-  
-  @@index([companyId])
-  @@index([userId])
-  @@index([createdAt])
-  @@index([action])
-  @@index([targetType, targetId])
+id String @id @default(cuid())
+userId String
+action String
+targetType String
+targetId String?
+details Json?
+ipAddress String?
+userAgent String?
+
+companyId String
+company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+createdAt DateTime @default(now())
+
+@@index([companyId])
+@@index([userId])
+@@index([createdAt])
+@@index([action])
+@@index([targetType, targetId])
 }
-```
+
+````
 
 ---
 
@@ -1287,7 +1296,7 @@ npm install stripe
 
 # Frontend
 npm install @stripe/stripe-js @stripe/react-stripe-js
-```
+````
 
 #### Backend — Create Payment Intent
 
@@ -1978,7 +1987,7 @@ SSLCOMMERZ_STORE_PASSWORD=your_store_password
 
 ### Step 0: Seed Platform Admin (First Time Only)
 
-```bash
+````bash
 curl -X POST https://your-api.com/api/platform/setup \
   -H "Content-Type: application/json" \
   -d '{"email":"admin@zentro.com","password":"SecurePass123","fullName":"Zentro Owner"}'
@@ -2035,7 +2044,7 @@ npm run dev   # Runs on http://localhost:5000
 cd frontend
 npm install
 npm run dev   # Runs on http://localhost:3000
-```
+````
 
 ---
 
